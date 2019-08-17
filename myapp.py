@@ -24,6 +24,7 @@ def index():
     if form.validate_on_submit():
         input_form_data = request.form['todo_name']
         db.execute('INSERT INTO todos(name) VALUES (%s)', (input_form_data,))
+        return redirect(url_for('index'))
 
     db.execute('SELECT * from todos')
     todos = db.fetchall()
