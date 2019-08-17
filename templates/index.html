@@ -7,31 +7,31 @@
 
 <form method="post" action="">
     {{ form.hidden_tag() }}
-    <div class="form-group">
-        <label for="name" class="col-sm-3 control-label">Todo</label>
-        <div class="col-sm-6">
+    <div class="form-row">
+        <div class="col-sm-8 md-3" style="margin-bottom: 10px;">
+            <label class="text-muted">New Todo</label>
             {% if form.todo_name.errors %}
-            {{ form.todo_name(class="form-control form-control-lg is-invalid") }}
+            {{ form.todo_name(class="form-control is-invalid") }}
             <div class="invalid-feedback">
                 {% for error in form.todo_name.errors %}
                 <span>{{ error }}</span>
                 {% endfor %}
             </div>
             {% else %}
-            {{ form.todo_name(class="input_title") }}
+            {{ form.todo_name(class="form-control") }}
             {% endif %}
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-row" style="margin-bottom: 30px">
         <div class="col-sm-offset-3 col-sm-6">
-            {{ form.add_todo_create(class="btn btn-default") }}
+            {{ form.add_todo_create(class="btn btn-info") }}
         </div>
     </div>
 </form>
 
 <h2>Current Todos</h2>
-<table class="table table-striped todo-table">
+<table class="table">
     <thead>
         <th>Todos</th>
         <th>&nbsp</th>
@@ -39,12 +39,12 @@
     <tbody>
         {% for todo in todos %}
         <tr>
-            <td>
-                <div>{{ todo['name'] }}</div>
+            <td style="vertical-align: middle">
+                <div style="padding-left: 3px; color: gray">{{ todo['name'] }}</div>
             </td>
             <td>
                 <form action="{{url_for('delete', id=todo['id'])}}" method="POST" class="delete-form">
-                    <button class="delete-button">Delete</button>
+                    <button class="btn btn-info">Delete</button>
                 </form>
             </td>
         </tr>
