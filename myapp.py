@@ -1,7 +1,6 @@
 import pymysql
 from flask import Flask, redirect, render_template, request, url_for
 
-# flaskアプリケーションの作成
 app = Flask(__name__)
 
 conn = pymysql.connect(host='localhost', user='flask_user',
