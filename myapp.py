@@ -1,11 +1,16 @@
 import pymysql
 from flask import Flask, redirect, render_template, request, url_for
+import setting
 
 app = Flask(__name__)
 
-conn = pymysql.connect(host='localhost', user='flask_user',
-                       password='yusaku0720', db='flask_db', autocommit=True,
-                       cursorclass=pymysql.cursors.DictCursor)
+conn = pymysql.connect(
+    host='localhost',
+    user=setting.USER_NAME,
+    password=setting.PASSWORD, db=setting.DB_NAME,
+    autocommit=True,
+    cursorclass=pymysql.cursors.DictCursor
+)
 db = conn.cursor()
 
 
