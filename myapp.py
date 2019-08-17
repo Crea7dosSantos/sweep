@@ -1,8 +1,11 @@
 import pymysql
 from flask import Flask, redirect, render_template, request, url_for
 import setting
+from form import CreateTodoForm
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = setting.SECRET_KEY
 
 conn = pymysql.connect(
     host='localhost',
@@ -14,18 +17,17 @@ conn = pymysql.connect(
 db = conn.cursor()
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/create', methods=['GET', 'POST'])
 def index():
+    form = CreateTodoForm()
+    if form.validate_on_submit():
+        input_form_data = request.form['todo_name']
+        db.execute('INSERT INTO todos(name) VALUES (%s)', (input_form_data,))
+
     db.execute('SELECT * from todos')
     todos = db.fetchall()
-    return render_template('index.html', todos=todos)
-
-
-@app.route('/create', methods=('POST',))
-def create():
-    name = request.form['name']
-    db.execute('INSERT INTO todos(name) VALUES (%s)', (name,))
-    return redirect(url_for('index'))
+    return render_template('index.html', form=form, todos=todos)
 
 
 @app.route('/<int:id>delete', methods=('POST',))
