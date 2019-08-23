@@ -1,7 +1,7 @@
 import pymysql
 from flask import Flask, redirect, render_template, request, url_for
 import setting
-from form import CreateTodoForm
+from form import CreateTodoForm, LoginForm, SignUpForm
 
 app = Flask(__name__)
 
@@ -35,6 +35,16 @@ def index():
 def delete(id):
     db.execute('DELETE FROM todos WHERE id = %s', (id,))
     return redirect(url_for('index'))
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 
 app.run(debug=True)
