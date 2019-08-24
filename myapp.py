@@ -39,12 +39,14 @@ def delete(id):
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+    return render_template('login.html', form=form)
 
 
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    form = SignUpForm()
+    return render_template('signup.html', form=form)
 
 
 app.run(debug=True)
