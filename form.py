@@ -25,8 +25,8 @@ class SignUpForm(FlaskForm):
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
-    auth_button = SubmitField('Sign Up')
+    auth_submit = SubmitField('Sign Up')
 
 
 class LoginForm(SignUpForm):
-    auth_button = SubmitField('Login')
+    auth_submit = SubmitField('Login')
