@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = setting.SECRET_KEY
 
 conn = pymysql.connect(
-    host='localhost',
+    host=setting.HOST_NAME,
     user=setting.USER_NAME,
     password=setting.PASSWORD, db=setting.DB_NAME,
     autocommit=True,
