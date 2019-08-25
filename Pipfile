@@ -13,6 +13,7 @@ pymysql = "*"
 flask-wtf = "*"
 wtforms = "*"
 python-dotenv = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.6"
