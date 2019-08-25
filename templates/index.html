@@ -40,7 +40,7 @@
         {% for todo in todos %}
         <tr>
             <td style="vertical-align: middle">
-                <div style="padding-left: 3px; color: gray">{{ todo['name'] }}</div>
+                <div style="padding-left: 3px; color: gray">{{ todo['title'] }}</div>
             </td>
             <td>
                 <form action="{{url_for('delete', id=todo['id'])}}" method="POST" class="delete-form">
