@@ -34,17 +34,19 @@ def index():
     form = CreateTodoForm()
     if form.validate_on_submit():
         input_form_data = request.form['todo_name']
-        db.execute('INSERT INTO todos(name) VALUES (%s)', (input_form_data,))
+        todo = Todo(title=input_form_data)
+        db.session.add(todo)
+        db.session.commit()
         return redirect(url_for('index'))
 
-    db.execute('SELECT * from todos')
-    todos = db.fetchall()
+    todos = db.session.query(Todo).all()
     return render_template('index.html', form=form, todos=todos)
 
 
 @app.route('/<int:id>delete', methods=('POST',))
 def delete(id):
-    db.execute('DELETE FROM todos WHERE id = %s', (id,))
+    db.session.query(Todo).filter(Todo.id == id).delete()
+    db.session.commit()
     return redirect(url_for('index'))
 
 
