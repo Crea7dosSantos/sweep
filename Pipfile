@@ -14,9 +14,10 @@ flask-wtf = "*"
 wtforms = "*"
 python-dotenv = "*"
 flask-sqlalchemy = "*"
+cryptography = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
-start = "python app.py"
+start = "python run.py"
