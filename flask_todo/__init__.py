@@ -12,4 +12,3 @@ SQLALCHEMY_ECHO = False
 db = SQLAlchemy(app)
 
 import flask_todo.routes
-
