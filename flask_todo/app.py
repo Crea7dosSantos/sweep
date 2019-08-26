@@ -1,6 +1,7 @@
 from flask import Flask
 
 from flask_todo.database import init_db
+import flask_todo.models
 
 
 def create_app():
