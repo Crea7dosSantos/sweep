@@ -2,3 +2,5 @@
 .setting.json
 .env
 __pycache__
+.flaskenv
+site.db

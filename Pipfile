@@ -15,9 +15,11 @@ wtforms = "*"
 python-dotenv = "*"
 flask-sqlalchemy = "*"
 cryptography = "*"
+flask-migrate = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
 start = "python run.py"
+migrate = "flask db init"

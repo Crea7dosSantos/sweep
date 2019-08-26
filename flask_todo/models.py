@@ -13,6 +13,3 @@ class Todo(db.Model):
 
     def __repr__(self):
         return "Todo('{}', '{}')".format(self.title, self.date_posted)
-
-
-db.create_all()
