@@ -1,6 +1,5 @@
 from flask import render_template, url_for, redirect, request
-from flask_todo.app import app
-from flask_todo.database import db
+from flask_todo import app, db
 from flask_todo.form import CreateTodoForm, LoginForm, SignUpForm
 from flask_todo.models import Todo
 

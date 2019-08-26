@@ -11,5 +11,8 @@ class Todo(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.datetime.utcnow)
 
+    def __repr__(self):
+        return "Todo('{}', '{}')".format(self.title, self.date_posted)
+
 
 db.create_all()
