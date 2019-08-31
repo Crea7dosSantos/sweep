@@ -16,6 +16,8 @@ python-dotenv = "*"
 flask-sqlalchemy = "*"
 cryptography = "*"
 flask-migrate = "*"
+flask-jwt = "*"
+flask-bcrypt = "*"
 
 [requires]
 python_version = "3.6"
