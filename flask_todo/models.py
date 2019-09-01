@@ -1,5 +1,5 @@
 import datetime
-from flask_todo import db
+from flask_todo import db, ma
 
 
 class Todo(db.Model):
@@ -10,6 +10,11 @@ class Todo(db.Model):
     title = db.Column(db.String(255), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.datetime.utcnow)
+
+
+class TodoSchema(ma.ModelSchema):
+    class Meta:
+        model = Todo
 
 
 class User(db.Model):

@@ -1,7 +1,7 @@
-from flask import render_template, url_for, redirect, request
+from flask import render_template, url_for, redirect, request, jsonify
 from flask_todo import app, db
 from flask_todo.form import CreateTodoForm, LoginForm, SignUpForm
-from flask_todo.models import Todo
+from flask_todo.models import Todo, TodoSchema
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -16,7 +16,9 @@ def index():
         return redirect(url_for('index'))
 
     todos = db.session.query(Todo).all()
-    return render_template('index.html', form=form, todos=todos)
+    # return render_template('index.html', form=form, todos=todos)
+    return jsonify({'status': 'ok',
+                    'todos': TodoSchema(many=True).dump(todos)})
 
 
 @app.route('/<int:id>delete', methods=('POST',))

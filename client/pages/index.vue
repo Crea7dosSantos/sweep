@@ -1,39 +1,44 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        client
-      </h1>
-      <h2 class="subtitle">
-        Front part implementation
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+  <div>
+    <p>this is totos list page</p>
+    <p>{{ message }}</p>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Axios from 'axios'
 
 export default {
-  components: {
-    Logo
+  components: {},
+  data: function() {
+    return {
+      // todos: []
+      message: ''
+    }
+  },
+  beforeMount: function() {
+    let axios = Axios.create({
+      baseURL: 'http://localhost:5000',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      responsetype: 'json'
+    })
+    // let self = this
+    axios
+      .get('/')
+      .then(res => {
+        if (res.status === 200) {
+          console.log('success get api')
+          console.log(res.data)
+          // self.todos = res.data
+          // self.message = res.data.message
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 </script>
