@@ -11,10 +11,12 @@
                 <div class="control">
                   <input
                     class="input is-medium"
+                    :class="{ 'input is-danger': isErrorExist }"
                     type="text"
                     placeholder="Todo name input"
                     v-model="todoName"
                   />
+                  <p class="help is-danger">{{ error }}</p>
                 </div>
               </div>
               <div class="field">
@@ -57,24 +59,26 @@
 
 <script>
 import Axios from 'axios'
+let axios = Axios.create({
+  baseURL: 'http://localhost:5000',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  },
+  responsetype: 'json'
+})
 
 export default {
   components: {},
   data: function() {
     return {
       todos: [],
-      todoName: ''
+      todoName: '',
+      error: '',
+      isErrorExist: false
     }
   },
   beforeMount: function() {
-    let axios = Axios.create({
-      baseURL: 'http://localhost:5000',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      responsetype: 'json'
-    })
     let self = this
     axios
       .get('/')
@@ -89,18 +93,24 @@ export default {
         console.log(error)
       })
   },
+  watch: {
+    todoName: function(newVal) {
+      console.log(newVal)
+      newVal.length <= 4
+        ? ((this.error = 'character length error'), (this.isErrorExist = true))
+        : ((this.error = ''), (this.isErrorExist = false))
+      if (newVal.length == 0) {
+        this.error = 'This item is not allowed to be empty'
+      }
+    }
+  },
   methods: {
     create: function() {
-      const max = 255
-      const min = 5
-      if (
-        !this.todoName == '' &&
-        this.todoName.length > min &&
-        this.todoName.length < max
-      ) {
-        console.log('add todo successs')
+      if (!this.todoName == '' && this.isErrorExist == false) {
+        console.log('add todo create success')
       } else {
-        console.log('errorやで')
+        this.error = 'This item is not allowed to be empty'
+        console.log('not create todo')
       }
     }
   }
