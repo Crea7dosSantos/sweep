@@ -21,7 +21,11 @@
               </div>
               <div class="field">
                 <div class="control">
-                  <button class="button is-dark" @click="create">Create Todo</button>
+                  <button
+                    class="button is-dark"
+                    :class="{ 'is-loading': isLoading }"
+                    @click="create"
+                  >Create Todo</button>
                 </div>
               </div>
             </div>
@@ -67,12 +71,12 @@ export default {
       todos: [],
       todoName: '',
       error: '',
-      isErrorExist: false
+      isErrorExist: false,
+      isLoading: false
     }
   },
   watch: {
     todoName: function(newVal) {
-      console.log(newVal)
       newVal.length <= 4
         ? ((this.error = 'character length error'), (this.isErrorExist = true))
         : ((this.error = ''), (this.isErrorExist = false))
@@ -81,7 +85,7 @@ export default {
       }
     }
   },
-  beforeMount: function() {
+  mounted: function() {
     let self = this
     axios
       .get('/')
@@ -98,11 +102,26 @@ export default {
   },
   methods: {
     create: function() {
+      const self = this
+      self.isLoading = true
       if (!this.todoName == '' && this.isErrorExist == false) {
         console.log('add todo create success')
+        axios
+          .post('/create', { title: self.todoName })
+          .then(res => {
+            if (res.status === 200) {
+              console.log('success post todo')
+              self.isLoading = false
+            }
+          })
+          .catch(error => {
+            console.log(error)
+            self.isLoading = false
+          })
       } else {
         this.error = 'This item is not allowed to be empty'
         console.log('not create todo')
+        self.isLoading = false
       }
     }
   }
