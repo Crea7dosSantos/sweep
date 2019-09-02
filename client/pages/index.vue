@@ -1,7 +1,57 @@
 <template>
-  <div>
-    <p>this is totos list page</p>
-    <p>{{ message }}</p>
+  <div class="container-block">
+    <section class="hero is-primary is-bold">
+      <div class="hero-body">
+        <div class="container new-todo">
+          <h3 class="title is-3">New Todo</h3>
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <div class="field">
+                <label class="label has-text-white">Name</label>
+                <div class="control">
+                  <input
+                    class="input is-medium"
+                    type="text"
+                    placeholder="Todo name input"
+                    v-model="todoName"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <button class="button is-dark" @click="create">Create Todo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="container todo-list">
+      <h3 class="title is-3">Todo List</h3>
+      <div class="columns">
+        <div class="column is-full">
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <th>title</th>
+                <th>date_posted</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(todo, index) in todos" :key="index">
+                <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
+                <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] }}</td>
+                <td>
+                  <button class="button is-primary">Primary</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -12,8 +62,8 @@ export default {
   components: {},
   data: function() {
     return {
-      // todos: []
-      message: ''
+      todos: [],
+      todoName: ''
     }
   },
   beforeMount: function() {
@@ -25,53 +75,50 @@ export default {
       },
       responsetype: 'json'
     })
-    // let self = this
+    let self = this
     axios
       .get('/')
       .then(res => {
         if (res.status === 200) {
           console.log('success get api')
           console.log(res.data)
-          // self.todos = res.data
-          // self.message = res.data.message
+          self.todos = res.data.todos
         }
       })
       .catch(error => {
         console.log(error)
       })
+  },
+  methods: {
+    create: function() {
+      const max = 255
+      const min = 5
+      if (
+        !this.todoName == '' &&
+        this.todoName.length > min &&
+        this.todoName.length < max
+      ) {
+        console.log('add todo successs')
+      } else {
+        console.log('errorやで')
+      }
+    }
   }
 }
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.todo-list {
+  margin-top: 50px;
 }
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
+.td-font {
+  color: gray;
+  font-size: 17px;
 }
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
+.table td {
+  vertical-align: middle;
 }
-
-.links {
-  padding-top: 15px;
+.new-todo {
+  margin-top: 20px;
 }
 </style>
