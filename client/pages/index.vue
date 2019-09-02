@@ -10,11 +10,11 @@
                 <label class="label has-text-white">Name</label>
                 <div class="control">
                   <input
+                    v-model="todoName"
                     class="input is-medium"
                     :class="{ 'input is-danger': isErrorExist }"
                     type="text"
                     placeholder="Todo name input"
-                    v-model="todoName"
                   />
                   <p class="help is-danger">{{ error }}</p>
                 </div>
@@ -58,15 +58,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
-let axios = Axios.create({
-  baseURL: 'http://localhost:5000',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
-  },
-  responsetype: 'json'
-})
+import axios from '@/plugins/axios'
 
 export default {
   components: {},
@@ -76,6 +68,17 @@ export default {
       todoName: '',
       error: '',
       isErrorExist: false
+    }
+  },
+  watch: {
+    todoName: function(newVal) {
+      console.log(newVal)
+      newVal.length <= 4
+        ? ((this.error = 'character length error'), (this.isErrorExist = true))
+        : ((this.error = ''), (this.isErrorExist = false))
+      if (newVal.length == 0) {
+        this.error = 'This item is not allowed to be empty'
+      }
     }
   },
   beforeMount: function() {
@@ -92,17 +95,6 @@ export default {
       .catch(error => {
         console.log(error)
       })
-  },
-  watch: {
-    todoName: function(newVal) {
-      console.log(newVal)
-      newVal.length <= 4
-        ? ((this.error = 'character length error'), (this.isErrorExist = true))
-        : ((this.error = ''), (this.isErrorExist = false))
-      if (newVal.length == 0) {
-        this.error = 'This item is not allowed to be empty'
-      }
-    }
   },
   methods: {
     create: function() {
