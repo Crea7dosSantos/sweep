@@ -50,7 +50,7 @@
                 <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
                 <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] }}</td>
                 <td>
-                  <button class="button is-primary">Primary</button>
+                  <button class="button is-primary" @click="hoge">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -112,6 +112,18 @@ export default {
             if (res.status === 200) {
               console.log('success post todo')
               self.isLoading = false
+              self.todoName = ''
+              axios
+                .get('/')
+                .then(res => {
+                  if (res.status === 200) {
+                    console.log('success get api')
+                    self.todos = res.data.todos
+                  }
+                })
+                .catch(error => {
+                  console.log(error)
+                })
             }
           })
           .catch(error => {
