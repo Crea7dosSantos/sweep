@@ -50,7 +50,7 @@
                 <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
                 <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] }}</td>
                 <td>
-                  <button class="button is-primary" @click="hoge">Delete</button>
+                  <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -135,6 +135,9 @@ export default {
         console.log('not create todo')
         self.isLoading = false
       }
+    },
+    deleteHandler: function(todoId) {
+      console.log(todoId)
     }
   }
 }
