@@ -1,9 +1,4 @@
-.vscode
-.setting.json
-.env
-__pycache__
-.flaskenv
-site.db
+
 # Logs
 logs
 *.log

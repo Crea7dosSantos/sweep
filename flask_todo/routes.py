@@ -1,12 +1,21 @@
-from flask import render_template, url_for, redirect, jsonify, request
+from flask import url_for, redirect, jsonify, request
 from flask_todo import app, db
 from flask_todo.models import Todo, TodoSchema
 import json
+import datetime
+from pytz import timezone
 
 
 @app.route('/index', methods=('GET',))
 def index():
     todos = db.session.query(Todo).all()
+    for todo in todos:
+        dt_naive_to_utc_replace = todo.date_posted.replace(
+            tzinfo=datetime.timezone.utc)
+        todo.date_posted = dt_naive_to_utc_replace.astimezone(
+            timezone('Asia/Tokyo'))
+        print(todo.date_posted)
+
     return jsonify({'status': 'ok',
                     'todos': TodoSchema(many=True).dump(todos)})
 
@@ -40,9 +49,9 @@ def delete():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    return 'OK'
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    return render_template('signup.html')
+    return 'OK'
