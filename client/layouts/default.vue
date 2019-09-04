@@ -32,13 +32,13 @@
         <div class="navbar-end">
           <n-link
             class="navbar-item button is-primary default-button"
-            to="/"
+            to="/signup"
           >
             Sign up
           </n-link>
           <n-link
             class="navbar-item button is-light has-text-grey-dark default-button"
-            to="/"
+            to="/login"
           >
             Log in
           </n-link>
