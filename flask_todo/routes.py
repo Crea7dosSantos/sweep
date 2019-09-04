@@ -25,8 +25,14 @@ def create():
     return redirect(url_for('index'))
 
 
-@app.route('/<int:id>delete', methods=('POST',))
-def delete(id):
+@app.route('/delete', methods=('POST',))
+def delete():
+    if not request.is_json:
+        return jsonify({"message": "Missing JSON in request"}), 400
+
+    data = request.data.decode('utf-8')
+    data = json.loads(data)
+    id = str(data['delete_id'])
     db.session.query(Todo).filter(Todo.id == id).delete()
     db.session.commit()
     return redirect(url_for('index'))

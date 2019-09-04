@@ -138,6 +138,28 @@ export default {
     },
     deleteHandler: function(todoId) {
       console.log(todoId)
+      axios
+        .post('/delete', { delete_id: todoId })
+        .then(res => {
+          if (res.status === 200) {
+            console.log('success delete todo')
+            axios
+              .get('/')
+              .then(res => {
+                if (res.status === 200) {
+                  console.log('success get api')
+                  self.todos = res.data.todos
+                }
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          self.isLoading = false
+        })
     }
   }
 }
