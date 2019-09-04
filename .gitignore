@@ -136,3 +136,5 @@ Temporary Items
 
 # client side .gitignore
 client/.gitignore
+
+client/.git
