@@ -14,7 +14,6 @@ def index():
             tzinfo=datetime.timezone.utc)
         todo.date_posted = dt_naive_to_utc_replace.astimezone(
             timezone('Asia/Tokyo'))
-        print(todo.date_posted)
 
     return jsonify({'status': 'ok',
                     'todos': TodoSchema(many=True).dump(todos)})
