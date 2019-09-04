@@ -134,3 +134,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# client side .gitignore
+client/.gitignore
