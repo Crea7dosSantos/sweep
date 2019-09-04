@@ -4,7 +4,7 @@ from flask_todo.models import Todo, TodoSchema
 import json
 
 
-@app.route('/', methods=('GET',))
+@app.route('/index', methods=('GET',))
 def index():
     todos = db.session.query(Todo).all()
     return jsonify({'status': 'ok',

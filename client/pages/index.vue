@@ -88,7 +88,7 @@ export default {
   mounted: function() {
     let self = this
     axios
-      .get('/')
+      .get('/index')
       .then(res => {
         if (res.status === 200) {
           console.log('success get api')
@@ -114,7 +114,7 @@ export default {
               self.isLoading = false
               self.todoName = ''
               axios
-                .get('/')
+                .get('/index')
                 .then(res => {
                   if (res.status === 200) {
                     console.log('success get api')
@@ -144,7 +144,7 @@ export default {
           if (res.status === 200) {
             console.log('success delete todo')
             axios
-              .get('/')
+              .get('/index')
               .then(res => {
                 if (res.status === 200) {
                   console.log('success get api')
