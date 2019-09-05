@@ -7,7 +7,7 @@ from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-app.config.from_object('flask_todo.config.Config')
+app.config.from_object('config.Config')
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
