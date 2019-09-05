@@ -1,17 +1,19 @@
 <template>
-  <section class="hero is-primary is-fullheight-with-navbar">
+  <section class="hero has-background-grey-lighter is-fullheight-with-navbar">
     <div class="hero-body">
       <div class="container">
         <div class="columns">
-          <div class="column is-one-third" />
-          <div class="column card box">
+          <div class="column" />
+          <div class="column card box is-two-fifths">
             <div class="field form-title">
-              <h3 class="title is-2 has-text-dark">login</h3>
+              <h3 class="title is-2 has-text-dark">Sign in</h3>
             </div>
             <div class="field">
+              <label class="label">Email</label>
               <input class="input is-medium" type="email" placeholder="Email" />
             </div>
             <div class="field">
+              <label class="label">Password</label>
               <input type="password" class="input is-medium" placeholder="Password" />
             </div>
             <div class="columns">
@@ -21,7 +23,7 @@
               </div>
               <div class="column form-subject">
                 <div class="field">
-                  <button class="button is-dark">Login</button>
+                  <button class="button is-dark signin">Sign in</button>
                 </div>
               </div>
             </div>
@@ -37,7 +39,8 @@
 <style scoped>
 .card {
   background: white;
-  height: 300px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 .form-title {
   text-align: center;
@@ -45,13 +48,16 @@
   height: 60px;
   padding-top: 10px;
 }
-.input {
-  margin-top: 10px;
-}
 .form-subject {
-  margin-top: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .form-subject button {
-  width: 90px;
+  padding-right: 20px;
+  padding-left: 20px;
+  height: 40px;
+}
+.is-light {
+  float: right;
 }
 </style>
