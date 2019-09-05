@@ -28,4 +28,6 @@ python_version = "3.6"
 
 [scripts]
 start = "python run.py"
-migrate = "flask db init"
+init = "flask db init"
+migrate = "flask db migrate"
+upgrade = "flask db upgrade"
