@@ -1,5 +1,25 @@
 <template>
   <div>
+    <section class="hero is-dark is-medium">
+      <nav class="navbar">
+        <div class="navbar-brand">
+          <n-link class="navbar-item" to="/">Todo</n-link>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <n-link class="navbar-item" to="/">Home</n-link>
+            <n-link class="navbar-item" to="/">Documentation</n-link>
+          </div>
+        </div>
+        <div class="navbar-end">
+          <n-link class="navbar-item button is-primary default-button" to="/signup">Sign up</n-link>
+          <n-link
+            class="navbar-item button is-light has-text-grey-dark default-button"
+            to="/signin"
+          >Sign in</n-link>
+        </div>
+      </nav>
+    </section>
     <nuxt />
   </div>
 </template>
@@ -51,5 +71,14 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+
+.default-button {
+  margin-right: 20px;
+  margin-top: 7px;
+}
+
+.navbar-end {
+  vertical-align: middle;
 }
 </style>
