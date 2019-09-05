@@ -41,8 +41,8 @@ def delete():
     return 'OK'
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
     return 'OK'
 
 
