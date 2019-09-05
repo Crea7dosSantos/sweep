@@ -13,9 +13,19 @@ pymysql = "*"
 flask-wtf = "*"
 wtforms = "*"
 python-dotenv = "*"
+flask-sqlalchemy = "*"
+cryptography = "*"
+flask-migrate = "*"
+flask-jwt = "*"
+flask-bcrypt = "*"
+flask-cors = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+pytz = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
-start = "python myapp.py"
+start = "python run.py"
+migrate = "flask db init"
