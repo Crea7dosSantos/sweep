@@ -24,13 +24,11 @@ def create():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
 
-    data = request.data.decode('utf-8')
-    data = json.loads(data)
-    title = str(data['title'])
+    title = request.json.get('title', None)
     todo = Todo(title=title)
     db.session.add(todo)
     db.session.commit()
-    return redirect(url_for('index'))
+    return 'OK'
 
 
 @app.route('/delete', methods=('POST',))
@@ -38,12 +36,10 @@ def delete():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
 
-    data = request.data.decode('utf-8')
-    data = json.loads(data)
-    id = str(data['delete_id'])
+    id = request.json.get('delete_id', None)
     db.session.query(Todo).filter(Todo.id == id).delete()
     db.session.commit()
-    return redirect(url_for('index'))
+    return 'OK'
 
 
 @app.route('/login', methods=['GET', 'POST'])
