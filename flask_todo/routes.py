@@ -1,7 +1,6 @@
-from flask import url_for, redirect, jsonify, request
+from flask import jsonify, request
 from flask_todo import app, db
 from flask_todo.models import Todo, TodoSchema
-import json
 import datetime
 from pytz import timezone
 
