@@ -97,12 +97,9 @@ export default {
   },
   watch: {
     todoName: function(newVal) {
-      newVal.length <= 4
+      newVal.length <= 4 && !newVal.length == 0
         ? ((this.error = 'character length error'), (this.isErrorExist = true))
         : ((this.error = ''), (this.isErrorExist = false))
-      if (newVal.length == 0) {
-        this.error = 'This item is not allowed to be empty'
-      }
     }
   },
   mounted: function() {
@@ -112,11 +109,11 @@ export default {
       .then(res => {
         if (res.status === 200) {
           console.log('success get api')
-          console.log(res.data)
           self.todos = res.data.todos
         }
       })
       .catch(error => {
+        console.log('not success get api')
         console.log(error)
       })
   },
@@ -124,37 +121,42 @@ export default {
     create: function() {
       const self = this
       self.isLoading = true
-      if (!this.todoName == '' && this.isErrorExist == false) {
-        console.log('add todo create success')
-        axios
-          .post('/create', { title: self.todoName })
-          .then(res => {
-            if (res.status === 200) {
-              console.log('success post todo')
-              self.isLoading = false
-              self.todoName = ''
-              axios
-                .get('/index')
-                .then(res => {
-                  if (res.status === 200) {
-                    console.log('success get api')
-                    self.todos = res.data.todos
-                  }
-                })
-                .catch(error => {
-                  console.log(error)
-                })
-            }
-          })
-          .catch(error => {
-            console.log(error)
-            self.isLoading = false
-          })
-      } else {
+      if (this.todoName == '') {
         this.error = 'This item is not allowed to be empty'
         console.log('not create todo')
         self.isLoading = false
+        return
+      } else if (this.isErrorExist == true) {
+        self.isLoading = false
+        return
       }
+
+      console.log('add todo create success')
+      axios
+        .post('/create', { title: self.todoName })
+        .then(res => {
+          if (res.status === 200) {
+            console.log('success post todo')
+            self.isLoading = false
+            self.todoName = ''
+            self.isErrorExist = false
+            axios
+              .get('/index')
+              .then(res => {
+                if (res.status === 200) {
+                  console.log('success get api')
+                  self.todos = res.data.todos
+                }
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          self.isLoading = false
+        })
     },
     deleteHandler: function(todoId) {
       console.log(todoId)

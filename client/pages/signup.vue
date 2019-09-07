@@ -1,67 +1,111 @@
 <template>
-  <section class="hero has-background-grey-lighter is-fullheight-with-navbar">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns">
-          <div class="column" />
-          <div class="column card box is-half">
-            <div class="field form-title">
-              <h3 class="title is-2 has-text-grey-dark">Sign up</h3>
-            </div>
-            <div class="field">
-              <label class="label">Username</label>
-              <input class="input is-medium" type="text" placeholder="Username" />
-            </div>
-            <div class="field">
-              <label class="label">Email</label>
-              <input class="input is-medium" type="email" placeholder="Email" />
-            </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <input type="password" class="input is-medium" placeholder="Password" />
-            </div>
-            <div class></div>
-            <div class="columns">
-              <div class="column is-half"></div>
-              <div class="column form-subject">
-                <button class="button is-light">Cancel</button>
-              </div>
-              <div class="column form-subject">
-                <div class="field">
-                  <button class="button is-dark">Create Acount</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="column" />
-        </div>
-      </div>
-    </div>
-  </section>
+  <v-app id="inspire">
+    <v-content>
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="4">
+            <v-card class="elevation-12">
+              <v-toolbar flat>
+                <v-toolbar-title class="grey--text">SignUp form</v-toolbar-title>
+                <div class="flex-grow-1" />
+              </v-toolbar>
+              <v-divider />
+              <v-card-text>
+                <v-form ref="form">
+                  <v-text-field
+                    label="Username"
+                    :rules="[rules.required, rules.min4]"
+                    name="Username"
+                    prepend-icon="person"
+                    type="text"
+                    v-model="userName"
+                    counter
+                    maxlength="20"
+                    required
+                  />
+                  <v-text-field
+                    label="Email"
+                    :rules="[rules.required, rules.email]"
+                    name="Email"
+                    prepend-icon="email"
+                    type="email"
+                    v-model="email"
+                    required
+                  />
+                  <v-text-field
+                    id="password"
+                    :rules="[rules.required, rules.min4, rules.max20]"
+                    label="Password"
+                    name="password"
+                    prepend-icon="lock"
+                    type="password"
+                    v-model="password"
+                    required
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <div class="flex-grow-1" />
+                <v-btn color="primary" @click="signup">Sign up</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
+<script>
+import axios from '@/plugins/axios'
+import crypto from 'crypto'
+
+export default {
+  props: {},
+  data: () => ({
+    drawer: null,
+    userName: '',
+    email: '',
+    password: '',
+    rules: {
+      required: value => !!value || 'Required.',
+      min4: value => value.length >= 4 || 'Min 4 characters',
+      max20: value => value.length <= 20 || 'Max 20 characters',
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(value) || 'Invalid e-mail.'
+      }
+    }
+  }),
+  methods: {
+    signup: function() {
+      if (!this.$refs.form.validate()) {
+        return
+      }
+      let sha256 = crypto.createHash('sha256')
+      sha256.update(this.password)
+      const hashPass = sha256.digest('base64')
+      let self = this
+      axios
+        .post('/signup', {
+          username: self.userName,
+          email: self.email,
+          password: hashPass
+        })
+        .then(res => {
+          console.log('success create account')
+          console.log(res.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+}
+</script>
 
 <style scoped>
-.card {
-  background: white;
-  padding-right: 30px;
-  padding-left: 30px;
-}
-.form-title {
-  text-align: center;
-  margin-bottom: 10px;
-  height: 60px;
-  padding-top: 10px;
-}
-.form-subject {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.form-subject button {
-  padding-right: 20px;
-  padding-left: 20px;
-}
-.is-light {
-  float: right;
+.v-divider {
+  margin: 0px;
 }
 </style>

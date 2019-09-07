@@ -14,10 +14,14 @@
   },
   "dependencies": {
     "@nuxtjs/bulma": "^1.2.1",
+    "@nuxtjs/font-awesome": "^1.0.4",
+    "@nuxtjs/vuetify": "^1.6.3",
     "axios": "^0.19.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
     "nuxt": "^2.0.0",
+    "nuxt-material-design-icons": "^1.0.4",
+    "the.crypto": "^1.0.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
