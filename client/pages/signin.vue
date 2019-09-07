@@ -1,77 +1,51 @@
 <template>
-  <section class="hero has-background-grey-lighter is-fullheight-with-navbar">
-    <div class="hero-body">
-      <div class="container">
-        <div class="columns">
-          <div class="column" />
-          <div class="column card box is-two-fifths">
-            <div class="field form-title">
-              <h3 class="title is-2 has-text-dark">
-                Sign in
-              </h3>
-            </div>
-            <div class="field">
-              <label class="label">Email</label>
-              <input
-                class="input is-medium"
-                type="email"
-                placeholder="Email"
-              >
-            </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <input
-                type="password"
-                class="input is-medium"
-                placeholder="Password"
-              >
-            </div>
-            <div class="columns">
-              <div class="column is-half" />
-              <div class="column form-subject">
-                <button class="button is-light">
-                  Cancel
-                </button>
-              </div>
-              <div class="column form-subject">
-                <div class="field">
-                  <button class="button is-dark signin">
-                    Sign in
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="column" />
-        </div>
-      </div>
-    </div>
-  </section>
+  <v-app id="inspire">
+    <v-content>
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="4">
+            <v-card class="elevation-12">
+              <v-toolbar flat>
+                <v-toolbar-title class="grey--text">SignIn form</v-toolbar-title>
+                <div class="flex-grow-1" />
+              </v-toolbar>
+              <v-divider />
+              <v-card-text>
+                <v-form>
+                  <v-text-field label="Email" name="Email" prepend-icon="email" type="text" />
+
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    name="password"
+                    prepend-icon="lock"
+                    type="password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <div class="flex-grow-1" />
+                <v-btn color="primary">Sign in</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
+<script>
+export default {
+  props: {},
+  data: () => ({
+    drawer: null
+  })
+}
+</script>
 
 <style scoped>
-.card {
-  background: white;
-  padding-right: 20px;
-  padding-left: 20px;
-}
-.form-title {
-  text-align: center;
-  margin-bottom: 10px;
-  height: 60px;
-  padding-top: 10px;
-}
-.form-subject {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-.form-subject button {
-  padding-right: 20px;
-  padding-left: 20px;
-  height: 40px;
-}
-.is-light {
-  float: right;
+.v-divider {
+  margin: 0px;
 }
 </style>
