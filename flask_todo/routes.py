@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_todo import app, db
-from flask_todo.models import Todo, TodoSchema
+from flask_todo.models import Todo, TodoSchema, User
 import datetime
 from pytz import timezone
 
@@ -48,4 +48,13 @@ def signin():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+
+    if not request.is_json:
+        return jsonify({"message": "Missing JSON in request"}), 400
+    username = request.json.get('username', None)
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+    user = User(username=username, email=email, password=password)
+    db.session.add(user)
+    db.session.commit()
     return 'OK'
