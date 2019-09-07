@@ -11,21 +11,42 @@
               </v-toolbar>
               <v-divider />
               <v-card-text>
-                <v-form>
-                  <v-text-field label="Username" name="Username" prepend-icon="person" type="text" />
-                  <v-text-field label="Email" name="Email" prepend-icon="email" type="email" />
+                <v-form ref="form">
+                  <v-text-field
+                    label="Username"
+                    :rules="[rules.required, rules.min4]"
+                    name="Username"
+                    prepend-icon="person"
+                    type="text"
+                    v-model="userName"
+                    counter
+                    maxlength="20"
+                    required
+                  />
+                  <v-text-field
+                    label="Email"
+                    :rules="[rules.required, rules.email]"
+                    name="Email"
+                    prepend-icon="email"
+                    type="email"
+                    v-model="email"
+                    required
+                  />
                   <v-text-field
                     id="password"
+                    :rules="[rules.required, rules.min4, rules.max20]"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
+                    v-model="password"
+                    required
                   />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1" />
-                <v-btn color="primary">Sign up</v-btn>
+                <v-btn color="primary" @click="signup">Sign up</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -36,13 +57,37 @@
 </template>
 
 <script>
+// import axios from '@/plugins/axios'
+import crypto from 'crypto'
+
 export default {
-  props: {
-    source: String
-  },
+  props: {},
   data: () => ({
-    drawer: null
-  })
+    drawer: null,
+    userName: '',
+    email: '',
+    password: '',
+    rules: {
+      required: value => !!value || 'Required.',
+      min4: value => value.length >= 4 || 'Min 4 characters',
+      max20: value => value.length <= 20 || 'Max 20 characters',
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(value) || 'Invalid e-mail.'
+      }
+    }
+  }),
+  methods: {
+    signup: function() {
+      if (!this.$refs.form.validate()) {
+        return
+      }
+      let sha256 = crypto.createHash('sha256')
+      sha256.update(this.password)
+      const hashPass = sha256.digest('base64')
+      console.log(hashPass)
+    }
+  }
 }
 </script>
 

@@ -21,6 +21,7 @@
     "moment-timezone": "^0.5.26",
     "nuxt": "^2.0.0",
     "nuxt-material-design-icons": "^1.0.4",
+    "the.crypto": "^1.0.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {

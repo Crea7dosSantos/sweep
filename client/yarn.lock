@@ -7617,6 +7617,11 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
+the.crypto@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/the.crypto/-/the.crypto-1.0.0.tgz#d9068765e8e2fe053d123702e7e41d01f90ba31c"
+  integrity sha512-RgumD6pntXupUEjdDTqR1STtrjGJewsNdp0VmbXz+6H4hgksDEcO1nfV7mZZz/skCG8bdZUeN6lePWRm77rCOA==
+
 thread-loader@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/thread-loader/-/thread-loader-2.1.3.tgz#cbd2c139fc2b2de6e9d28f62286ab770c1acbdda"
