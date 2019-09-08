@@ -3,6 +3,7 @@ from flask_todo import app, db, bcrypt
 from flask_todo.models import Todo, TodoSchema, User
 import datetime
 from pytz import timezone
+from flask_jwt_extended import create_access_token
 
 
 @app.route('/index', methods=('GET',))
@@ -45,15 +46,19 @@ def delete():
 def signin():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
-
+    print("きてるぞ")
     email = request.json.get('email', None)
     password = request.json.get('password', None)
-    if not email:
+    user = User.query.filter_by(email=email).first()
+    if not user:
         return jsonify({"msg": "Missing email parameter"}), 400
-    if not password:
+    if user and bcrypt.check_password_hash(user.password, password):
+        print('success signin')
+    else:
         return jsonify({"msg": "Missing password parameter"}), 400
 
-    return 'OK'
+    access_token = create_access_token(identity=user.id)
+    return jsonify(access_token=access_token), 200
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -66,8 +71,8 @@ def signup():
     password = request.json.get('password', None)
     hashed_pass = bcrypt.generate_password_hash(password)
 
-    email_filtered = db.session.query(User).filter(User.email == email).first()
-    if email_filtered:
+    user_validate = User.query.filter_by(email=email).first()
+    if user_validate:
         return jsonify({"mode": "signup", "status": "error",
                         "message": "This email cannot be used"}), 400
 
