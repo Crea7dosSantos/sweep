@@ -6,26 +6,36 @@
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar flat>
-                <v-toolbar-title class="grey--text">SignIn form</v-toolbar-title>
+                <v-toolbar-title class="grey--text">signIn form</v-toolbar-title>
                 <div class="flex-grow-1" />
               </v-toolbar>
               <v-divider />
               <v-card-text>
-                <v-form>
-                  <v-text-field label="Email" name="Email" prepend-icon="email" type="text" />
-
+                <v-form ref="form">
+                  <v-text-field
+                    label="Email"
+                    :rules="[rules.required, rules.email]"
+                    name="Email"
+                    prepend-icon="email"
+                    type="email"
+                    v-model="email"
+                    required
+                  />
                   <v-text-field
                     id="password"
+                    :rules="[rules.required, rules.min4, rules.max20]"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
+                    v-model="password"
+                    required
                   />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1" />
-                <v-btn color="primary">Sign in</v-btn>
+                <v-btn color="primary" @click="signin">Sign in</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -36,11 +46,49 @@
 </template>
 
 <script>
+import axios from '@/plugins/axios'
+import crypto from 'crypto'
+
 export default {
   props: {},
   data: () => ({
-    drawer: null
-  })
+    drawer: null,
+    email: '',
+    password: '',
+    rules: {
+      required: value => !!value || 'Required.',
+      min4: value => value.length >= 4 || 'Min 4 characters',
+      max20: value => value.length <= 20 || 'Max 20 characters',
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(value) || 'Invalid e-mail.'
+      }
+    }
+  }),
+  methods: {
+    signin: function() {
+      if (!this.$refs.form.validate()) {
+        return
+      }
+      let sha256 = crypto.createHash('sha256')
+      sha256.update(this.password)
+      const hashPass = sha256.digest('base64')
+      let self = this
+      axios
+        .post('/signin', {
+          username: self.userName,
+          email: self.email,
+          password: hashPass
+        })
+        .then(res => {
+          console.log('success create account')
+          console.log(res.data)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
 }
 </script>
 
