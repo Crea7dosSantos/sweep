@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_todo import app, db
+from flask_todo import app, db, bcrypt
 from flask_todo.models import Todo, TodoSchema, User
 import datetime
 from pytz import timezone
@@ -43,9 +43,9 @@ def delete():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
-
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
+
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     if not email:
@@ -58,13 +58,21 @@ def signin():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
+
     username = request.json.get('username', None)
     email = request.json.get('email', None)
     password = request.json.get('password', None)
-    user = User(username=username, email=email, password=password)
+    hashed_pass = bcrypt.generate_password_hash(password)
+
+    email_filtered = db.session.query(User).filter(User.email == email).first()
+    if email_filtered:
+        return jsonify({"mode": "signup", "status": "error",
+                        "message": "This email cannot be used"}), 400
+
+    user = User(username=username, email=email, password=hashed_pass)
     db.session.add(user)
     db.session.commit()
-    return 'OK'
+    return jsonify({"mode": "signup", "status": "success",
+                    "message": "Completed"}), 200
