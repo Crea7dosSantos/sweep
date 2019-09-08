@@ -43,6 +43,16 @@ def delete():
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
+
+    if not request.is_json:
+        return jsonify({"message": "Missing JSON in request"}), 400
+    email = request.json.get('email', None)
+    password = request.json.get('password', None)
+    if not email:
+        return jsonify({"msg": "Missing email parameter"}), 400
+    if not password:
+        return jsonify({"msg": "Missing password parameter"}), 400
+
     return 'OK'
 
 
