@@ -3,45 +3,20 @@
     <section class="hero is-dark is-medium">
       <nav class="navbar">
         <div class="navbar-brand">
-          <n-link
-            class="navbar-item"
-            to="/"
-          >
-            Todo
-          </n-link>
+          <n-link class="navbar-item" to="/top">Top</n-link>
         </div>
-        <div
-          id="navbarBasicExample"
-          class="navbar-menu"
-        >
+        <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-            <n-link
-              class="navbar-item"
-              to="/"
-            >
-              Home
-            </n-link>
-            <n-link
-              class="navbar-item"
-              to="/"
-            >
-              Documentation
-            </n-link>
+            <n-link class="navbar-item" to="/">Home</n-link>
+            <n-link class="navbar-item" to="/">Documentation</n-link>
           </div>
         </div>
         <div class="navbar-end">
-          <n-link
-            class="navbar-item button is-primary default-button"
-            to="/signup"
-          >
-            Sign up
-          </n-link>
+          <n-link class="navbar-item button is-primary default-button" to="/signup">Sign up</n-link>
           <n-link
             class="navbar-item button is-light has-text-grey-dark default-button"
             to="/signin"
-          >
-            Sign in
-          </n-link>
+          >Sign in</n-link>
         </div>
       </nav>
     </section>
