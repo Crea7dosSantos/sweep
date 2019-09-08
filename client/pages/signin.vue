@@ -47,7 +47,6 @@
 
 <script>
 import axios from '@/plugins/axios'
-import crypto from 'crypto'
 
 export default {
   props: {},
@@ -70,18 +69,15 @@ export default {
       if (!this.$refs.form.validate()) {
         return
       }
-      let sha256 = crypto.createHash('sha256')
-      sha256.update(this.password)
-      const hashPass = sha256.digest('base64')
       let self = this
       axios
         .post('/signin', {
           username: self.userName,
           email: self.email,
-          password: hashPass
+          password: self.password
         })
         .then(res => {
-          console.log('success create account')
+          console.log('success signin')
           console.log(res.data)
         })
         .catch(error => {
