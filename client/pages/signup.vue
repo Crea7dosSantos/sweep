@@ -1,52 +1,69 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
             <v-card class="elevation-12">
               <v-toolbar flat>
-                <v-toolbar-title class="grey--text">SignUp form</v-toolbar-title>
+                <v-toolbar-title class="grey--text">
+                  SignUp form
+                </v-toolbar-title>
                 <div class="flex-grow-1" />
               </v-toolbar>
               <v-divider />
               <v-card-text>
                 <v-form ref="form">
                   <v-text-field
+                    v-model="userName"
                     label="Username"
                     :rules="[rules.required, rules.min4]"
                     name="Username"
                     prepend-icon="person"
                     type="text"
-                    v-model="userName"
                     counter
                     maxlength="20"
                     required
                   />
                   <v-text-field
+                    v-model="email"
                     label="Email"
                     :rules="[rules.required, rules.email]"
                     name="Email"
                     prepend-icon="email"
                     type="email"
-                    v-model="email"
                     required
                   />
                   <v-text-field
                     id="password"
+                    v-model="password"
                     :rules="[rules.required, rules.min4, rules.max20]"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
-                    v-model="password"
                     required
                   />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1" />
-                <v-btn color="primary" @click="signup">Sign up</v-btn>
+                <v-btn
+                  color="primary"
+                  @click="signup"
+                >
+                  Sign up
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
