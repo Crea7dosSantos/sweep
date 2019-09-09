@@ -46,7 +46,6 @@ def delete():
 def signin():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
-    print("きてるぞ")
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     user = User.query.filter_by(email=email).first()
