@@ -3,9 +3,7 @@
     <section class="hero is-primary is-bold">
       <div class="hero-body">
         <div class="container new-todo">
-          <h3 class="title is-3">
-            New Todo
-          </h3>
+          <h3 class="title is-3">New Todo</h3>
           <div class="columns">
             <div class="column is-four-fifths">
               <div class="field">
@@ -17,10 +15,8 @@
                     :class="{ 'input is-danger': isErrorExist }"
                     type="text"
                     placeholder="Todo name input"
-                  >
-                  <p class="help is-danger">
-                    {{ error }}
-                  </p>
+                  />
+                  <p class="help is-danger">{{ error }}</p>
                 </div>
               </div>
               <div class="field">
@@ -29,9 +25,7 @@
                     class="button is-dark"
                     :class="{ 'is-loading': isLoading }"
                     @click="create"
-                  >
-                    Create Todo
-                  </button>
+                  >Create Todo</button>
                 </div>
               </div>
             </div>
@@ -40,9 +34,7 @@
       </div>
     </section>
     <div class="container todo-list">
-      <h3 class="title is-3">
-        Todo List
-      </h3>
+      <h3 class="title is-3">Todo List</h3>
       <div class="columns">
         <div class="column is-full">
           <table class="table is-fullwidth is-hoverable">
@@ -54,23 +46,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(todo, index) in todos"
-                :key="index"
-              >
-                <td class="has-text-weight-semibold td-font">
-                  {{ todo["title"] }}
-                </td>
-                <td class="has-text-weight-semibold td-font">
-                  {{ todo["date_posted"] | dateFormat }}
-                </td>
+              <tr v-for="(todo, index) in todos" :key="index">
+                <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
+                <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
                 <td>
-                  <button
-                    class="button is-primary"
-                    @click="deleteHandler(todo.id)"
-                  >
-                    Delete
-                  </button>
+                  <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -83,6 +63,7 @@
 
 <script>
 import axios from '@/plugins/axios'
+import Cookies from 'js-cookie'
 
 export default {
   components: {},
@@ -101,6 +82,10 @@ export default {
         ? ((this.error = 'character length error'), (this.isErrorExist = true))
         : ((this.error = ''), (this.isErrorExist = false))
     }
+  },
+  beforeMount: function() {
+    let token = Cookies.get('jwt_token')
+    console.log(token)
   },
   mounted: function() {
     let self = this
