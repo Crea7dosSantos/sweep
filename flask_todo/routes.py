@@ -6,8 +6,8 @@ from pytz import timezone
 from flask_jwt_extended import create_access_token
 
 
-@app.route('/index', methods=('GET',))
-def index():
+@app.route('/home', methods=('GET',))
+def home():
     todos = db.session.query(Todo).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(

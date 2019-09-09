@@ -3,11 +3,11 @@
     <section class="hero is-dark is-medium">
       <nav class="navbar">
         <div class="navbar-brand">
-          <n-link class="navbar-item" to="/top">Top</n-link>
+          <n-link class="navbar-item" to="/">Top</n-link>
         </div>
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-            <n-link class="navbar-item" to="/">Home</n-link>
+            <n-link class="navbar-item" to="/home">Home</n-link>
             <n-link class="navbar-item" to="/">Documentation</n-link>
           </div>
         </div>

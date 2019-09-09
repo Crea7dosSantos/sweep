@@ -81,7 +81,7 @@ export default {
         .then(res => {
           console.log('success signin')
           Cookies.set('jwt_token', res.data.access_token)
-          router.push('/')
+          router.push('/home')
         })
         .catch(error => {
           console.log(error)
