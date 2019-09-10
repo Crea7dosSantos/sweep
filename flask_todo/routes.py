@@ -95,3 +95,9 @@ def signup():
     db.session.commit()
     return jsonify({"mode": "signup", "status": "success",
                     "message": "Completed"}), 200
+
+
+@app.route('/signout', methods=['POST'])
+def signout():
+    return jsonify({"mode": "signout", "status": "success",
+                    "message": "Completed"}), 200
