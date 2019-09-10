@@ -2,25 +2,55 @@
   <div>
     <nav class="navbar is-dark">
       <div class="navbar-brand">
-        <n-link class="navbar-item" to="/">Todo</n-link>
+        <n-link class="navbar-item" to="/">Top</n-link>
       </div>
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <n-link class="navbar-item" to="/">Home</n-link>
-          <n-link class="navbar-item" to="/">Documentation</n-link>
+          <n-link class="navbar-item" to="/home">Home</n-link>
+          <n-link class="navbar-item" to="/documentation">Documentation</n-link>
         </div>
       </div>
       <div class="navbar-end">
-        <n-link class="navbar-item button is-primary default-button" to="/signup">Sign up</n-link>
+        <n-link
+          class="navbar-item button is-primary default-button"
+          :class="{ 'is-hidden': !isAuth }"
+          to="/signout"
+        >Sign out</n-link>
+        <n-link
+          class="navbar-item button is-primary default-button"
+          :class="{ 'is-hidden': isAuth }"
+          to="/signup"
+        >Sign up</n-link>
         <n-link
           class="navbar-item button is-light has-text-grey-dark default-button"
           to="/signin"
+          :class="{ 'is-hidden': isAuth }"
         >Sign in</n-link>
       </div>
     </nav>
     <nuxt />
   </div>
 </template>
+
+<script>
+import Cookies from 'js-cookie'
+
+export default {
+  data: function() {
+    return {
+      isAuth: false
+    }
+  },
+  beforeMount: function() {
+    let token = Cookies.get('jwt_token')
+    console.log('default.vue is before mount')
+    if (token) {
+      this.isAuth = true
+      console.log('default.vue is before mount in token confirm')
+    }
+  }
+}
+</script>
 
 <style>
 html {
@@ -40,31 +70,6 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-/* .button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-} */
 .default-button {
   margin-right: 20px;
   margin-top: 7px;
