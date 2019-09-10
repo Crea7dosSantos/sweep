@@ -1,41 +1,58 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
             <v-card class="elevation-12">
               <v-toolbar flat>
-                <v-toolbar-title class="grey--text">signIn form</v-toolbar-title>
+                <v-toolbar-title class="grey--text">
+                  signIn form
+                </v-toolbar-title>
                 <div class="flex-grow-1" />
               </v-toolbar>
               <v-divider />
               <v-card-text>
                 <v-form ref="form">
                   <v-text-field
+                    v-model="email"
                     label="Email"
                     :rules="[rules.required, rules.email]"
                     name="Email"
                     prepend-icon="email"
                     type="email"
-                    v-model="email"
                     required
                   />
                   <v-text-field
                     id="password"
+                    v-model="password"
                     :rules="[rules.required, rules.min4, rules.max20]"
                     label="Password"
                     name="password"
                     prepend-icon="lock"
                     type="password"
-                    v-model="password"
                     required
                   />
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1" />
-                <v-btn color="primary" @click="signin">Sign in</v-btn>
+                <v-btn
+                  color="primary"
+                  @click="signin"
+                >
+                  Sign in
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -46,8 +63,8 @@
 </template>
 
 <script>
-import axios from '@/plugins/axios'
-import crypto from 'crypto'
+import axiosDefault from '@/plugins/axios'
+import Cookies from 'js-cookie'
 
 export default {
   props: {},
@@ -67,22 +84,21 @@ export default {
   }),
   methods: {
     signin: function() {
+      const router = this.$router
+
       if (!this.$refs.form.validate()) {
         return
       }
-      let sha256 = crypto.createHash('sha256')
-      sha256.update(this.password)
-      const hashPass = sha256.digest('base64')
       let self = this
-      axios
+      axiosDefault
         .post('/signin', {
-          username: self.userName,
           email: self.email,
-          password: hashPass
+          password: self.password
         })
         .then(res => {
-          console.log('success create account')
-          console.log(res.data)
+          console.log('success signin')
+          Cookies.set('jwt_token', res.data.access_token)
+          router.push('/home')
         })
         .catch(error => {
           console.log(error)

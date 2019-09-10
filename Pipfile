@@ -22,6 +22,7 @@ flask-cors = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 pytz = "*"
+flask-jwt-extended = "*"
 
 [requires]
 python_version = "3.6"
