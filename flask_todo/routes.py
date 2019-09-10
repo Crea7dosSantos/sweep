@@ -7,15 +7,22 @@ from flask_jwt_extended import (
     create_access_token, jwt_required, get_jwt_identity)
 
 
-@app.route('/home', methods=('GET',))
+@app.route('/protected', methods=['GET'])
 @jwt_required
-def home():
+def protected():
     current_user = get_jwt_identity()
     if not current_user:
         return jsonify({"message": "Bad access token"}), 401
         print("not exist current_user")
     print('認証は成功しました')
     print(current_user)
+    return jsonify({'status': 'ok',
+                    'user_id': current_user})
+
+
+@app.route('/home', methods=('GET',))
+def home():
+
     todos = db.session.query(Todo).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(
@@ -24,7 +31,7 @@ def home():
             timezone('Asia/Tokyo'))
 
     return jsonify({'status': 'ok',
-                    'user_id': current_user})
+                    'todos': TodoSchema(many=True).dump(todos)})
 
 
 @app.route('/create', methods=('POST',))

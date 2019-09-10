@@ -75,7 +75,7 @@ export default {
       error: '',
       isErrorExist: false,
       isLoading: false,
-      userId: ''
+      userId: 0
     }
   },
   watch: {
@@ -85,7 +85,7 @@ export default {
         : ((this.error = ''), (this.isErrorExist = false))
     }
   },
-  beforeMount: function() {
+  created: function() {
     const router = this.$router
     let token = Cookies.get('jwt_token')
     console.log(token)
@@ -99,11 +99,12 @@ export default {
     })
     let self = this
     axios
-      .get('/home')
+      .get('/protected')
       .then(res => {
         let data = res.data
         console.log(data)
-        self.userId = data
+        console.log('access_tokenを使用してsign inしました。')
+        self.userId = data.user_id
       })
       .catch(() => {
         console.log('access_tokenがありません。')
@@ -112,6 +113,8 @@ export default {
   },
   mounted: function() {
     let self = this
+    console.log('start lifecycle mounted')
+    console.log(self.userId)
     axiosDefault
       .get('/home')
       .then(res => {
