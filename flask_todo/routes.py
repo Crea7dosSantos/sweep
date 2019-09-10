@@ -3,11 +3,19 @@ from flask_todo import app, db, bcrypt
 from flask_todo.models import Todo, TodoSchema, User
 import datetime
 from pytz import timezone
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import (
+    create_access_token, jwt_required, get_jwt_identity)
 
 
 @app.route('/home', methods=('GET',))
+@jwt_required
 def home():
+    current_user = get_jwt_identity()
+    if not current_user:
+        return jsonify({"message": "Bad access token"}), 401
+        print("not exist current_user")
+    print('認証は成功しました')
+    print(current_user)
     todos = db.session.query(Todo).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(
@@ -16,7 +24,7 @@ def home():
             timezone('Asia/Tokyo'))
 
     return jsonify({'status': 'ok',
-                    'todos': TodoSchema(many=True).dump(todos)})
+                    'user_id': current_user})
 
 
 @app.route('/create', methods=('POST',))

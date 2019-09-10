@@ -3,9 +3,7 @@
     <section class="hero is-primary is-bold">
       <div class="hero-body">
         <div class="container new-todo">
-          <h3 class="title is-3">
-            New Todo
-          </h3>
+          <h3 class="title is-3">New Todo</h3>
           <div class="columns">
             <div class="column is-four-fifths">
               <div class="field">
@@ -17,10 +15,8 @@
                     :class="{ 'input is-danger': isErrorExist }"
                     type="text"
                     placeholder="Todo name input"
-                  >
-                  <p class="help is-danger">
-                    {{ error }}
-                  </p>
+                  />
+                  <p class="help is-danger">{{ error }}</p>
                 </div>
               </div>
               <div class="field">
@@ -29,9 +25,7 @@
                     class="button is-dark"
                     :class="{ 'is-loading': isLoading }"
                     @click="create"
-                  >
-                    Create Todo
-                  </button>
+                  >Create Todo</button>
                 </div>
               </div>
             </div>
@@ -40,9 +34,7 @@
       </div>
     </section>
     <div class="container todo-list">
-      <h3 class="title is-3">
-        Todo List
-      </h3>
+      <h3 class="title is-3">Todo List</h3>
       <div class="columns">
         <div class="column is-full">
           <table class="table is-fullwidth is-hoverable">
@@ -54,23 +46,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(todo, index) in todos"
-                :key="index"
-              >
-                <td class="has-text-weight-semibold td-font">
-                  {{ todo["title"] }}
-                </td>
-                <td class="has-text-weight-semibold td-font">
-                  {{ todo["date_posted"] | dateFormat }}
-                </td>
+              <tr v-for="(todo, index) in todos" :key="index">
+                <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
+                <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
                 <td>
-                  <button
-                    class="button is-primary"
-                    @click="deleteHandler(todo.id)"
-                  >
-                    Delete
-                  </button>
+                  <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -82,8 +62,9 @@
 </template>
 
 <script>
-import axios from '@/plugins/axios'
 import Cookies from 'js-cookie'
+import Axios from 'axios'
+import axiosDefault from '@/plugins/axios'
 
 export default {
   components: {},
@@ -93,7 +74,8 @@ export default {
       todoName: '',
       error: '',
       isErrorExist: false,
-      isLoading: false
+      isLoading: false,
+      userId: ''
     }
   },
   watch: {
@@ -104,12 +86,33 @@ export default {
     }
   },
   beforeMount: function() {
+    const router = this.$router
     let token = Cookies.get('jwt_token')
     console.log(token)
+    let axios = Axios.create({
+      baseURL: 'http://localhost:5000',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      responseType: 'json'
+    })
+    let self = this
+    axios
+      .get('/home')
+      .then(res => {
+        let data = res.data
+        console.log(data)
+        self.userId = data
+      })
+      .catch(() => {
+        console.log('access_tokenがありません。')
+        router.push('/signin')
+      })
   },
   mounted: function() {
     let self = this
-    axios
+    axiosDefault
       .get('/home')
       .then(res => {
         if (res.status === 200) {
@@ -137,7 +140,7 @@ export default {
       }
 
       console.log('add todo create success')
-      axios
+      axiosDefault
         .post('/create', { title: self.todoName })
         .then(res => {
           if (res.status === 200) {
@@ -145,7 +148,7 @@ export default {
             self.isLoading = false
             self.todoName = ''
             self.isErrorExist = false
-            axios
+            axiosDefault
               .get('/home')
               .then(res => {
                 if (res.status === 200) {
@@ -165,22 +168,11 @@ export default {
     },
     deleteHandler: function(todoId) {
       console.log(todoId)
-      axios
+      axiosDefault
         .post('/delete', { delete_id: todoId })
         .then(res => {
           if (res.status === 200) {
             console.log('success delete todo')
-            axios
-              .get('/home')
-              .then(res => {
-                if (res.status === 200) {
-                  console.log('success get api')
-                  self.todos = res.data.todos
-                }
-              })
-              .catch(error => {
-                console.log(error)
-              })
           }
         })
         .catch(error => {

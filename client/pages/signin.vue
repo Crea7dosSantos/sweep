@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axios from '@/plugins/axios'
+import axiosDefault from '@/plugins/axios'
 import Cookies from 'js-cookie'
 
 export default {
@@ -90,7 +90,7 @@ export default {
         return
       }
       let self = this
-      axios
+      axiosDefault
         .post('/signin', {
           email: self.email,
           password: self.password
