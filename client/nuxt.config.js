@@ -27,7 +27,10 @@ export default {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: ['~/plugins/filter.js'],
+  plugins: [
+    { src: '~/plugins/filter.js' },
+    { src: '~plugins/persistedstate.js', ssr: false }
+  ],
   /*
   ** Nuxt.js dev-modules
   */
