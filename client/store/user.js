@@ -8,7 +8,8 @@ const initialState = {
 }
 
 export const state = () => ({
-  user: initialState
+  user: initialState,
+  loggedIn: false
 })
 
 export const mutations = {
@@ -17,6 +18,13 @@ export const mutations = {
     state.user.name = userObj.username
     state.user.id = userObj.id
     state.user.email = userObj.email
+    state.loggedIn = true
+  },
+  unsetUserState(state) {
+    state.user.name = ''
+    state.user.id = ''
+    state.user.email = ''
+    state.loggedIn = false
   }
 }
 
@@ -43,12 +51,12 @@ export const actions = {
       })
   },
   signOut({ commit }) {
-    commit('setUserstate', false)
+    commit('unsetUserState')
   }
 }
 
 export const getters = {
   isAuthenticated(state) {
-    return !!state.user
+    return !!state.loggedIn
   }
 }

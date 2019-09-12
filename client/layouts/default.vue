@@ -13,21 +13,20 @@
       <div class="navbar-end">
         <n-link
           class="navbar-item button is-primary default-button"
-          :class="{ 'is-hidden': !isAuth }"
+          :class="{ 'is-hidden': !isAuthenticated }"
           to="/signout"
         >Sign out</n-link>
         <n-link
           class="navbar-item button is-primary default-button"
-          :class="{ 'is-hidden': isAuth }"
+          :class="{ 'is-hidden': isAuthenticated }"
           to="/signup"
         >Sign up</n-link>
         <n-link
           class="navbar-item button is-light has-text-grey-dark default-button"
           to="/signin"
-          :class="{ 'is-hidden': isAuth }"
+          :class="{ 'is-hidden': isAuthenticated }"
         >Sign in</n-link>
         {{ user.name }}
-        {{ isAuthenticated }}
       </div>
     </nav>
     <nuxt />
@@ -35,26 +34,12 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { mapState, mapGetters } from 'vuex'
 
 export default {
   computed: {
     ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated'])
-  },
-  data: function() {
-    return {
-      isAuth: false
-    }
-  },
-  beforeMount: function() {
-    let token = Cookies.get('jwt_token')
-    console.log('default.vue is before mount')
-    if (token) {
-      this.isAuth = true
-      console.log('default.vue is before mount in token confirm')
-    }
   }
 }
 </script>
