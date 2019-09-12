@@ -82,9 +82,9 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
-import Axios from 'axios'
 import axiosDefault from '@/plugins/axios'
+import Axios from 'axios'
+import Cookies from 'js-cookie'
 
 export default {
   components: {},
@@ -95,7 +95,7 @@ export default {
       error: '',
       isErrorExist: false,
       isLoading: false,
-      userId: 0
+      token: ''
     }
   },
   watch: {
@@ -105,8 +105,10 @@ export default {
         : ((this.error = ''), (this.isErrorExist = false))
     }
   },
-  created: function() {
-    const router = this.$router
+  mounted: function() {
+    let self = this
+    console.log('start lifecycle mounted')
+    // axiosDefault
     let token = Cookies.get('jwt_token')
     console.log(token)
     let axios = Axios.create({
@@ -117,25 +119,7 @@ export default {
       },
       responseType: 'json'
     })
-    let self = this
     axios
-      .get('/protected')
-      .then(res => {
-        let data = res.data
-        console.log(data)
-        console.log('access_tokenを使用してsign inしました。')
-        self.userId = data.user_id
-      })
-      .catch(() => {
-        console.log('access_tokenがありません。')
-        router.push('/signin')
-      })
-  },
-  mounted: function() {
-    let self = this
-    console.log('start lifecycle mounted')
-    console.log(self.userId)
-    axiosDefault
       .get('/home')
       .then(res => {
         if (res.status === 200) {

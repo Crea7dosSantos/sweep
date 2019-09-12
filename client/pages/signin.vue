@@ -65,6 +65,7 @@
 <script>
 import axiosDefault from '@/plugins/axios'
 import Cookies from 'js-cookie'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   props: {},
@@ -82,7 +83,11 @@ export default {
       }
     }
   }),
+  computed: {
+    ...mapState('user', ['user'])
+  },
   methods: {
+    ...mapActions('user', ['signIn']),
     signin: function() {
       const router = this.$router
 
@@ -96,6 +101,7 @@ export default {
           password: self.password
         })
         .then(res => {
+          this.signIn(res.data.access_token)
           console.log('success signin')
           Cookies.set('jwt_token', res.data.access_token)
           router.push('/home')
