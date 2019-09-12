@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from flask_todo import app, db, bcrypt
-from flask_todo.models import Todo, TodoSchema, User
+from flask_todo.models import Todo, TodoSchema, User, UserSchema
 import datetime
 from pytz import timezone
 from flask_jwt_extended import (
@@ -13,11 +13,10 @@ def protected():
     current_user = get_jwt_identity()
     if not current_user:
         return jsonify({"message": "Bad access token"}), 401
-    user_datas = db.session.query(User.username).\
+    user_datas = db.session.query(User.username, User.email, User.id).\
         filter(User.id == current_user)
-    user_name = user_datas[0][0]
     return jsonify({'status': 'ok',
-                    'user_name': user_name})
+                    'user_datas': UserSchema(many=True).dump(user_datas)})
 
 
 @app.route('/home', methods=('GET',))

@@ -1,13 +1,22 @@
 import Axios from 'axios'
 export const strict = false
 
+const initialState = {
+  name: '',
+  id: '',
+  email: ''
+}
+
 export const state = () => ({
-  user: false
+  user: initialState
 })
 
 export const mutations = {
   setUserState(state, payload) {
-    state.user = payload
+    const userObj = payload[0]
+    state.user.name = userObj.username
+    state.user.id = userObj.id
+    state.user.email = userObj.email
   }
 }
 
@@ -25,15 +34,15 @@ export const actions = {
       .get('/protected')
       .then(res => {
         const data = res.data
-        console.log(data)
-        const payload = data.user_name
+        console.log(data.user_datas)
+        const payload = data.user_datas
         commit('setUserState', payload)
       })
       .catch(() => {
         commit('setUserStete', false)
       })
   },
-  signout({ commit }) {
+  signOut({ commit }) {
     commit('setUserstate', false)
   }
 }
