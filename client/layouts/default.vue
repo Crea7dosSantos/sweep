@@ -27,6 +27,7 @@
           :class="{ 'is-hidden': isAuth }"
         >Sign in</n-link>
         {{ user.name }}
+        {{ isAuthenticated }}
       </div>
     </nav>
     <nuxt />
