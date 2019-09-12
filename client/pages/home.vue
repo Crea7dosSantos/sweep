@@ -83,6 +83,8 @@
 
 <script>
 import axiosDefault from '@/plugins/axios'
+import Axios from 'axios'
+import Cookies from 'js-cookie'
 
 export default {
   components: {},
@@ -92,7 +94,8 @@ export default {
       todoName: '',
       error: '',
       isErrorExist: false,
-      isLoading: false
+      isLoading: false,
+      token: ''
     }
   },
   watch: {
@@ -105,7 +108,18 @@ export default {
   mounted: function() {
     let self = this
     console.log('start lifecycle mounted')
-    axiosDefault
+    // axiosDefault
+    let token = Cookies.get('jwt_token')
+    console.log(token)
+    let axios = Axios.create({
+      baseURL: 'http://localhost:5000',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      },
+      responseType: 'json'
+    })
+    axios
       .get('/home')
       .then(res => {
         if (res.status === 200) {

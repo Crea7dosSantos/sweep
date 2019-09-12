@@ -1,11 +1,6 @@
 import Axios from 'axios'
 export const strict = false
 
-// const initialState = {
-//   userId: '',
-//   userName: ''
-// }
-
 export const state = () => ({
   user: false
 })
@@ -30,7 +25,8 @@ export const actions = {
       .get('/protected')
       .then(res => {
         const data = res.data
-        const payload = data.user_id
+        console.log(data)
+        const payload = data.user_name
         commit('setUserState', payload)
       })
       .catch(() => {

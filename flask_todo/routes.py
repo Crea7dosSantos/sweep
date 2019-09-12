@@ -13,16 +13,19 @@ def protected():
     current_user = get_jwt_identity()
     if not current_user:
         return jsonify({"message": "Bad access token"}), 401
-        print("not exist current_user")
-    print('認証は成功しました')
-    print(current_user)
+    user_datas = db.session.query(User.username).\
+        filter(User.id == current_user)
+    user_name = user_datas[0][0]
     return jsonify({'status': 'ok',
-                    'user_id': current_user})
+                    'user_name': user_name})
 
 
 @app.route('/home', methods=('GET',))
+@jwt_required
 def home():
 
+    current_user = get_jwt_identity()
+    print(current_user)
     todos = db.session.query(Todo).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(
