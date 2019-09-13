@@ -111,6 +111,25 @@ export default {
       .catch(error => {
         console.log(error)
         console.log('homeの部分でエラー')
+        let refreshToken = Cookies.get('refresh_token')
+        let axios = Axios.create({
+          baseURL: 'http://localhost:5000',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + refreshToken
+          },
+          responseType: 'json'
+        })
+        axios
+          .post('/refresh')
+          .then(res => {
+            console.log(res.data)
+            console.log('get new access_token')
+            Cookies.set('access_token', res.data.access_token)
+          })
+          .catch(() => {
+            console.log('error occured id refresh')
+          })
       })
   },
   methods: {

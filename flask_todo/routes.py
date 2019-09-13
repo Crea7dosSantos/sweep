@@ -4,7 +4,8 @@ from flask_todo.models import Todo, TodoSchema, User, UserSchema
 import datetime
 from pytz import timezone
 from flask_jwt_extended import (
-    create_access_token, jwt_required, get_jwt_identity, create_refresh_token)
+    create_access_token, create_refresh_token, jwt_required,
+    jwt_refresh_token_required, get_jwt_identity, )
 
 
 @app.route('/protected', methods=['GET'])
@@ -17,6 +18,17 @@ def protected():
         filter(User.id == current_user)
     return jsonify({'status': 'ok',
                     'user_datas': UserSchema(many=True).dump(user_datas)})
+
+
+@app.route('/refresh', methods=['POST'])
+@jwt_refresh_token_required
+def refresh():
+    current_user = get_jwt_identity()
+    if not current_user:
+        return jsonify({"message": "Bad access token"}), 401
+    new_token = create_access_token(identity=current_user, fresh=False)
+    ret = {'access_token': new_token}
+    return jsonify(ret), 200
 
 
 @app.route('/home', methods=('GET',))
