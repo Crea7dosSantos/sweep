@@ -2,12 +2,30 @@
   <div>
     <nav class="navbar is-dark">
       <div class="navbar-brand">
-        <n-link class="navbar-item" to="/">Top</n-link>
+        <n-link
+          class="navbar-item"
+          to="/"
+        >
+          Top
+        </n-link>
       </div>
-      <div id="navbarBasicExample" class="navbar-menu">
+      <div
+        id="navbarBasicExample"
+        class="navbar-menu"
+      >
         <div class="navbar-start">
-          <n-link class="navbar-item" to="/home">Home</n-link>
-          <n-link class="navbar-item" to="/documentation">Documentation</n-link>
+          <n-link
+            class="navbar-item"
+            to="/home"
+          >
+            Home
+          </n-link>
+          <n-link
+            class="navbar-item"
+            to="/documentation"
+          >
+            Documentation
+          </n-link>
         </div>
       </div>
       <div class="navbar-end">
@@ -15,17 +33,23 @@
           class="navbar-item button is-primary default-button"
           :class="{ 'is-hidden': !isAuthenticated }"
           to="/signout"
-        >Sign out</n-link>
+        >
+          Sign out
+        </n-link>
         <n-link
           class="navbar-item button is-primary default-button"
           :class="{ 'is-hidden': isAuthenticated }"
           to="/signup"
-        >Sign up</n-link>
+        >
+          Sign up
+        </n-link>
         <n-link
           class="navbar-item button is-light has-text-grey-dark default-button"
           to="/signin"
           :class="{ 'is-hidden': isAuthenticated }"
-        >Sign in</n-link>
+        >
+          Sign in
+        </n-link>
         {{ user.name }}
       </div>
     </nav>
