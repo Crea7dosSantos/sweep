@@ -4,7 +4,7 @@ from flask_todo.models import Todo, TodoSchema, User, UserSchema
 import datetime
 from pytz import timezone
 from flask_jwt_extended import (
-    create_access_token, jwt_required, get_jwt_identity)
+    create_access_token, jwt_required, get_jwt_identity, create_refresh_token)
 
 
 @app.route('/protected', methods=['GET'])
@@ -73,8 +73,11 @@ def signin():
     else:
         return jsonify({"msg": "Missing password parameter"}), 400
 
-    access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token), 200
+    ret = {
+        'access_token': create_access_token(identity=user.id, fresh=True),
+        'refresh_token': create_refresh_token(identity=user.id)
+    }
+    return jsonify(access_token=ret), 200
 
 
 @app.route('/signup', methods=['GET', 'POST'])
