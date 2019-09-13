@@ -41,9 +41,8 @@ export default {
     signout: function() {
       const router = this.$router
       this.loading = true
-      Cookies.remove('jwt_token')
+      Cookies.remove('access_token')
       this.signOut()
-      console.log(e)
       this.loading = false
       router.push('/')
     }

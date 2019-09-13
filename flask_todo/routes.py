@@ -77,7 +77,7 @@ def signin():
         'access_token': create_access_token(identity=user.id, fresh=True),
         'refresh_token': create_refresh_token(identity=user.id)
     }
-    return jsonify(access_token=ret), 200
+    return jsonify(ret), 200
 
 
 @app.route('/signup', methods=['GET', 'POST'])
