@@ -3,7 +3,9 @@
     <section class="hero is-primary is-bold">
       <div class="hero-body">
         <div class="container new-todo">
-          <h3 class="title is-3">New Todo</h3>
+          <h3 class="title is-3">
+            New Todo
+          </h3>
           <div class="columns">
             <div class="column is-four-fifths">
               <div class="field">
@@ -15,8 +17,10 @@
                     :class="{ 'input is-danger': isErrorExist }"
                     type="text"
                     placeholder="Todo name input"
-                  />
-                  <p class="help is-danger">{{ error }}</p>
+                  >
+                  <p class="help is-danger">
+                    {{ error }}
+                  </p>
                 </div>
               </div>
               <div class="field">
@@ -25,7 +29,9 @@
                     class="button is-dark"
                     :class="{ 'is-loading': isLoading }"
                     @click="create"
-                  >Create Todo</button>
+                  >
+                    Create Todo
+                  </button>
                 </div>
               </div>
             </div>
@@ -34,7 +40,9 @@
       </div>
     </section>
     <div class="container todo-list">
-      <h3 class="title is-3">Todo List</h3>
+      <h3 class="title is-3">
+        Todo List
+      </h3>
       <div class="columns">
         <div class="column is-full">
           <table class="table is-fullwidth is-hoverable">
@@ -46,11 +54,23 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(todo, index) in todos" :key="index">
-                <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
-                <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
+              <tr
+                v-for="(todo, index) in todos"
+                :key="index"
+              >
+                <td class="has-text-weight-semibold td-font">
+                  {{ todo["title"] }}
+                </td>
+                <td class="has-text-weight-semibold td-font">
+                  {{ todo["date_posted"] | dateFormat }}
+                </td>
                 <td>
-                  <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
+                  <button
+                    class="button is-primary"
+                    @click="deleteHandler(todo.id)"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -62,9 +82,9 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
-import Axios from 'axios'
 import axiosDefault from '@/plugins/axios'
+import Axios from 'axios'
+import Cookies from 'js-cookie'
 
 export default {
   components: {},
@@ -75,7 +95,7 @@ export default {
       error: '',
       isErrorExist: false,
       isLoading: false,
-      userId: 0
+      token: ''
     }
   },
   watch: {
@@ -85,10 +105,14 @@ export default {
         : ((this.error = ''), (this.isErrorExist = false))
     }
   },
-  created: function() {
-    const router = this.$router
+  mounted: function() {
+    let self = this
     let token = Cookies.get('jwt_token')
     console.log(token)
+    if (!token) {
+      console.log('sign inしてください。')
+      return
+    }
     let axios = Axios.create({
       baseURL: 'http://localhost:5000',
       headers: {
@@ -97,25 +121,7 @@ export default {
       },
       responseType: 'json'
     })
-    let self = this
     axios
-      .get('/protected')
-      .then(res => {
-        let data = res.data
-        console.log(data)
-        console.log('access_tokenを使用してsign inしました。')
-        self.userId = data.user_id
-      })
-      .catch(() => {
-        console.log('access_tokenがありません。')
-        router.push('/signin')
-      })
-  },
-  mounted: function() {
-    let self = this
-    console.log('start lifecycle mounted')
-    console.log(self.userId)
-    axiosDefault
       .get('/home')
       .then(res => {
         if (res.status === 200) {
@@ -124,8 +130,8 @@ export default {
         }
       })
       .catch(error => {
-        console.log('not success get api')
         console.log(error)
+        console.log('homeの部分でエラー')
       })
   },
   methods: {
