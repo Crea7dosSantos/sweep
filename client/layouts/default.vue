@@ -92,6 +92,7 @@
           </v-list>
         </v-navigation-drawer>
         <v-toolbar dark color="grey darken-3">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
           <v-toolbar-title>TodoApp</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-expand-x-transition>
