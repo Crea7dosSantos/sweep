@@ -81,37 +81,57 @@
           </v-list>
           <v-list class="pt-0" dense>
             <v-divider></v-divider>
-            <v-list-item
-              v-for="item in items"
-              :key="item.title"
-              :class="{ 'is-hidden': isAuthenticated }"
-              link
-            >
-              <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item
+            <v-list-item-group v-for="item in items1" :key="item.title" link>
+              <v-list-item :to="item.title">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+            <v-divider></v-divider>
+            <v-list-item-group
               v-for="item in items2"
               :key="item.title"
               :class="{ 'is-hidden': !isAuthenticated }"
               link
             >
-              <v-list-item-icon>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              <v-list-item :to="item.title">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group
+              v-for="item in items3"
+              :key="item.title"
+              :class="{ 'is-hidden': isAuthenticated }"
+              link
+            >
+              <v-list-item :to="item.title">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
         <v-toolbar dark color="grey darken-3">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
-          <v-toolbar-title>TodoApp</v-toolbar-title>
+          <v-toolbar-items>
+            <v-btn text to="/">Sample</v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-for="item in items1" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :to="item.title">{{ item.title }}</v-btn>
+          </v-toolbar-items>
           <v-spacer></v-spacer>
           <v-expand-x-transition>
             <v-text-field
@@ -130,11 +150,11 @@
               <v-icon>search</v-icon>
             </v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items" :key="item.title" class="hidden-sm-and-down">
-            <v-btn text :class="{ 'is-hidden': isAuthenticated }">{{ item.title }}</v-btn>
+          <v-toolbar-items v-for="item in items3" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :class="{ 'is-hidden': isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
           </v-toolbar-items>
           <v-toolbar-items v-for="item in items2" :key="item.title" class="hidden-sm-and-down">
-            <v-btn text :class="{ 'is-hidden': !isAuthenticated }">{{ item.title }}</v-btn>
+            <v-btn text :class="{ 'is-hidden': !isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </div>
@@ -154,13 +174,17 @@ export default {
   data: () => ({
     showSearchInput: false,
     drawer: false,
-    items: [
-      { title: 'signup', icon: 'account_box' },
-      { title: 'signin', icon: 'gavel' }
+    items1: [
+      { title: 'home', icon: 'person' },
+      { title: 'documentation', icon: 'dashboard' }
     ],
     items2: [
       { title: 'user', icon: 'person' },
       { title: 'signout', icon: 'dashboard' }
+    ],
+    items3: [
+      { title: 'signup', icon: 'account_box' },
+      { title: 'signin', icon: 'gavel' }
     ]
   })
 }
