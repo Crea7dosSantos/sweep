@@ -90,26 +90,23 @@ export default {
     let self = this
     let token = Cookies.get('access_token')
     if (!token) {
-      console.log('sign inしてください。')
+      console.log('Please sign in')
       return
     }
     axiosAccess
       .get('/home')
       .then(res => {
-        if (res.status === 200) {
-          console.log('success get api')
-          self.todos = res.data.todos
-        }
+        console.log('success get api')
+        self.todos = res.data.todos
       })
-      .catch(error => {
-        console.log(error)
-        console.log('homeの部分でエラー')
+      .catch(() => {
+        console.log('error is /home')
         axiosRefresh
           .post('/refresh')
           .then(res => {
-            console.log(res.data)
             console.log('get new access_token')
             Cookies.set('access_token', res.data.access_token)
+            location.reload()
           })
           .catch(() => {
             console.log('error occured id refresh')
