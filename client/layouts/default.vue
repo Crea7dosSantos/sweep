@@ -81,7 +81,25 @@
           </v-list>
           <v-list class="pt-0" dense>
             <v-divider></v-divider>
-            <v-list-item v-for="item in items" :key="item.title" link>
+            <v-list-item
+              v-for="item in items"
+              :key="item.title"
+              :class="{ 'is-hidden': isAuthenticated }"
+              link
+            >
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item
+              v-for="item in items2"
+              :key="item.title"
+              :class="{ 'is-hidden': !isAuthenticated }"
+              link
+            >
               <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
               </v-list-item-icon>
@@ -111,9 +129,12 @@
             <v-btn icon @click="showSearchInput = !showSearchInput">
               <v-icon>search</v-icon>
             </v-btn>
-            <v-btn text>signup</v-btn>
-            <v-btn text>signin</v-btn>
-            <v-btn text>signout</v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-for="item in items" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :class="{ 'is-hidden': isAuthenticated }">{{ item.title }}</v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-for="item in items2" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :class="{ 'is-hidden': !isAuthenticated }">{{ item.title }}</v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </div>
@@ -132,11 +153,14 @@ export default {
   },
   data: () => ({
     showSearchInput: false,
-    drawer: true,
+    drawer: false,
     items: [
-      { title: 'Dashboard', icon: 'dashboard' },
-      { title: 'Account', icon: 'account_box' },
-      { title: 'Admin', icon: 'gavel' }
+      { title: 'signup', icon: 'account_box' },
+      { title: 'signin', icon: 'gavel' }
+    ],
+    items2: [
+      { title: 'user', icon: 'person' },
+      { title: 'signout', icon: 'dashboard' }
     ]
   })
 }
