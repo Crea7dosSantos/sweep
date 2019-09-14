@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axiosDefault from '@/plugins/axios'
+import axiosBase from '@/plugins/axiosBase'
 import Cookies from 'js-cookie'
 import { mapActions, mapState } from 'vuex'
 
@@ -95,7 +95,7 @@ export default {
         return
       }
       let self = this
-      axiosDefault
+      axiosBase
         .post('/signin', {
           email: self.email,
           password: self.password
@@ -103,7 +103,8 @@ export default {
         .then(res => {
           this.signIn(res.data.access_token)
           console.log('success signin')
-          Cookies.set('jwt_token', res.data.access_token)
+          Cookies.set('access_token', res.data.access_token)
+          Cookies.set('refresh_token', res.data.refresh_token)
           router.push('/home')
         })
         .catch(error => {
