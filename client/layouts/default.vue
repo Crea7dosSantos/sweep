@@ -58,6 +58,39 @@
   <div>
     <v-app class="inspire">
       <div>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
+          <v-list>
+            <v-list-item>
+              <v-list-item-avatar>
+                <img src="~/assets/cristiano.jpg" />
+                <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
+              </v-list-item-avatar>
+              <v-list-item-title>Cristiano</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-list>
+            <v-text-field
+              clearable
+              flat
+              label="Search"
+              prepend-inner-icon="search"
+              solo
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-list>
+          <v-list class="pt-0" dense>
+            <v-divider></v-divider>
+            <v-list-item v-for="item in items" :key="item.title" link>
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
         <v-toolbar dark color="grey darken-3">
           <v-toolbar-title>TodoApp</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -97,7 +130,13 @@ export default {
     ...mapGetters('user', ['isAuthenticated'])
   },
   data: () => ({
-    showSearchInput: false
+    showSearchInput: false,
+    drawer: true,
+    items: [
+      { title: 'Dashboard', icon: 'dashboard' },
+      { title: 'Account', icon: 'account_box' },
+      { title: 'Admin', icon: 'gavel' }
+    ]
   })
 }
 </script>
