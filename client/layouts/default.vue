@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <nav class="navbar is-dark">
       <div class="navbar-brand">
         <n-link
@@ -54,6 +54,37 @@
       </div>
     </nav>
     <nuxt />
+  </div>-->
+  <div>
+    <v-app class="inspire">
+      <div>
+        <v-toolbar dark color="grey darken-3">
+          <v-toolbar-title>TodoApp</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-expand-x-transition>
+            <v-text-field
+              class="hidden-sm-and-down"
+              clearable
+              flat
+              label="Search"
+              solo-inverted
+              single-line
+              hide-details
+              v-show="showSearchInput"
+            ></v-text-field>
+          </v-expand-x-transition>
+          <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn icon @click="showSearchInput = !showSearchInput">
+              <v-icon>search</v-icon>
+            </v-btn>
+            <v-btn text>signup</v-btn>
+            <v-btn text>signin</v-btn>
+            <v-btn text>signout</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+      </div>
+      <nuxt />
+    </v-app>
   </div>
 </template>
 
@@ -64,7 +95,10 @@ export default {
   computed: {
     ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated'])
-  }
+  },
+  data: () => ({
+    showSearchInput: false
+  })
 }
 </script>
 
