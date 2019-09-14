@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import axiosDefault from '@/plugins/axios'
+import axiosBase from '@/plugins/axiosBase'
 
 export default {
   props: {},
@@ -101,7 +101,7 @@ export default {
         return
       }
       let self = this
-      axiosDefault
+      axiosBase
         .post('/signup', {
           username: self.userName,
           email: self.email,

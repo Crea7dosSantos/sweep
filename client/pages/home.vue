@@ -62,8 +62,9 @@
 </template>
 
 <script>
-import axiosDefault from '@/plugins/axios'
-import Axios from 'axios'
+import axiosBase from '@/plugins/axiosBase'
+import axiosAccess from '@/plugins/axiosAccess'
+import axiosRefresh from '@/plugins/axiosRefresh'
 import Cookies from 'js-cookie'
 
 export default {
@@ -92,15 +93,7 @@ export default {
       console.log('sign inしてください。')
       return
     }
-    let axios = Axios.create({
-      baseURL: 'http://localhost:5000',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      },
-      responseType: 'json'
-    })
-    axios
+    axiosAccess
       .get('/home')
       .then(res => {
         if (res.status === 200) {
@@ -111,16 +104,7 @@ export default {
       .catch(error => {
         console.log(error)
         console.log('homeの部分でエラー')
-        let refreshToken = Cookies.get('refresh_token')
-        let axios = Axios.create({
-          baseURL: 'http://localhost:5000',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + refreshToken
-          },
-          responseType: 'json'
-        })
-        axios
+        axiosRefresh
           .post('/refresh')
           .then(res => {
             console.log(res.data)
@@ -147,7 +131,7 @@ export default {
       }
 
       console.log('add todo create success')
-      axiosDefault
+      axiosBase
         .post('/create', { title: self.todoName })
         .then(res => {
           if (res.status === 200) {
@@ -155,7 +139,7 @@ export default {
             self.isLoading = false
             self.todoName = ''
             self.isErrorExist = false
-            axiosDefault
+            axiosBase
               .get('/home')
               .then(res => {
                 if (res.status === 200) {
@@ -175,7 +159,7 @@ export default {
     },
     deleteHandler: function(todoId) {
       console.log(todoId)
-      axiosDefault
+      axiosBase
         .post('/delete', { delete_id: todoId })
         .then(res => {
           if (res.status === 200) {

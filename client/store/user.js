@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import axiosAccess from '@/plugins/axiosAccess'
 export const strict = false
 
 const initialState = {
@@ -29,20 +29,11 @@ export const mutations = {
 }
 
 export const actions = {
-  signIn({ commit }, token) {
-    let axios = Axios.create({
-      baseURL: 'http://localhost:5000',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      },
-      responseType: 'json'
-    })
-    axios
+  signIn({ commit }) {
+    axiosAccess
       .get('/protected')
       .then(res => {
         const data = res.data
-        console.log(data.user_datas)
         const payload = data.user_datas
         commit('setUserState', payload)
       })

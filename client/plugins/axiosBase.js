@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-let axiosDefault = Axios.create({
+let axiosBase = Axios.create({
   baseURL: 'http://localhost:5000',
   headers: {
     'Content-Type': 'application/json',
@@ -9,4 +9,4 @@ let axiosDefault = Axios.create({
   responsetype: 'json'
 })
 
-export default axiosDefault
+export default axiosBase
