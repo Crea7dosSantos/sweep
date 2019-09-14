@@ -66,6 +66,7 @@ import axiosBase from '@/plugins/axiosBase'
 import axiosAccess from '@/plugins/axiosAccess'
 import axiosRefresh from '@/plugins/axiosRefresh'
 import Cookies from 'js-cookie'
+import { mapActions } from 'vuex'
 
 export default {
   components: {},
@@ -87,6 +88,7 @@ export default {
     }
   },
   mounted: function() {
+    const router = this.$router
     let self = this
     let token = Cookies.get('access_token')
     if (!token) {
@@ -109,11 +111,19 @@ export default {
             location.reload()
           })
           .catch(() => {
-            console.log('error occured id refresh')
+            console.log('error occured is refresh_token')
+            this.exit()
+            Cookies.remove('access_token')
+            Cookies.remove('refresh_token')
+            router.push('/signin')
           })
       })
   },
   methods: {
+    ...mapActions('user', ['signOut']),
+    exit: function() {
+      this.signOut()
+    },
     create: function() {
       const self = this
       self.isLoading = true

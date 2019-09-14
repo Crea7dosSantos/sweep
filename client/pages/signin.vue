@@ -1,24 +1,12 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar flat>
-                <v-toolbar-title class="grey--text">
-                  signIn form
-                </v-toolbar-title>
+                <v-toolbar-title class="grey--text">signIn form</v-toolbar-title>
                 <div class="flex-grow-1" />
               </v-toolbar>
               <v-divider />
@@ -47,12 +35,7 @@
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1" />
-                <v-btn
-                  color="primary"
-                  @click="signin"
-                >
-                  Sign in
-                </v-btn>
+                <v-btn color="primary" @click="signin">Sign in</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -101,8 +84,8 @@ export default {
           password: self.password
         })
         .then(res => {
-          this.signIn(res.data.access_token)
           console.log('success signin')
+          this.signIn()
           Cookies.set('access_token', res.data.access_token)
           Cookies.set('refresh_token', res.data.refresh_token)
           router.push('/home')

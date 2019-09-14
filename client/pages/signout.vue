@@ -65,6 +65,7 @@ export default {
       const router = this.$router
       this.loading = true
       Cookies.remove('access_token')
+      Cookies.remove('refresh_token')
       this.signOut()
       this.loading = false
       router.push('/')
