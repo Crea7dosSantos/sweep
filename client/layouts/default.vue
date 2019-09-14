@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
     <nav class="navbar is-dark">
       <div class="navbar-brand">
         <n-link
@@ -54,6 +54,112 @@
       </div>
     </nav>
     <nuxt />
+  </div>-->
+  <div>
+    <v-app class="inspire">
+      <div>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
+          <v-list>
+            <v-list-item>
+              <v-list-item-avatar>
+                <img src="~/assets/cristiano.jpg" />
+                <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
+              </v-list-item-avatar>
+              <v-list-item-title>Cristiano</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-list>
+            <v-text-field
+              clearable
+              flat
+              label="Search"
+              prepend-inner-icon="search"
+              solo
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-list>
+          <v-list class="pt-0" dense>
+            <v-divider></v-divider>
+            <v-list-item-group v-for="item in items1" :key="item.title" link>
+              <v-list-item :to="item.title">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+            <v-divider></v-divider>
+            <v-list-item-group
+              v-for="item in items2"
+              :key="item.title"
+              :class="{ 'is-hidden': !isAuthenticated }"
+              link
+            >
+              <v-list-item :to="item.title">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group
+              v-for="item in items3"
+              :key="item.title"
+              :class="{ 'is-hidden': isAuthenticated }"
+              link
+            >
+              <v-list-item :to="item.title">
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+        <v-toolbar dark color="grey darken-3">
+          <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-app-bar-nav-icon>
+          <v-toolbar-items>
+            <v-btn text to="/">Sample</v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-for="item in items1" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :to="item.title">{{ item.title }}</v-btn>
+          </v-toolbar-items>
+          <v-spacer></v-spacer>
+          <v-expand-x-transition>
+            <v-text-field
+              class="hidden-sm-and-down"
+              clearable
+              flat
+              label="Search"
+              solo-inverted
+              single-line
+              hide-details
+              v-show="showSearchInput"
+            ></v-text-field>
+          </v-expand-x-transition>
+          <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn icon @click="showSearchInput = !showSearchInput">
+              <v-icon>search</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-for="item in items3" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :class="{ 'is-hidden': isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-for="item in items2" :key="item.title" class="hidden-sm-and-down">
+            <v-btn text :class="{ 'is-hidden': !isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+      </div>
+      <nuxt />
+    </v-app>
   </div>
 </template>
 
@@ -64,7 +170,23 @@ export default {
   computed: {
     ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated'])
-  }
+  },
+  data: () => ({
+    showSearchInput: false,
+    drawer: false,
+    items1: [
+      { title: 'home', icon: 'person' },
+      { title: 'documentation', icon: 'dashboard' }
+    ],
+    items2: [
+      { title: 'user', icon: 'person' },
+      { title: 'signout', icon: 'dashboard' }
+    ],
+    items3: [
+      { title: 'signup', icon: 'account_box' },
+      { title: 'signin', icon: 'gavel' }
+    ]
+  })
 }
 </script>
 
