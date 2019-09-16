@@ -34,7 +34,6 @@ def refresh():
 @app.route('/home', methods=('GET',))
 @jwt_required
 def home():
-
     current_user = get_jwt_identity()
     print(current_user)
     todos = db.session.query(Todo).all()
