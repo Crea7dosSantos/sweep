@@ -63,8 +63,7 @@
 
 <script>
 import axiosBase from '@/plugins/axiosBase'
-import axiosAccess from '@/plugins/axiosAccess'
-import axiosRefresh from '@/plugins/axiosRefresh'
+import Axios from 'axios'
 import Cookies from 'js-cookie'
 import { mapActions } from 'vuex'
 
@@ -95,15 +94,15 @@ export default {
       console.log('Please sign in')
       return
     }
-    axiosAccess
+    this.axiosAccessHandler(Cookies.get('access_token'))
       .get('/home')
       .then(res => {
-        console.log('success get api')
+        console.log(res.data.todos)
         self.todos = res.data.todos
       })
       .catch(() => {
         console.log('error is /home')
-        axiosRefresh
+        this.axiosRefreshHandler(Cookies.get('refresh_token'))
           .post('/refresh')
           .then(res => {
             console.log('get new access_token')
@@ -136,7 +135,6 @@ export default {
         self.isLoading = false
         return
       }
-
       console.log('add todo create success')
       axiosBase
         .post('/create', { title: self.todoName })
@@ -177,6 +175,28 @@ export default {
           console.log(error)
           self.isLoading = false
         })
+    },
+    axiosAccessHandler: function(token) {
+      const axiosAccess = Axios.create({
+        baseURL: 'http://localhost:5000',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        },
+        responseType: 'json'
+      })
+      return axiosAccess
+    },
+    axiosRefreshHandler: function(token) {
+      const axiosRefresh = Axios.create({
+        baseURL: 'http://localhost:5000',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        },
+        responseType: 'json'
+      })
+      return axiosRefresh
     }
   }
 }
