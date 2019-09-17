@@ -17,7 +17,7 @@ def protected():
     user_datas = db.session.query(User.username, User.email, User.id).\
         filter(User.id == current_user)
     return jsonify({'status': 'ok',
-                    'user_datas': UserSchema(many=True).dump(user_datas)})
+                    'user_datas': UserSchema(many=True).dump(user_datas)}), 200
 
 
 @app.route('/refresh', methods=['POST'])
@@ -34,7 +34,6 @@ def refresh():
 @app.route('/home', methods=('GET',))
 @jwt_required
 def home():
-
     current_user = get_jwt_identity()
     print(current_user)
     todos = db.session.query(Todo).all()
@@ -45,7 +44,7 @@ def home():
             timezone('Asia/Tokyo'))
 
     return jsonify({'status': 'ok',
-                    'todos': TodoSchema(many=True).dump(todos)})
+                    'todos': TodoSchema(many=True).dump(todos)}), 200
 
 
 @app.route('/create', methods=('POST',))
@@ -79,6 +78,7 @@ def signin():
     password = request.json.get('password', None)
     user = User.query.filter_by(email=email).first()
     if not user:
+        # abort(400, {"msg": "Missing email parameter"})
         return jsonify({"msg": "Missing email parameter"}), 400
     if user and bcrypt.check_password_hash(user.password, password):
         print('success signin')

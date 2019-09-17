@@ -1,24 +1,12 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
               <v-toolbar flat>
-                <v-toolbar-title class="grey--text">
-                  SignUp form
-                </v-toolbar-title>
+                <v-toolbar-title class="grey--text">SignUp form</v-toolbar-title>
                 <div class="flex-grow-1" />
               </v-toolbar>
               <v-divider />
@@ -58,12 +46,7 @@
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1" />
-                <v-btn
-                  color="primary"
-                  @click="signup"
-                >
-                  Sign up
-                </v-btn>
+                <v-btn color="primary" @click="signup">Sign up</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -108,7 +91,7 @@ export default {
           password: self.password
         })
         .then(res => {
-          console.log('success create account')
+          this.snackOn({ payload: 'Success create account', color: 'green' })
           console.log(res.data.message)
           router.push('/signin')
         })
