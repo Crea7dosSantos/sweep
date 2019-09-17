@@ -36,7 +36,7 @@ def refresh():
 def home():
     current_user = get_jwt_identity()
     print(current_user)
-    todos = db.session.query(Todo).all()
+    todos = db.session.query(Todo).filter(Todo.user_id == current_user).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(
             tzinfo=datetime.timezone.utc)
