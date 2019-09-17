@@ -3,13 +3,14 @@ export const strict = false
 export const state = () => ({
   isEnable: false,
   message: false,
-  status: ''
+  actionStatus: false
 })
 
 export const mutations = {
-  setMessage(state, payload) {
+  setMessage(state, { payload, color }) {
     state.isEnable = true
     state.message = payload
+    state.actionStatus = color
   },
   setDisable(state) {
     state.isEnable = false
@@ -17,8 +18,8 @@ export const mutations = {
 }
 
 export const actions = {
-  snackOn({ commit }, payload) {
-    commit('setMessage', payload)
+  snackOn({ commit }, { payload, color }) {
+    commit('setMessage', { payload: payload, color: color })
   },
   snackOff({ commit }) {
     commit('setDisable')
