@@ -58,6 +58,7 @@
 
 <script>
 import axiosBase from '@/plugins/axiosBase'
+import { mapActions } from 'vuex'
 
 export default {
   props: {},
@@ -77,6 +78,7 @@ export default {
     }
   }),
   methods: {
+    ...mapActions('snackbar', ['snackOn']),
     signup: function() {
       const router = this.$router
 
@@ -97,6 +99,7 @@ export default {
         })
         .catch(error => {
           console.log(error)
+          this.snackOn({ payload: 'Error create account' })
         })
     }
   }

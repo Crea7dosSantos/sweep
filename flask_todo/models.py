@@ -10,6 +10,7 @@ class Todo(db.Model):
     title = db.Column(db.String(255), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow())
+    user_id = db.Column(db.Integer, nullable=False)
 
 
 class TodoSchema(ma.ModelSchema):

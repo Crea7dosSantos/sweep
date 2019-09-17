@@ -36,7 +36,7 @@ def refresh():
 def home():
     current_user = get_jwt_identity()
     print(current_user)
-    todos = db.session.query(Todo).all()
+    todos = db.session.query(Todo).filter(Todo.user_id == current_user).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(
             tzinfo=datetime.timezone.utc)
@@ -48,12 +48,14 @@ def home():
 
 
 @app.route('/create', methods=('POST',))
+@jwt_required
 def create():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
 
+    current_user = get_jwt_identity()
     title = request.json.get('title', None)
-    todo = Todo(title=title)
+    todo = Todo(title=title, user_id=current_user)
     db.session.add(todo)
     db.session.commit()
     return 'OK'
