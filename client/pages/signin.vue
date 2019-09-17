@@ -48,7 +48,7 @@
 <script>
 import axiosBase from '@/plugins/axiosBase'
 import Cookies from 'js-cookie'
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   props: {},
@@ -66,11 +66,9 @@ export default {
       }
     }
   }),
-  computed: {
-    ...mapState('user', ['user'])
-  },
   methods: {
     ...mapActions('user', ['signIn']),
+    ...mapActions('snackbar', ['snackOn']),
     signin: function() {
       const router = this.$router
 
@@ -84,14 +82,14 @@ export default {
           password: self.password
         })
         .then(res => {
-          console.log('success signin')
-          this.signIn()
+          this.snackOn('Sign in complete')
+          this.signIn(res.data.access_token)
           Cookies.set('access_token', res.data.access_token)
           Cookies.set('refresh_token', res.data.refresh_token)
           router.push('/home')
         })
-        .catch(error => {
-          console.log(error)
+        .catch(() => {
+          this.snackOn('An error has occured')
         })
     }
   }

@@ -91,7 +91,7 @@ export default {
     let self = this
     let token = Cookies.get('access_token')
     if (!token) {
-      console.log('Please sign in')
+      this.snackOn('Please sign in')
       return
     }
     this.axiosAccessHandler(Cookies.get('access_token'))
@@ -110,8 +110,8 @@ export default {
             location.reload()
           })
           .catch(() => {
-            console.log('error occured is refresh_token')
-            this.exit()
+            this.snackOn('Please sign in again')
+            this.signOut()
             Cookies.remove('access_token')
             Cookies.remove('refresh_token')
             router.push('/signin')
@@ -119,10 +119,7 @@ export default {
       })
   },
   methods: {
-    ...mapActions('user', ['signOut']),
-    exit: function() {
-      this.signOut()
-    },
+    ...mapActions('snackbar', ['snackOn']),
     create: function() {
       const self = this
       self.isLoading = true
@@ -144,6 +141,7 @@ export default {
             self.isLoading = false
             self.todoName = ''
             self.isErrorExist = false
+            this.snackOn('Created a new Todo')
             axiosBase
               .get('/home')
               .then(res => {
@@ -168,7 +166,7 @@ export default {
         .post('/delete', { delete_id: todoId })
         .then(res => {
           if (res.status === 200) {
-            console.log('success delete todo')
+            this.snackOn('Deleted a new Todo')
           }
         })
         .catch(error => {
