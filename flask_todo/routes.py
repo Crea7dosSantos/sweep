@@ -72,7 +72,7 @@ def delete():
     return 'OK'
 
 
-@app.route('/signin', methods=['GET', 'POST'])
+@app.route('/signin', methods=['POST'])
 def signin():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
@@ -94,7 +94,7 @@ def signin():
     return jsonify(ret), 200
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['POST'])
 def signup():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400

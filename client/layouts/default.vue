@@ -70,7 +70,7 @@
         <v-toolbar dark color="grey darken-3">
           <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
           <v-toolbar-items>
-            <v-btn text to="/">Sample</v-btn>
+            <v-btn text to="/">Top</v-btn>
           </v-toolbar-items>
           <v-toolbar-items v-for="item in items1" :key="item.title" class="hidden-sm-and-down">
             <v-btn text :to="item.title">{{ item.title }}</v-btn>
