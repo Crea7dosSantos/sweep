@@ -91,7 +91,7 @@ export default {
     let self = this
     let token = Cookies.get('access_token')
     if (!token) {
-      this.snackOn('Please sign in')
+      this.snackOn({ payload: 'Please sign in', color: 'error' })
       return
     }
     this.axiosAccessHandler(Cookies.get('access_token'))
@@ -109,7 +109,7 @@ export default {
             location.reload()
           })
           .catch(() => {
-            this.snackOn('Please sign in again')
+            this.snackOn({ payload: 'Please sign in again', color: 'yellow' })
             this.signOut()
             Cookies.remove('access_token')
             Cookies.remove('refresh_token')
@@ -140,7 +140,7 @@ export default {
             self.isLoading = false
             self.todoName = ''
             self.isErrorExist = false
-            this.snackOn('Created a new Todo')
+            this.snackOn({ payload: 'Created a new Todo', color: 'green' })
             this.axiosAccessHandler(Cookies.get('access_token'))
               .get('/home')
               .then(res => {
@@ -165,10 +165,11 @@ export default {
         .post('/delete', { delete_id: todoId })
         .then(res => {
           if (res.status === 200) {
-            this.snackOn('Deleted a new Todo')
+            this.snackOn({ payload: 'Deleted a new Todo', color: 'green' })
           }
         })
         .catch(error => {
+          this.snackOn({ payload: 'Not deleted a new Todo', color: 'error' })
           console.log(error)
           self.isLoading = false
         })
