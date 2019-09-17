@@ -3,7 +3,7 @@ export const strict = false
 export const state = () => ({
   isEnable: false,
   message: false,
-  actionStatus: false
+  actionStatus: ''
 })
 
 export const mutations = {
