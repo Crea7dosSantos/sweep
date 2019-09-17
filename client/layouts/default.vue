@@ -7,7 +7,6 @@
             <v-list-item>
               <v-list-item-avatar>
                 <img src="~/assets/cristiano.jpg" />
-                <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
               </v-list-item-avatar>
               <v-list-item-title>{{ user.name }}</v-list-item-title>
             </v-list-item>
