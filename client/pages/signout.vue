@@ -41,7 +41,7 @@ export default {
     ...mapActions('snackbar', ['snackOn']),
     signout: function() {
       const router = this.$router
-      this.snackOn('Sign out complete')
+      this.snackOn({ payload: 'Sign out complete', color: 'green' })
       this.loading = true
       Cookies.remove('access_token')
       Cookies.remove('refresh_token')

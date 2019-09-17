@@ -3,13 +3,13 @@
     <v-app class="inspire">
       <div>
         <v-navigation-drawer v-model="drawer" absolute temporary>
-          <v-list>
+          <v-list :class="{ 'is-hidden': !isAuthenticated }">
             <v-list-item>
               <v-list-item-avatar>
                 <img src="~/assets/cristiano.jpg" />
                 <!-- <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img> -->
               </v-list-item-avatar>
-              <v-list-item-title>Cristiano</v-list-item-title>
+              <v-list-item-title>{{ user.name }}</v-list-item-title>
             </v-list-item>
           </v-list>
           <v-list>
@@ -97,15 +97,18 @@
           <v-toolbar-items v-for="item in items3" :key="item.title" class="hidden-sm-and-down">
             <v-btn text :class="{ 'is-hidden': isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
           </v-toolbar-items>
+          <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn text :class="{ 'is-hidden': !isAuthenticated }" to="user">{{ user.name }}</v-btn>
+          </v-toolbar-items>
           <v-toolbar-items v-for="item in items2" :key="item.title" class="hidden-sm-and-down">
             <v-btn text :class="{ 'is-hidden': !isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </div>
       <div>
-        <v-snackbar v-model="snackbarVisible" color="error" top :timeout="timeout">
+        <v-snackbar v-model="snackbarVisible" :color="actionStatus" top :timeout="timeout">
           {{ message }}
-          <v-btn color="blue" text @click="close">Close</v-btn>
+          <v-btn color="white" text @click="close">Close</v-btn>
         </v-snackbar>
       </div>
       <nuxt />
@@ -120,7 +123,7 @@ export default {
   computed: {
     ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated']),
-    ...mapState('snackbar', ['message', 'isEnable']),
+    ...mapState('snackbar', ['message', 'isEnable', 'actionStatus']),
     snackbarVisible: {
       get() {
         return this.isEnable
@@ -139,10 +142,7 @@ export default {
       { title: 'home', icon: 'person' },
       { title: 'documentation', icon: 'dashboard' }
     ],
-    items2: [
-      { title: 'user', icon: 'person' },
-      { title: 'signout', icon: 'dashboard' }
-    ],
+    items2: [{ title: 'signout', icon: 'dashboard' }],
     items3: [
       { title: 'signup', icon: 'account_box' },
       { title: 'signin', icon: 'gavel' }
