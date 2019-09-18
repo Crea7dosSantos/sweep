@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" width="600px">
+  <v-dialog
+    v-model="dialog"
+    width="600px"
+  >
     <v-card>
       <v-card-title>
         <span class="headline">Use Google's location service?</span>
@@ -19,8 +22,20 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
-        <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
+        <v-btn
+          color="green darken-1"
+          text
+          @click="dialog = false"
+        >
+          Disagree
+        </v-btn>
+        <v-btn
+          color="green darken-1"
+          text
+          @click="dialog = false"
+        >
+          Agree
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
