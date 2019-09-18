@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    v-model="userViewVisible"
     width="600px"
   >
     <v-card>
@@ -42,10 +42,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data() {
-    return {
-      dialog: true
+    return {}
+  },
+  computed: {
+    ...mapState('modal', ['isUserView']),
+    userViewVisible: {
+      get() {
+        return this.isUserView
+      },
+      set() {
+        return this.$store.dispatch('modal/unsetUserView')
+      }
     }
   }
 }
