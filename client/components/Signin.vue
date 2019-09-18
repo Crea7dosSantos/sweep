@@ -1,8 +1,13 @@
 <template>
-  <v-dialog v-model="userSigninVisible" width="400px">
+  <v-dialog
+    v-model="userSigninVisible"
+    width="400px"
+  >
     <v-card class="elevation-12">
       <v-toolbar flat>
-        <v-toolbar-title class="grey--text">signIn form</v-toolbar-title>
+        <v-toolbar-title class="grey--text">
+          signIn form
+        </v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>
       <v-divider />
@@ -31,7 +36,12 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn color="primary" @click="signin">Sign in</v-btn>
+        <v-btn
+          color="primary"
+          @click="signin"
+        >
+          Sign in
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

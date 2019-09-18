@@ -1,26 +1,32 @@
 <template>
-  <v-app>
+  <div class="contant">
     <div class="holder">
       <div class="first" />
       <div class="second" />
       <div class="third" />
       <div class="txt">
-        <div class="display-4">
-          Sample Todo
-        </div>
-        <br>
+        <div class="display-4">Sample Todo</div>
+        <br />
         <div class="textcontainer">
-          <nuxt-link
-            class="display-2 particletext lines"
-            to="/home"
-          >
-            Let's start!!!
-          </nuxt-link>
+          <nuxt-link class="display-2 particletext lines" to="/home">Let's start!!!</nuxt-link>
         </div>
       </div>
     </div>
-  </v-app>
+    <template>
+      <AllModal />
+    </template>
+  </div>
 </template>
+
+<script>
+import AllModal from '~/components/AllModal'
+
+export default {
+  components: {
+    AllModal
+  }
+}
+</script>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Bitter');
