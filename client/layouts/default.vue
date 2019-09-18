@@ -144,7 +144,7 @@
             <v-btn
               text
               :class="{ 'is-hidden': !isAuthenticated }"
-              to="user"
+              to="/user"
             >
               {{ user.name }}
             </v-btn>

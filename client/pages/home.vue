@@ -58,6 +58,9 @@
         </div>
       </div>
     </div>
+    <template v-if="dialog">
+      <User />
+    </template>
   </div>
 </template>
 
@@ -65,9 +68,12 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
 import { mapActions } from 'vuex'
+import User from '~/components/User'
 
 export default {
-  components: {},
+  components: {
+    User
+  },
   data: function() {
     return {
       todos: [],
@@ -75,7 +81,8 @@ export default {
       error: '',
       isErrorExist: false,
       isLoading: false,
-      token: ''
+      token: '',
+      dialog: false
     }
   },
   watch: {
