@@ -58,7 +58,7 @@
         </div>
       </div>
     </div>
-    <template v-if="dialog">
+    <template v-if="userVisible">
       <User />
     </template>
   </div>
@@ -67,7 +67,7 @@
 <script>
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import User from '~/components/User'
 
 export default {
@@ -81,8 +81,18 @@ export default {
       error: '',
       isErrorExist: false,
       isLoading: false,
-      token: '',
-      dialog: false
+      token: ''
+    }
+  },
+  computed: {
+    ...mapState('modal', ['isUserView']),
+    userVisible: {
+      get() {
+        return this.isUserView
+      },
+      set() {
+        return this.$store.dispatch('modal/setUserView(false)')
+      }
     }
   },
   watch: {
