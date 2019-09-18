@@ -47,11 +47,11 @@ export const actions = {
   unsetSigninView({ commit }) {
     commit('unsetSigninView')
   },
-  setSignunView({ commit }) {
-    commit('setSignunView')
+  setSignupView({ commit }) {
+    commit('setSignupView')
   },
-  unsetSignunView({ commit }) {
-    commit('unsetSignunView')
+  unsetSignupView({ commit }) {
+    commit('unsetSignupView')
   },
   setSignoutView({ commit }) {
     commit('setSignoutView')
