@@ -5,13 +5,19 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setUserView(state, payload) {
-    state.isUserView = payload
+  setUserView(state) {
+    state.isUserView = true
+  },
+  unsetUserView(state) {
+    state.isUserView = false
   }
 }
 
 export const actions = {
-  setUserView({ commit }, payload) {
-    commit('setUserView', payload)
+  setUserView({ commit }) {
+    commit('setUserView')
+  },
+  unsetUserView({ commit }) {
+    commit('unsetUserView')
   }
 }
