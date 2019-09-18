@@ -58,10 +58,11 @@ def create():
     todo = Todo(title=title, user_id=current_user)
     db.session.add(todo)
     db.session.commit()
-    return 'OK'
+    return jsonify({"message": "Success create Todo"}), 200
 
 
 @app.route('/delete', methods=('POST',))
+@jwt_required
 def delete():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
@@ -69,7 +70,7 @@ def delete():
     id = request.json.get('delete_id', None)
     db.session.query(Todo).filter(Todo.id == id).delete()
     db.session.commit()
-    return 'OK'
+    return jsonify({"message": "Success delete Todo"}), 200
 
 
 @app.route('/signin', methods=['POST'])
