@@ -8,7 +8,7 @@
         <div class="display-4">Sample Todo</div>
         <br />
         <div class="textcontainer">
-          <nuxt-link class="display-2 particletext lines" to="/home">Let's start!!!</nuxt-link>
+          <nuxt-link class="display-1 particletext lines" to="/home">Let's start!!!</nuxt-link>
         </div>
       </div>
     </div>
