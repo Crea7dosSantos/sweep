@@ -1,13 +1,8 @@
 <template>
-  <v-dialog
-    v-model="userSignupVisible"
-    width="500px"
-  >
+  <v-dialog v-model="userSignupVisible" width="500px">
     <v-card class="elevation-12">
       <v-toolbar flat>
-        <v-toolbar-title class="grey--text">
-          SignUp form
-        </v-toolbar-title>
+        <v-toolbar-title class="grey--text">Sign up</v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>
       <v-divider />
@@ -47,12 +42,7 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn
-          color="primary"
-          @click="signup"
-        >
-          Sign up
-        </v-btn>
+        <v-btn color="primary" @click="signup">Sign up</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

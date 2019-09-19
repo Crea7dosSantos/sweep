@@ -6,7 +6,7 @@
         <div class="second" />
         <div class="third" />
         <div class="txt">
-          <div class="display-4">Sample Todo</div>
+          <div class="display-4">Sweep</div>
           <br />
           <div class="textcontainer">
             <button class="btn6" to @click="displaySigninView">Let's start!!!</button>
@@ -237,13 +237,13 @@ body {
 }
 
 .display-4 {
-  color: blanchedalmond;
+  color: burlywood;
 }
 
 .btn6 {
   padding: 15px 100px;
   margin: 10px 4px;
-  color: #fff;
+  color: navajowhite;
   font-family: sans-serif;
   text-transform: uppercase;
   text-align: center;
