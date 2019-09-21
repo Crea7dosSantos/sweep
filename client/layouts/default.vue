@@ -2,15 +2,19 @@
   <div>
     <v-app class="inspire">
       <div>
-        <v-navigation-drawer v-model="drawer" absolute temporary>
-          <v-list :class="{ 'is-hidden': !isAuthenticated }">
-            <v-list-item>
+        <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          temporary
+        >
+          <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
+            <v-list-item to="/user">
               <v-list-item-avatar>
-                <img src="~/assets/cristiano.jpg" />
+                <img src="~/assets/cristiano.jpg">
               </v-list-item-avatar>
               <v-list-item-title>{{ user.name }}</v-list-item-title>
             </v-list-item>
-          </v-list>
+          </v-list-item-group>
           <v-list>
             <v-text-field
               clearable
@@ -22,9 +26,16 @@
               hide-details
             />
           </v-list>
-          <v-list class="pt-0" dense>
+          <v-list
+            class="pt-0"
+            dense
+          >
             <v-divider />
-            <v-list-item-group v-for="item in items1" :key="item.title" link>
+            <v-list-item-group
+              v-for="item in items1"
+              :key="item.title"
+              link
+            >
               <v-list-item :to="item.title">
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
@@ -67,23 +78,60 @@
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
-        <v-toolbar dark color="grey darken-3">
-          <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
+        <v-toolbar
+          dark
+          color="grey darken-3"
+        >
+          <v-app-bar-nav-icon
+            class="hidden-md-and-up"
+            @click.stop="drawer = !drawer"
+          />
           <v-toolbar-items>
-            <v-btn text to="/" :class="{ 'is-hidden': isAuthenticated }">Top</v-btn>
+            <v-btn
+              text
+              to="/"
+              :class="{ 'is-hidden': isAuthenticated }"
+            >
+              Top
+            </v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items" :key="item.title" class="hidden-sm-and-down">
-            <v-btn text :class="{ 'is-hidden': !isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
+          <v-toolbar-items
+            v-for="item in items"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
+            <v-btn
+              text
+              :class="{ 'is-hidden': !isAuthenticated }"
+              :to="item.title"
+            >
+              {{ item.title }}
+            </v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items1" :key="item.title" class="hidden-sm-and-down">
-            <v-btn text :to="item.title">{{ item.title }}</v-btn>
+          <v-toolbar-items
+            v-for="item in items1"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
+            <v-btn
+              text
+              :to="item.title"
+            >
+              {{ item.title }}
+            </v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items4" :key="item.title" class="hidden-sm-and-down">
+          <v-toolbar-items
+            v-for="item in items4"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
             <v-btn
               text
               :class="{ 'is-hidden': !isAuthenticated }"
               @click="tmp(item.title)"
-            >{{ item.title }}</v-btn>
+            >
+              {{ item.title }}
+            </v-btn>
           </v-toolbar-items>
           <v-spacer />
           <v-expand-x-transition>
@@ -99,37 +147,65 @@
             />
           </v-expand-x-transition>
           <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn icon @click="showSearchInput = !showSearchInput">
+            <v-btn
+              icon
+              @click="showSearchInput = !showSearchInput"
+            >
               <v-icon>search</v-icon>
             </v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items3" :key="item.title" class="hidden-sm-and-down">
+          <v-toolbar-items
+            v-for="item in items3"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
             <v-btn
               text
               :class="{ 'is-hidden': isAuthenticated }"
               @click="tmp(item.title)"
-            >{{ item.title }}</v-btn>
+            >
+              {{ item.title }}
+            </v-btn>
           </v-toolbar-items>
           <v-toolbar-items class="hidden-sm-and-down">
             <v-btn
               text
               :class="{ 'is-hidden': !isAuthenticated }"
               @click="displayUserView"
-            >{{ user.name }}</v-btn>
+            >
+              {{ user.name }}
+            </v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items2" :key="item.title" class="hidden-sm-and-down">
+          <v-toolbar-items
+            v-for="item in items2"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
             <v-btn
               text
               :class="{ 'is-hidden': !isAuthenticated }"
               @click="tmp(item.title)"
-            >{{ item.title }}</v-btn>
+            >
+              {{ item.title }}
+            </v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </div>
       <div>
-        <v-snackbar v-model="snackbarVisible" :color="actionStatus" top :timeout="timeout">
+        <v-snackbar
+          v-model="snackbarVisible"
+          :color="actionStatus"
+          top
+          :timeout="timeout"
+        >
           {{ message }}
-          <v-btn color="white" text @click="close">Close</v-btn>
+          <v-btn
+            color="white"
+            text
+            @click="close"
+          >
+            Close
+          </v-btn>
         </v-snackbar>
       </div>
       <nuxt />
