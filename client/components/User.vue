@@ -1,76 +1,35 @@
 <template>
-  <v-dialog
-    v-model="userViewVisible"
-    width="500px"
-  >
+  <v-dialog v-model="userViewVisible" width="500px">
     <v-card dark>
       <v-card-title>
-        <v-icon class="close-profile">
-          clear
-        </v-icon>profile edit
+        <v-btn text icon>
+          <v-icon>clear</v-icon>
+        </v-btn>
+        <span class="close-profile">profile edit</span>
       </v-card-title>
-      <v-img
-        height="100%"
-        src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
-      >
-        <v-row
-          align="start"
-          class="fill-height"
-        >
-          <v-col
-            align-self="start"
-            class="pa-0"
-            cols="12"
-          >
-            <v-avatar
-              color="grey"
-              size="164"
-              tile
-            >
-              <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg" />
-            </v-avatar>
+      <v-img src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
+        <v-row class="fill-height" align="center">
+          <v-col justify="center" class="backimage-button">
+            <v-btn icon text>
+              <v-icon>add_a_photo</v-icon>
+            </v-btn>
           </v-col>
-          <v-col class="py-0">
-            <v-list-item
-              color="rgba(0, 0, 0, .4)"
-              dark
-            >
-              <v-list-item-content>
-                <v-list-item-title class="title">
-                  Marcus Obrien
-                </v-list-item-title>
-                <v-list-item-subtitle>Network Engineer</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+          <v-col align-self="end" cols="12" class="avatar-col">
+            <v-btn height="100px" icon class="avatar-button">
+              <v-avatar color="grey" size="100">
+                <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg" />
+              </v-avatar>
+            </v-btn>
           </v-col>
         </v-row>
       </v-img>
-      <v-col
-        cols="12"
-        md="12"
-      >
-        <v-text-field
-          v-model="user.name"
-          label="Name"
-          placeholder="Username"
-        />
+      <v-col cols="12" md="12">
+        <v-text-field v-model="user.name" label="Name" placeholder="Username" />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn
-          color="green darken-1"
-          text
-          @click="dialog = false"
-        >
-          Disagree
-        </v-btn>
-        <v-btn
-          color="green darken-1"
-          text
-          @click="dialog = false"
-        >
-          Agree
-        </v-btn>
+        <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
+        <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -100,6 +59,20 @@ export default {
 
 <style  scoped>
 .close-profile {
-  margin-right: 10px;
+  margin-left: 18px;
+  padding-bottom: 4px;
+}
+.backimage-button {
+  text-align: center;
+  padding-top: 120px;
+}
+.profile {
+  padding-left: 5px;
+}
+.avatar-col {
+  padding-left: 24px;
+}
+.avatar-button {
+  padding-left: 52px;
 }
 </style>
