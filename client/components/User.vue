@@ -24,7 +24,7 @@
         </v-row>
       </v-img>
       <v-col cols="12" md="12">
-        <v-text-field v-model="user.name" label="Name" placeholder="Username" />
+        <v-text-field filled counter="25" label="Name" v-model="user.name" placeholder="Username" />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
