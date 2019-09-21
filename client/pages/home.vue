@@ -80,6 +80,7 @@
     </div>
     <template>
       <AllModal />
+      <User />
     </template>
   </div>
 </template>
@@ -89,10 +90,12 @@ import Axios from 'axios'
 import Cookies from 'js-cookie'
 import { mapActions } from 'vuex'
 import AllModal from '~/components/AllModal'
+import User from '~/components/User'
 
 export default {
   components: {
-    AllModal
+    AllModal,
+    User
   },
   data: function() {
     return {

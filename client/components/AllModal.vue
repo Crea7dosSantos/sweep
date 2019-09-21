@@ -1,6 +1,5 @@
 <template>
   <div>
-    <User />
     <Signin />
     <signup />
     <Signout />
@@ -8,14 +7,12 @@
 </template>
 
 <script>
-import User from '~/components/User'
 import Signin from '~/components/Signin'
 import Signup from '~/components/Signup'
 import Signout from '~/components/Signout'
 
 export default {
   components: {
-    User,
     Signin,
     Signup,
     Signout
