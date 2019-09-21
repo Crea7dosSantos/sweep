@@ -43,7 +43,8 @@ export default {
     '@nuxtjs/bulma',
     '@nuxtjs/axios',
     '@nuxtjs/vuetify',
-    'nuxt-material-design-icons'
+    'nuxt-material-design-icons',
+    '@nuxtjs/dotenv'
   ],
   vuetify: {
     theme: {
