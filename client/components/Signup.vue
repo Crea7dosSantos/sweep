@@ -6,7 +6,7 @@
     <v-card class="elevation-12">
       <v-toolbar flat>
         <v-toolbar-title class="grey--text">
-          SignUp form
+          Sign up
         </v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>

@@ -1,29 +1,46 @@
 <template>
   <div class="contant">
-    <div class="holder">
-      <div class="first" />
-      <div class="second" />
-      <div class="third" />
-      <div class="txt">
-        <div class="display-4">Sample Todo</div>
-        <br />
-        <div class="textcontainer">
-          <nuxt-link class="display-2 particletext lines" to="/home">Let's start!!!</nuxt-link>
+    <v-app>
+      <div class="holder">
+        <div class="first" />
+        <div class="second" />
+        <div class="third" />
+        <div class="txt">
+          <div class="display-4">
+            Sweep
+          </div>
+          <br>
+          <div class="textcontainer">
+            <button
+              class="btn6"
+              to
+              @click="displaySigninView"
+            >
+              Let's start!!!
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <template>
-      <AllModal />
-    </template>
+      <template>
+        <AllModal />
+      </template>
+    </v-app>
   </div>
 </template>
 
 <script>
 import AllModal from '~/components/AllModal'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
     AllModal
+  },
+  methods: {
+    ...mapActions('modal', ['setSigninView']),
+    displaySigninView: function() {
+      this.setSigninView()
+    }
   }
 }
 </script>
@@ -228,6 +245,62 @@ body {
 }
 
 .display-4 {
-  color: blanchedalmond;
+  color: burlywood;
+}
+
+.btn6 {
+  padding: 15px 100px;
+  margin: 10px 4px;
+  color: navajowhite;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn6 {
+  border: 1px solid transparent;
+  -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+  transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+}
+
+.btn6::before {
+  content: '';
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  z-index: -1;
+  width: 0%;
+  height: 1px;
+  background: #fff;
+  box-shadow: inset 0px 0px 0px #fff;
+  display: block;
+  -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+  transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+}
+
+.btn6:hover::before {
+  width: 100%;
+}
+
+.btn6::after {
+  content: '';
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: -1;
+  width: 0%;
+  height: 1px;
+  background: #fff;
+  -webkit-transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+  transition: all 0.4s cubic-bezier(0.5, 0.24, 0, 1);
+}
+.btn6:hover::after {
+  width: 100%;
+}
+.btn6:hover {
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
 }
 </style>

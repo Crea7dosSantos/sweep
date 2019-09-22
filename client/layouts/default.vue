@@ -7,14 +7,14 @@
           absolute
           temporary
         >
-          <v-list :class="{ 'is-hidden': !isAuthenticated }">
-            <v-list-item>
+          <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
+            <v-list-item to="/user">
               <v-list-item-avatar>
                 <img src="~/assets/cristiano.jpg">
               </v-list-item-avatar>
               <v-list-item-title>{{ user.name }}</v-list-item-title>
             </v-list-item>
-          </v-list>
+          </v-list-item-group>
           <v-list>
             <v-text-field
               clearable
@@ -90,8 +90,22 @@
             <v-btn
               text
               to="/"
+              :class="{ 'is-hidden': isAuthenticated }"
             >
               Top
+            </v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items
+            v-for="item in items"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
+            <v-btn
+              text
+              :class="{ 'is-hidden': !isAuthenticated }"
+              :to="item.title"
+            >
+              {{ item.title }}
             </v-btn>
           </v-toolbar-items>
           <v-toolbar-items
@@ -102,6 +116,19 @@
             <v-btn
               text
               :to="item.title"
+            >
+              {{ item.title }}
+            </v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items
+            v-for="item in items4"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
+            <v-btn
+              text
+              :class="{ 'is-hidden': !isAuthenticated }"
+              @click="tmp(item.title)"
             >
               {{ item.title }}
             </v-btn>
@@ -209,15 +236,14 @@ export default {
     drawer: false,
     snackbar: false,
     timeout: 3000,
-    items1: [
-      { title: 'home', icon: 'person' },
-      { title: 'documentation', icon: 'dashboard' }
-    ],
+    items: [{ title: 'home', icon: 'person' }],
+    items1: [{ title: 'documentation', icon: 'dashboard' }],
     items2: [{ title: 'signout', icon: 'dashboard' }],
     items3: [
       { title: 'signup', icon: 'account_box' },
       { title: 'signin', icon: 'gavel' }
-    ]
+    ],
+    items4: [{ title: 'post', icon: 'person' }]
   }),
   methods: {
     ...mapActions('snackbar', ['snackOff']),

@@ -4,6 +4,13 @@
     width="400px"
   >
     <v-card class="elevation-12">
+      <v-toolbar flat>
+        <v-toolbar-title class="grey--text">
+          Sign out
+        </v-toolbar-title>
+        <div class="flex-grow-1" />
+      </v-toolbar>
+      <v-divider />
       <div class="card-container">
         <div class="inner-icon">
           <v-icon
@@ -77,6 +84,9 @@ export default {
 <style>
 .card-container {
   padding: 15px 5px;
+}
+.v-divider {
+  margin: 0px;
 }
 .inner-icon {
   text-align: center;
