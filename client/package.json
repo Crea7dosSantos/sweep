@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "@nuxtjs/bulma": "^1.2.1",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/font-awesome": "^1.0.4",
     "@nuxtjs/vuetify": "^1.6.3",
     "aws-sdk": "^2.533.0",
     "axios": "^0.19.0",
-    "dotenv": "^8.1.0",
     "js-cookie": "^2.2.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
