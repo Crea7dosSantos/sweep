@@ -31,7 +31,7 @@
           <v-col align-self="end" cols="12" class="avatar-col">
             <button height="100px" icon class="avatar-button" @click="uploadUserImage">
               <v-avatar color="grey" size="100">
-                <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg" />
+                <v-img v-show="uploadImage" :src="uploadImage" />
               </v-avatar>
             </button>
           </v-col>
@@ -56,7 +56,9 @@ import S3 from 'aws-sdk/clients/s3'
 
 export default {
   data() {
-    return {}
+    return {
+      uploadImage: ''
+    }
   },
   computed: {
     ...mapState('modal', ['isUserView']),
@@ -96,7 +98,7 @@ export default {
       })
       return s3
     },
-    selectedBackImage() {
+    selectedBackImage: function() {
       console.log('selectedBackImage')
       const file = this.$refs.backImage.files[0]
       if (!file) {
@@ -117,15 +119,15 @@ export default {
           ACL: 'public-read'
         },
         function(err, data) {
-          if (data !== null) {
-            console.log(data)
-          } else {
+          if (data === null) {
             console.log(err)
+            return
           }
         }
       )
+      this.createImage(file)
     },
-    selectedUserImage() {
+    selectedUserImage: function() {
       console.log('selectedUserImage')
       const file = this.$refs.userImage.files[0]
       if (!file) {
@@ -153,6 +155,14 @@ export default {
           }
         }
       )
+    },
+    createImage: function(file) {
+      let reader = new FileReader()
+      reader.onload = e => {
+        this.uploadImage = e.target.result
+      }
+      reader.readAsDataURL(file)
+      console.log('cretaeImage')
     }
   }
 }
