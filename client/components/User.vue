@@ -20,6 +20,7 @@
           <v-icon>clear</v-icon>
         </v-btn>
         <span class="close-profile">profile edit</span>
+        {{ UserImageSetKey }} {{ BackImageSetKey }}
       </v-card-title>
       <v-img height="300" v-show="uploadedBackImage" :src="uploadedBackImage">
         <v-row class="fill-height" align="center">
@@ -60,9 +61,10 @@ import UserDefault from '~/assets/user_default.png'
 export default {
   data() {
     return {
-      uploadedUserImage: UserDefault,
-      uploadedBackImage:
-        'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+      uploadedUserImage: '',
+      uploadedBackImage: '',
+      UserImageSetKey: false,
+      BackImageSetKey: false
     }
   },
   computed: {
@@ -93,17 +95,34 @@ export default {
           : (self.uploadedBackImage = data['profile_back_image_key'])
       })
       .catch(() => {
-        this.snackOn({ paylod: 'error get profile', color: 'error' })
+        // this.snackOn({ paylod: 'error get profile', color: 'error' })
         return
       })
-    console.log(self.uploadedBackImage)
   },
   methods: {
     ...mapActions('modal', ['unsetUserView']),
     closeModal: function() {
       this.unsetUserView()
     },
-    saveProfile: function() {},
+    saveProfile: function() {
+      const self = this
+      let dict = { profile_image_key: null, profile_back_image_key: null }
+      if (self.UserImageSetKey !== false) {
+        dict['profile_image_key'] = self.UserImageSetKey
+      }
+      if (self.BackImageSetKey !== false) {
+        dict['profile_back_image_key'] = self.BackImageSetKey
+      }
+      this.axiosAccessHandler()
+        .post('/save', dict)
+        .then(() => {
+          console.log('success update profile')
+          self.closeModal()
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     uploadBackImage: function() {
       this.$refs.backImage.click()
     },
@@ -178,6 +197,7 @@ export default {
             console.log(err)
             return
           }
+          console.log(data)
         }
       )
       this.createImage(file, 'userImage')
@@ -187,10 +207,12 @@ export default {
       let reader = new FileReader()
       if (select === 'userImage') {
         reader.onload = e => {
+          this.UserImageSetKey = file.name
           this.uploadedUserImage = e.target.result
         }
       } else if (select === 'backImage') {
         reader.onload = e => {
+          this.BackImageSetKey = file.name
           this.uploadedBackImage = e.target.result
         }
       }
