@@ -84,10 +84,10 @@ export default {
       .get('/profile')
       .then(res => {
         const data = res.data.user[0]
-        data['profile_image'] == null
+        data['profile_image_key'] == null
           ? (self.uploadedUserImage = UserDefault)
           : (self.uploadedUserImage = data['profile_image'])
-        data['profile_back_image'] == null
+        data['profile_back_image_key'] == null
           ? (self.uploadedBackImage =
               'https://cdn.vuetifyjs.com/images/parallax/material.jpg')
           : (self.uploadedBackImage = data['profile_back_image'])

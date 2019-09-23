@@ -26,9 +26,9 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    profile_image = db.Column(db.String(120), nullable=True)
-    profile_back_image = db.Column(db.String(120), nullable=True
-                                   )
+    profile_image_key = db.Column(db.String(120), nullable=True)
+    profile_back_image_key = db.Column(db.String(120), nullable=True
+                                       )
 
 
 class UserSchema(ma.ModelSchema):

@@ -133,3 +133,13 @@ def profile():
 
     return jsonify({'status': 'ok',
                     'user': UserSchema(many=True).dump(user)}), 200
+
+
+@app.route('/save-profile', methods=['POST'])
+@jwt_required
+def save():
+    if not request.is_json:
+        return jsonify({"message": "Missing JSON in request"}), 400
+
+    current_user = get_jwt_identity()
+    return current_user
