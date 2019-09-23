@@ -142,4 +142,10 @@ def save():
         return jsonify({"message": "Missing JSON in request"}), 400
 
     current_user = get_jwt_identity()
-    return current_user
+    profile_image_key = request.json.get('profile_image_key', None)
+    profile_back_image_key = request.json.get('profile_back_image_key')
+    user = db.session.query(User).filter(User.id == current_user)
+    user.update({user.profile_image_key: profile_image_key,
+                 user.profile_back_image_key: profile_back_image_key})
+
+    return 'OK'
