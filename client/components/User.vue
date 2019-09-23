@@ -59,7 +59,8 @@ export default {
     return {
       uploadedUserImage: '',
       uploadedBackImage:
-        'https://cdn.vuetifyjs.com/images/parallax/material2.jpg'
+        'https://cdn.vuetifyjs.com/images/parallax/material2.jpg',
+      imageURL: ''
     }
   },
   computed: {
@@ -73,6 +74,9 @@ export default {
         return this.$store.dispatch('modal/unsetUserView')
       }
     }
+  },
+  mounted() {
+    console.log('User component mounted')
   },
   methods: {
     ...mapActions('modal', ['unsetUserView']),
@@ -159,6 +163,7 @@ export default {
       this.createImage(file, 'userImage')
     },
     createImage: function(file, select) {
+      console.log(typeof file)
       let reader = new FileReader()
       if (select === 'userImage') {
         reader.onload = e => {
