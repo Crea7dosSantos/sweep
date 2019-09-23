@@ -4,7 +4,8 @@ export const state = () => ({
   isUserView: false,
   isSigninView: false,
   isSignupView: false,
-  isSignoutView: false
+  isSignoutView: false,
+  isPostView: false
 })
 
 export const mutations = {
@@ -31,6 +32,12 @@ export const mutations = {
   },
   unsetSignoutView(state) {
     state.isSignoutView = false
+  },
+  setPostView(state) {
+    state.isPostView = true
+  },
+  unsetPostView(state) {
+    state.isPostView = false
   }
 }
 
@@ -58,5 +65,11 @@ export const actions = {
   },
   unsetSignoutView({ commit }) {
     commit('unsetSignoutView')
+  },
+  setPostView({ commit }) {
+    commit('setPostView')
+  },
+  unsetPostView({ commit }) {
+    commit('unsetPostView')
   }
 }

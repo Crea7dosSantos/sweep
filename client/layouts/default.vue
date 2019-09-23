@@ -177,6 +177,7 @@ export default {
     ...mapActions('modal', ['setSigninView']),
     ...mapActions('modal', ['setSignupView']),
     ...mapActions('modal', ['setSignoutView']),
+    ...mapActions('modal', ['setPostView']),
     close: function() {
       this.snackOff()
     },
@@ -192,6 +193,9 @@ export default {
     displaySignoutView: function() {
       this.setSignoutView()
     },
+    displayPostView: function() {
+      this.setPostView()
+    },
     tmp: function(data) {
       if (data === 'signout') {
         this.displaySignoutView()
@@ -199,6 +203,8 @@ export default {
         this.displaySigninView()
       } else if (data === 'signup') {
         this.displaySignupVie()
+      } else if (data === 'post') {
+        this.displayPostView()
       }
     }
   }
