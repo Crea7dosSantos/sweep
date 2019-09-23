@@ -20,7 +20,6 @@
           <v-icon>clear</v-icon>
         </v-btn>
         <span class="close-profile">profile edit</span>
-        {{ UserImageSetKey }} {{ BackImageSetKey }}
       </v-card-title>
       <v-img height="300" v-show="uploadedBackImage" :src="uploadedBackImage">
         <v-row class="fill-height" align="center">
