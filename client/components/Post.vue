@@ -14,16 +14,20 @@
         </v-btn>
         <span class="close-profile">post window</span>
       </v-card-title>
-      <v-img height="250" v-show="uploadedBackImage" :src="uploadedBackImage">
-        <v-row class="fill-height" align="center">
-          <v-col justify="center" class="backimage-button">
-            <v-btn icon text @click="uploadBackImage">
-              <v-icon>add_a_photo</v-icon>
-            </v-btn>
-          </v-col>
-          <v-col align-self="end" cols="12" class="avatar-col"></v-col>
-        </v-row>
-      </v-img>
+      <v-divider />
+      <p class="image-title body-2">select back image</p>
+      <div class="image-div">
+        <v-img height="250" v-show="uploadedBackImage" :src="uploadedBackImage">
+          <v-row class="fill-height" align="center">
+            <v-col justify="center" class="backimage-button">
+              <v-btn icon text @click="uploadBackImage">
+                <v-icon>add_a_photo</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col align-self="end" cols="12" class="avatar-col"></v-col>
+          </v-row>
+        </v-img>
+      </div>
       <v-col cols="12" md="12">
         <v-text-field
           filled
@@ -32,6 +36,7 @@
           v-model="postTitle"
           placeholder="Post title"
         />
+        <v-textarea filled label="Content" v-model="postContent" placeholder="Post content"></v-textarea>
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
@@ -57,7 +62,8 @@ export default {
       uploadedBackImage: '',
       UserImageSetKey: false,
       BackImageSetKey: false,
-      postTitle: ''
+      postTitle: '',
+      postContent: ''
     }
   },
   computed: {
@@ -245,5 +251,15 @@ export default {
 }
 .avatar-col {
   padding-left: 24px;
+}
+.image-title {
+  padding-top: 15px;
+  padding-left: 15px;
+  margin-bottom: 5px;
+}
+.image-div {
+  border-radius: 5px;
+  border: 2px solid gray;
+  margin: 0 10px;
 }
 </style>
