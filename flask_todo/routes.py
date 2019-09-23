@@ -121,3 +121,33 @@ def signup():
 def signout():
     return jsonify({"mode": "signout", "status": "success",
                     "message": "Completed"}), 200
+
+
+@app.route('/profile', methods=['GET'])
+@jwt_required
+def profile():
+    current_user = get_jwt_identity()
+    print(current_user)
+    user = db.session.query(User).filter(User.id == current_user).all()
+    print(user)
+
+    return jsonify({'status': 'ok',
+                    'user': UserSchema(many=True).dump(user)}), 200
+
+
+@app.route('/save', methods=['POST'])
+@jwt_required
+def save():
+    if not request.is_json:
+        return jsonify({"message": "Missing JSON in request"}), 400
+
+    print(request.json)
+    current_user = get_jwt_identity()
+    profile_image_key = request.json.get('profile_image_key', None)
+    profile_back_image_key = request.json.get('profile_back_image_key', None)
+    user = db.session.query(User).filter(User.id == current_user).first()
+    user.profile_image_key = profile_image_key
+    user.profile_back_image_key = profile_back_image_key
+    db.session.commit()
+
+    return 'OK'

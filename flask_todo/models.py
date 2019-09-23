@@ -26,7 +26,8 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    # posts = db.relationship('Post', backref='author', lazy=True)
+    profile_image_key = db.Column(db.String(120))
+    profile_back_image_key = db.Column(db.String(120))
 
 
 class UserSchema(ma.ModelSchema):
