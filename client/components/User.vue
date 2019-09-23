@@ -21,7 +21,7 @@
         </v-btn>
         <span class="close-profile">profile edit</span>
       </v-card-title>
-      <v-img src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg">
+      <v-img height="300" v-show="uploadedBackImage" :src="uploadedBackImage">
         <v-row class="fill-height" align="center">
           <v-col justify="center" class="backimage-button">
             <v-btn icon text @click="uploadBackImage">
@@ -31,7 +31,7 @@
           <v-col align-self="end" cols="12" class="avatar-col">
             <button height="100px" icon class="avatar-button" @click="uploadUserImage">
               <v-avatar color="grey" size="100">
-                <v-img v-show="uploadImage" :src="uploadImage" />
+                <v-img v-show="uploadedUserImage" :src="uploadedUserImage" />
               </v-avatar>
             </button>
           </v-col>
@@ -57,7 +57,9 @@ import S3 from 'aws-sdk/clients/s3'
 export default {
   data() {
     return {
-      uploadImage: ''
+      uploadedUserImage: '',
+      uploadedBackImage:
+        'https://cdn.vuetifyjs.com/images/parallax/material2.jpg'
     }
   },
   computed: {
@@ -125,7 +127,7 @@ export default {
           }
         }
       )
-      this.createImage(file)
+      this.createImage(file, 'backImage')
     },
     selectedUserImage: function() {
       console.log('selectedUserImage')
@@ -148,21 +150,26 @@ export default {
           ACL: 'public-read'
         },
         function(err, data) {
-          if (data !== null) {
-            console.log(data)
-          } else {
+          if (data === null) {
             console.log(err)
+            return
           }
         }
       )
+      this.createImage(file, 'userImage')
     },
-    createImage: function(file) {
+    createImage: function(file, select) {
       let reader = new FileReader()
-      reader.onload = e => {
-        this.uploadImage = e.target.result
+      if (select === 'userImage') {
+        reader.onload = e => {
+          this.uploadedUserImage = e.target.result
+        }
+      } else if (select === 'backImage') {
+        reader.onload = e => {
+          this.uploadedBackImage = e.target.result
+        }
       }
       reader.readAsDataURL(file)
-      console.log('cretaeImage')
     }
   }
 }
