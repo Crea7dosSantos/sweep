@@ -55,12 +55,14 @@ import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 import Axios from 'axios'
 import Cookies from 'js-cookie'
+import UserDefault from '~/assets/user_default.png'
 
 export default {
   data() {
     return {
-      uploadedUserImage: '',
-      uploadedBackImage: ''
+      uploadedUserImage: UserDefault,
+      uploadedBackImage:
+        'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
     }
   },
   computed: {
