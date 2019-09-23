@@ -78,15 +78,25 @@ export default {
     }
   },
   mounted() {
+    const self = this
     console.log('User component mounted')
     this.axiosAccessHandler()
       .get('/profile')
       .then(res => {
-        console.log(res.data)
+        const data = res.data.user[0]
+        data['profile_image'] == null
+          ? (self.uploadedUserImage = UserDefault)
+          : (self.uploadedUserImage = data['profile_image'])
+        data['profile_back_image'] == null
+          ? (self.uploadedBackImage =
+              'https://cdn.vuetifyjs.com/images/parallax/material.jpg')
+          : (self.uploadedBackImage = data['profile_back_image'])
       })
-      .catch(err => {
-        console.log(err)
+      .catch(() => {
+        this.snackOn({ paylod: 'error get profile', color: 'error' })
+        return
       })
+    console.log(self.uploadedBackImage)
   },
   methods: {
     ...mapActions('modal', ['unsetUserView']),
