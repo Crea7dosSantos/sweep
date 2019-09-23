@@ -53,14 +53,14 @@
 import { mapState, mapActions } from 'vuex'
 import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
+import Axios from 'axios'
+import Cookies from 'js-cookie'
 
 export default {
   data() {
     return {
       uploadedUserImage: '',
-      uploadedBackImage:
-        'https://cdn.vuetifyjs.com/images/parallax/material2.jpg',
-      imageURL: ''
+      uploadedBackImage: ''
     }
   },
   computed: {
@@ -77,6 +77,14 @@ export default {
   },
   mounted() {
     console.log('User component mounted')
+    this.axiosAccessHandler()
+      .get('/profile')
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   methods: {
     ...mapActions('modal', ['unsetUserView']),
@@ -175,6 +183,20 @@ export default {
         }
       }
       reader.readAsDataURL(file)
+    },
+    axiosAccessHandler: function() {
+      const axiosAccess = Axios.create({
+        baseURL: 'http://localhost:5000',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + this.getToken()
+        },
+        responseType: 'json'
+      })
+      return axiosAccess
+    },
+    getToken: function() {
+      return Cookies.get('access_token')
     }
   }
 }

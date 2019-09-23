@@ -121,3 +121,15 @@ def signup():
 def signout():
     return jsonify({"mode": "signout", "status": "success",
                     "message": "Completed"}), 200
+
+
+@app.route('/profile', methods=['GET'])
+@jwt_required
+def profile():
+    current_user = get_jwt_identity()
+    print(current_user)
+    user = db.session.query(User).filter(User.id == current_user).all()
+    print(user)
+
+    return jsonify({'status': 'ok',
+                    'user': UserSchema(many=True).dump(user)}), 200
