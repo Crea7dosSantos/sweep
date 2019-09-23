@@ -81,6 +81,9 @@ export default {
   },
   mounted() {
     const self = this
+    const baseURL = process.env.BASE_URL
+    const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
+    const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
     console.log('User component mounted')
     this.axiosAccessHandler()
       .get('/profile')
@@ -88,11 +91,15 @@ export default {
         const data = res.data.user[0]
         data['profile_image_key'] == null
           ? (self.uploadedUserImage = UserDefault)
-          : (self.uploadedUserImage = data['profile_image_key'])
+          : (self.uploadedUserImage = `https://${userImageBucketName}${baseURL}${
+              data['profile_image_key']
+            }`)
         data['profile_back_image_key'] == null
           ? (self.uploadedBackImage =
               'https://cdn.vuetifyjs.com/images/parallax/material.jpg')
-          : (self.uploadedBackImage = data['profile_back_image_key'])
+          : (self.uploadedBackImage = `https://${backImageBucketName}${baseURL}${
+              data['profile_back_image_key']
+            }`)
       })
       .catch(() => {
         // this.snackOn({ paylod: 'error get profile', color: 'error' })
