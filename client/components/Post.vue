@@ -256,6 +256,7 @@ export default {
   padding-top: 15px;
   padding-left: 15px;
   margin-bottom: 5px;
+  color: lightgray;
 }
 .image-div {
   border-radius: 5px;
