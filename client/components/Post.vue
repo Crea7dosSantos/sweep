@@ -14,29 +14,29 @@
         </v-btn>
         <span class="close-profile">post window</span>
       </v-card-title>
-      <v-img height="300" v-show="uploadedBackImage" :src="uploadedBackImage">
+      <v-img height="250" v-show="uploadedBackImage" :src="uploadedBackImage">
         <v-row class="fill-height" align="center">
           <v-col justify="center" class="backimage-button">
             <v-btn icon text @click="uploadBackImage">
               <v-icon>add_a_photo</v-icon>
             </v-btn>
           </v-col>
-          <v-col align-self="end" cols="12" class="avatar-col">
-            <button height="100px" icon class="avatar-button" @click="uploadUserImage">
-              <v-avatar color="grey" size="100">
-                <v-img v-show="uploadedUserImage" :src="uploadedUserImage" />
-              </v-avatar>
-            </button>
-          </v-col>
+          <v-col align-self="end" cols="12" class="avatar-col"></v-col>
         </v-row>
       </v-img>
       <v-col cols="12" md="12">
-        <v-text-field filled counter="25" label="Name" v-model="user.name" placeholder="Username" />
+        <v-text-field
+          filled
+          counter="50"
+          label="Title"
+          v-model="postTitle"
+          placeholder="Post title"
+        />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
         <v-btn color="red darken-1" text @click="closeModal">Cancel</v-btn>
-        <v-btn color=" darken-1" text @click="saveProfile">Save</v-btn>
+        <v-btn color=" darken-1" text @click="saveProfile">Post</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -56,7 +56,8 @@ export default {
       uploadedUserImage: '',
       uploadedBackImage: '',
       UserImageSetKey: false,
-      BackImageSetKey: false
+      BackImageSetKey: false,
+      postTitle: ''
     }
   },
   computed: {
@@ -76,7 +77,6 @@ export default {
     const baseURL = process.env.BASE_URL
     const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
     const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
-    console.log('User component mounted')
     this.axiosAccessHandler()
       .get('/profile')
       .then(res => {
@@ -115,7 +115,6 @@ export default {
       this.axiosAccessHandler()
         .post('/save', dict)
         .then(() => {
-          console.log('success update profile')
           self.closeModal()
         })
         .catch(err => {
@@ -143,7 +142,6 @@ export default {
       return s3
     },
     selectedBackImage: function() {
-      console.log('selectedBackImage')
       const file = this.$refs.backImage.files[0]
       if (!file) {
         return
@@ -172,7 +170,6 @@ export default {
       this.createImage(file, 'backImage')
     },
     selectedUserImage: function() {
-      console.log('selectedUserImage')
       const file = this.$refs.userImage.files[0]
       if (!file) {
         return
@@ -202,7 +199,6 @@ export default {
       this.createImage(file, 'userImage')
     },
     createImage: function(file, select) {
-      console.log(typeof file)
       let reader = new FileReader()
       if (select === 'userImage') {
         reader.onload = e => {
@@ -242,7 +238,7 @@ export default {
 }
 .backimage-button {
   text-align: center;
-  padding-top: 120px;
+  padding-top: 80px;
 }
 .profile {
   padding-left: 5px;

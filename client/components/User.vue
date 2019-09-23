@@ -83,7 +83,6 @@ export default {
     const baseURL = process.env.BASE_URL
     const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
     const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
-    console.log('User component mounted')
     this.axiosAccessHandler()
       .get('/profile')
       .then(res => {
@@ -150,7 +149,6 @@ export default {
       return s3
     },
     selectedBackImage: function() {
-      console.log('selectedBackImage')
       const file = this.$refs.backImage.files[0]
       if (!file) {
         return
@@ -179,7 +177,6 @@ export default {
       this.createImage(file, 'backImage')
     },
     selectedUserImage: function() {
-      console.log('selectedUserImage')
       const file = this.$refs.userImage.files[0]
       if (!file) {
         return
@@ -209,7 +206,6 @@ export default {
       this.createImage(file, 'userImage')
     },
     createImage: function(file, select) {
-      console.log(typeof file)
       let reader = new FileReader()
       if (select === 'userImage') {
         reader.onload = e => {
