@@ -2,11 +2,11 @@
   <v-dialog v-model="postViewvisible" width="500px">
     <v-card dark>
       <input
+        ref="postImage"
         style="display: none"
-        ref="backImage"
         type="file"
         accept="image/jpeg, image/jpg, image/png"
-        @change="selectedBackImage()"
+        @change="selectedPostImage()"
       />
       <v-card-title>
         <v-btn text icon @click="closeModal">
@@ -17,31 +17,31 @@
       <v-divider />
       <p class="image-title body-2">select back image</p>
       <div class="image-div">
-        <v-img height="250" v-show="uploadedBackImage" :src="uploadedBackImage">
+        <v-img v-show="uploadedPostImage" height="250" :src="uploadedPostImage">
           <v-row class="fill-height" align="center">
             <v-col justify="center" class="backimage-button">
-              <v-btn icon text @click="uploadBackImage">
+              <v-btn icon text @click="uploadPostImage">
                 <v-icon>add_a_photo</v-icon>
               </v-btn>
             </v-col>
-            <v-col align-self="end" cols="12" class="avatar-col"></v-col>
+            <v-col align-self="end" cols="12" class="avatar-col" />
           </v-row>
         </v-img>
       </div>
       <v-col cols="12" md="12">
         <v-text-field
+          v-model="postTitle"
           filled
           counter="50"
           label="Title"
-          v-model="postTitle"
           placeholder="Post title"
         />
-        <v-textarea filled label="Content" v-model="postContent" placeholder="Post content"></v-textarea>
+        <v-textarea v-model="postContent" filled label="Content" placeholder="Post content" />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
         <v-btn color="red darken-1" text @click="closeModal">Cancel</v-btn>
-        <v-btn color=" darken-1" text @click="saveProfile">Post</v-btn>
+        <v-btn color=" darken-1" text @click="savePost">Post</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -53,15 +53,13 @@ import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import UserDefault from '~/assets/user_default.png'
 
 export default {
   data() {
     return {
-      uploadedUserImage: '',
-      uploadedBackImage: '',
-      UserImageSetKey: false,
-      BackImageSetKey: false,
+      uploadedPostImage:
+        'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
+      postImageSetKey: false,
       postTitle: '',
       postContent: ''
     }
@@ -78,48 +76,21 @@ export default {
       }
     }
   },
-  mounted() {
-    const self = this
-    const baseURL = process.env.BASE_URL
-    const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
-    const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
-    this.axiosAccessHandler()
-      .get('/profile')
-      .then(res => {
-        const data = res.data.user[0]
-        data['profile_image_key'] == null
-          ? (self.uploadedUserImage = UserDefault)
-          : (self.uploadedUserImage = `https://${userImageBucketName}${baseURL}${
-              data['profile_image_key']
-            }`)
-        data['profile_back_image_key'] == null
-          ? (self.uploadedBackImage =
-              'https://cdn.vuetifyjs.com/images/parallax/material.jpg')
-          : (self.uploadedBackImage = `https://${backImageBucketName}${baseURL}${
-              data['profile_back_image_key']
-            }`)
-      })
-      .catch(() => {
-        // this.snackOn({ paylod: 'error get profile', color: 'error' })
-        return
-      })
-  },
+  mounted() {},
   methods: {
     ...mapActions('modal', ['unsetPostView']),
     closeModal: function() {
       this.unsetPostView()
     },
-    saveProfile: function() {
+    savePost: function() {
       const self = this
-      let dict = { profile_image_key: null, profile_back_image_key: null }
-      if (self.UserImageSetKey !== false) {
-        dict['profile_image_key'] = self.UserImageSetKey
-      }
-      if (self.BackImageSetKey !== false) {
-        dict['profile_back_image_key'] = self.BackImageSetKey
+      let dict = {
+        title: self.postTitle,
+        content: self.postContent,
+        post_image_key: self.postImageSetKey
       }
       this.axiosAccessHandler()
-        .post('/save', dict)
+        .post('/create', dict)
         .then(() => {
           self.closeModal()
         })
@@ -127,38 +98,31 @@ export default {
           console.log(err)
         })
     },
-    uploadBackImage: function() {
-      this.$refs.backImage.click()
+    uploadPostImage: function() {
+      this.$refs.postImage.click()
     },
-    uploadUserImage: function() {
-      this.$refs.userImage.click()
-    },
-    getUserImageBucket: function() {
-      const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
+    getPostImageBucket: function() {
+      const postImageBucketName = process.env.POST_IMAGE_BUCKET_NAME
+      console.log(postImageBucketName)
       const s3 = new S3({
-        params: { Bucket: userImageBucketName, Region: 'ap-northeast-1' }
+        params: { Bucket: postImageBucketName, Region: 'ap-northeast-1' }
       })
       return s3
     },
-    getBackImageBucket: function() {
-      const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
-      const s3 = new S3({
-        params: { Bucket: backImageBucketName, Region: 'ap-northeast-1' }
-      })
-      return s3
-    },
-    selectedBackImage: function() {
-      const file = this.$refs.backImage.files[0]
+    selectedPostImage: function() {
+      const file = this.$refs.postImage.files[0]
       if (!file) {
         return
       }
-      const backImageAccessKeyId = process.env.BACK_IMAGE_ACCESS_KEY_ID
-      const backImageSecretAccessKey = process.env.BACK_IMAGE_SECRET_ACCESS_KEY
+      const postImageAccessKeyId = process.env.POST_IMAGE_ACCESS_KEY_ID
+      const postImageSecretAccessKey = process.env.POST_IMAGE_SECRET_ACCESS_KEY
+      console.log(postImageAccessKeyId)
+      console.log(postImageSecretAccessKey)
       AWS.config.update({
-        accessKeyId: backImageAccessKeyId,
-        secretAccessKey: backImageSecretAccessKey
+        accessKeyId: postImageAccessKeyId,
+        secretAccessKey: postImageSecretAccessKey
       })
-      const s3 = this.getBackImageBucket()
+      const s3 = this.getPostImageBucket()
       s3.putObject(
         {
           Key: file.name,
@@ -167,55 +131,22 @@ export default {
           ACL: 'public-read'
         },
         function(err, data) {
-          if (data === null) {
+          if (data !== null) {
+            console.log('success post image save')
+            console.log(data)
+          } else {
+            console.log('error だよ')
             console.log(err)
-            return
           }
         }
       )
-      this.createImage(file, 'backImage')
+      this.createImage(file)
     },
-    selectedUserImage: function() {
-      const file = this.$refs.userImage.files[0]
-      if (!file) {
-        return
-      }
-      const userImageAccessKeyId = process.env.USER_IMAGE_ACCESS_KEY_ID
-      const userImageSecretAccessKey = process.env.USER_IMAGE_SECRET_ACCESS_KEY
-      AWS.config.update({
-        accessKeyId: userImageAccessKeyId,
-        secretAccessKey: userImageSecretAccessKey
-      })
-      const s3 = this.getUserImageBucket()
-      s3.putObject(
-        {
-          Key: file.name,
-          ContentType: file.type,
-          Body: file,
-          ACL: 'public-read'
-        },
-        function(err, data) {
-          if (data === null) {
-            console.log(err)
-            return
-          }
-          console.log(data)
-        }
-      )
-      this.createImage(file, 'userImage')
-    },
-    createImage: function(file, select) {
+    createImage: function(file) {
       let reader = new FileReader()
-      if (select === 'userImage') {
-        reader.onload = e => {
-          this.UserImageSetKey = file.name
-          this.uploadedUserImage = e.target.result
-        }
-      } else if (select === 'backImage') {
-        reader.onload = e => {
-          this.BackImageSetKey = file.name
-          this.uploadedBackImage = e.target.result
-        }
+      this.postImageSetKey = file.name
+      reader.onload = e => {
+        this.uploadedPostImage = e.target.result
       }
       reader.readAsDataURL(file)
     },
