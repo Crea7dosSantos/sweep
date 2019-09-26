@@ -6,7 +6,7 @@
           <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
             <v-list-item to="/user">
               <v-list-item-avatar>
-                <v-img :src="userImage"></v-img>
+                <v-img :src="userImage" />
               </v-list-item-avatar>
               <v-list-item-title>{{ user.name }}</v-list-item-title>
             </v-list-item>
@@ -75,9 +75,18 @@
           <v-toolbar-items v-for="item in items" :key="item.title" class="hidden-sm-and-down">
             <v-btn text :class="{ 'is-hidden': !isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
           </v-toolbar-items>
-          <v-toolbar-items v-for="item in items1" :key="item.title" class="hidden-sm-and-down">
-            <v-btn text :to="item.title">{{ item.title }}</v-btn>
-          </v-toolbar-items>
+          <!-- <v-toolbar-items
+            v-for="item in items1"
+            :key="item.title"
+            class="hidden-sm-and-down"
+          >
+            <v-btn
+              text
+              :to="item.title"
+            >
+              {{ item.title }}
+            </v-btn>
+          </v-toolbar-items>-->
           <v-toolbar-items v-for="item in items4" :key="item.title" class="hidden-sm-and-down">
             <v-btn
               text
