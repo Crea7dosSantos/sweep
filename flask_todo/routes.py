@@ -55,7 +55,10 @@ def create():
 
     current_user = get_jwt_identity()
     title = request.json.get('title', None)
-    todo = Todo(title=title, user_id=current_user)
+    content = request.json.get('content', None)
+    post_image_key = request.json.get('post_image_key', None)
+    todo = Todo(title=title, content=content,
+                post_image_key=post_image_key, user_id=current_user)
     db.session.add(todo)
     db.session.commit()
     return jsonify({"message": "Success create Todo"}), 200
