@@ -29,14 +29,25 @@
         </v-img>
       </div>
       <v-col cols="12" md="12">
-        <v-text-field
-          v-model="postTitle"
-          filled
-          counter="50"
-          label="Title"
-          placeholder="Post title"
-        />
-        <v-textarea v-model="postContent" filled label="Content" placeholder="Post content" />
+        <v-form ref="form">
+          <v-text-field
+            v-model="postTitle"
+            filled
+            counter="30"
+            label="Title"
+            placeholder="Post title"
+            :rules="[rules.required, rules.min4, rules.max30]"
+            required
+          />
+          <v-textarea
+            v-model="postContent"
+            :rules="[rules.required, rules.min4]"
+            required
+            filled
+            label="Content"
+            placeholder="Post content"
+          />
+        </v-form>
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
@@ -62,7 +73,12 @@ export default {
       postImageSetKey: '',
       isSetPostImage: false,
       postTitle: '',
-      postContent: ''
+      postContent: '',
+      rules: {
+        required: value => !!value || 'Required',
+        min4: value => value.length >= 4 || 'Min 4 characters',
+        max30: value => value.length <= 30 || 'Max 30 characters'
+      }
     }
   },
   computed: {
@@ -86,6 +102,9 @@ export default {
       this.deleteData()
     },
     savePost: function() {
+      if (!this.$refs.form.validate()) {
+        return
+      }
       const self = this
       let dict = {
         title: self.postTitle,
@@ -144,7 +163,6 @@ export default {
             console.log('success post image save')
             console.log(data)
           } else {
-            console.log('error だよ')
             console.log(err)
           }
         }
