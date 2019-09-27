@@ -59,7 +59,8 @@ export default {
     return {
       uploadedPostImage:
         'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
-      postImageSetKey: false,
+      postImageSetKey: '',
+      isSetPostImage: false,
       postTitle: '',
       postContent: ''
     }
@@ -89,6 +90,10 @@ export default {
         content: self.postContent,
         post_image_key: self.postImageSetKey
       }
+      if (self.isSetPostImage == false) {
+        const key = this.getRandomImageKey()
+        dict['post_image_key'] = key
+      }
       this.axiosAccessHandler()
         .post('/create', dict)
         .then(() => {
@@ -103,7 +108,6 @@ export default {
     },
     getPostImageBucket: function() {
       const postImageBucketName = process.env.POST_IMAGE_BUCKET_NAME
-      console.log(postImageBucketName)
       const s3 = new S3({
         params: { Bucket: postImageBucketName, Region: 'ap-northeast-1' }
       })
@@ -116,8 +120,6 @@ export default {
       }
       const postImageAccessKeyId = process.env.POST_IMAGE_ACCESS_KEY_ID
       const postImageSecretAccessKey = process.env.POST_IMAGE_SECRET_ACCESS_KEY
-      console.log(postImageAccessKeyId)
-      console.log(postImageSecretAccessKey)
       AWS.config.update({
         accessKeyId: postImageAccessKeyId,
         secretAccessKey: postImageSecretAccessKey
@@ -143,6 +145,7 @@ export default {
       this.createImage(file)
     },
     createImage: function(file) {
+      this.isSetPostImage = true
       let reader = new FileReader()
       this.postImageSetKey = file.name
       reader.onload = e => {
@@ -163,6 +166,14 @@ export default {
     },
     getToken: function() {
       return Cookies.get('access_token')
+    },
+    getRandomImageKey: function() {
+      const randomFloor = Math.floor(Math.random() * 11)
+      const randomString = String(randomFloor)
+      const setKey = 'random-free-upload'
+      const setExtension = '.jpg'
+      const key = setKey + randomString + setExtension
+      return key
     }
   }
 }
