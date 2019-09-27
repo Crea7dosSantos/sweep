@@ -73,15 +73,16 @@ export default {
         return this.isPostView
       },
       set() {
-        return this.$store.dispatch('modal/unsetPostView')
+        this.$store.dispatch('modal/unsetPostView')
+        this.deleteData()
       }
     }
   },
-  mounted() {},
   methods: {
     ...mapActions('modal', ['unsetPostView']),
     closeModal: function() {
       this.unsetPostView()
+      this.deleteData()
     },
     savePost: function() {
       const self = this
@@ -174,6 +175,14 @@ export default {
       const setExtension = '.jpg'
       const key = setKey + randomString + setExtension
       return key
+    },
+    deleteData: function() {
+      this.postTitle = ''
+      this.postContent = ''
+      this.uploadedPostImage =
+        'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+      this.postImageSetKey = ''
+      this.isSetPostImage = false
     }
   }
 }
