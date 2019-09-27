@@ -2,15 +2,15 @@
   <v-dialog v-model="userViewVisible" width="500px">
     <v-card dark>
       <input
-        style="display: none"
         ref="backImage"
+        style="display: none"
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedBackImage()"
       />
       <input
-        style="display: none"
         ref="userImage"
+        style="display: none"
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedUserImage()"
@@ -21,7 +21,7 @@
         </v-btn>
         <span class="close-profile">profile edit</span>
       </v-card-title>
-      <v-img height="300" v-show="uploadedBackImage" :src="uploadedBackImage">
+      <v-img v-show="uploadedBackImage" height="300" :src="uploadedBackImage">
         <v-row class="fill-height" align="center">
           <v-col justify="center" class="backimage-button">
             <v-btn icon text @click="uploadBackImage">
@@ -38,7 +38,7 @@
         </v-row>
       </v-img>
       <v-col cols="12" md="12">
-        <v-text-field filled counter="25" label="Name" v-model="user.name" placeholder="Username" />
+        <v-text-field v-model="user.name" filled counter="25" label="Name" placeholder="Username" />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
@@ -100,12 +100,13 @@ export default {
             }`)
       })
       .catch(() => {
-        // this.snackOn({ paylod: 'error get profile', color: 'error' })
+        this.snackOn({ paylod: 'error get profile', color: 'error' })
         return
       })
   },
   methods: {
     ...mapActions('modal', ['unsetUserView']),
+    ...mapActions('snackbar', ['snackOn']),
     closeModal: function() {
       this.unsetUserView()
     },
@@ -122,9 +123,11 @@ export default {
         .post('/save', dict)
         .then(() => {
           console.log('success update profile')
+          this.snackOn({ payload: 'success update profile', color: 'green' })
           self.closeModal()
         })
         .catch(err => {
+          this.snackOn({ payload: 'Failed to update profile', color: 'error' })
           console.log(err)
         })
     },

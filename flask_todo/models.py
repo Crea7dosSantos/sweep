@@ -8,6 +8,8 @@ class Todo(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.String(255), nullable=False)
+    post_image_key = db.Column(db.String(255), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow())
     user_id = db.Column(db.Integer, nullable=False)
@@ -26,8 +28,8 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    profile_image_key = db.Column(db.String(120))
-    profile_back_image_key = db.Column(db.String(120))
+    profile_image_key = db.Column(db.String(120), nullable=True)
+    profile_back_image_key = db.Column(db.String(120), nullable=True)
 
 
 class UserSchema(ma.ModelSchema):

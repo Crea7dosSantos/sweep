@@ -1,11 +1,9 @@
 <template>
-  <div class="container-block">
-    <section class="hero is-primary is-bold">
+  <div class="container">
+    <!-- <section class="hero is-primary is-bold">
       <div class="hero-body">
         <div class="container new-todo">
-          <h3 class="title is-3">
-            New Todo
-          </h3>
+          <h3 class="title is-3">New Todo</h3>
           <div class="columns">
             <div class="column is-four-fifths">
               <div class="field">
@@ -17,10 +15,8 @@
                     :class="{ 'input is-danger': isErrorExist }"
                     type="text"
                     placeholder="Todo name input"
-                  >
-                  <p class="help is-danger">
-                    {{ error }}
-                  </p>
+                  />
+                  <p class="help is-danger">{{ error }}</p>
                 </div>
               </div>
               <div class="field">
@@ -29,21 +25,46 @@
                     class="button is-dark"
                     :class="{ 'is-loading': isLoading }"
                     @click="create"
-                  >
-                    Create Todo
-                  </button>
+                  >Create Todo</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <div class="container todo-list">
-      <h3 class="title is-3">
-        Todo List
-      </h3>
-      <div class="columns">
+    </section>-->
+
+    <!-- <section class="create-part">
+      <div class="hero-body">
+        <div class="container new-todo">
+          <h3 class="title is-3">Post</h3>
+          <div class="columns">
+            <div class="column is-four-fifths">
+              <v-text-field
+                label="your post title"
+                v-model="todoName"
+                :class="{ 'input is-danger': isErrorExist }"
+                placeholder="Post title"
+              ></v-text-field>
+              <p class="help is-danger">{{ error }}</p>
+              <v-textarea></v-textarea>
+              <div class="field">
+                <div class="control">
+                  <button
+                    class="button is-dark"
+                    :class="{ 'is-loading': isLoading }"
+                    @click="create"
+                  >Create Todo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>-->
+    <!-- <div class="container todo-list">
+    <h3 class="title is-3">All Post</h3>-->
+    <!-- <div class="columns">
         <div class="column is-full">
           <table class="table is-fullwidth is-hoverable">
             <thead>
@@ -54,23 +75,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(todo, index) in todos"
-                :key="index"
-              >
-                <td class="has-text-weight-semibold td-font">
-                  {{ todo["title"] }}
-                </td>
-                <td class="has-text-weight-semibold td-font">
-                  {{ todo["date_posted"] | dateFormat }}
-                </td>
+              <tr v-for="(todo, index) in todos" :key="index">
+                <td class="has-text-weight-semibold td-font">{{ todo["title"] }}</td>
+                <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
                 <td>
-                  <button
-                    class="button is-primary"
-                    @click="deleteHandler(todo.id)"
-                  >
-                    Delete
-                  </button>
+                  <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -78,10 +87,41 @@
         </div>
       </div>
     </div>
-    <template>
-      <AllModal />
-      <User />
-    </template>
+    <div>-->
+    <v-app>
+      <h3 class="title is-3">All Post</h3>
+      <div>
+        <v-col v-for="(todo, index) in todos" :key="index">
+          <v-card max-width="400" class="mx-auto">
+            <v-img
+              :src="'https://' + bucketName + baseURL + todo.post_image_key"
+              class="white--text"
+              height="200px"
+            >
+              <!-- "https://sweep-user-back-image.s3.amazonaws.com/sunset-2137067_1920%20(1).jpg" -->
+
+              <v-card-title class="align-end fill-height" max-width="400">{{ todo["title"] }}</v-card-title>
+            </v-img>
+            <v-card-text>
+              <span>{{ todo["date_posted"] | dateFormat }}</span>
+              <br />
+              <span class="text--primary">
+                <span>{{ todo.content }}</span>
+                <br />
+              </span>
+            </v-card-text>
+            <!-- <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
+            <td>
+              <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
+            </td>-->
+          </v-card>
+        </v-col>
+      </div>
+      <template>
+        <AllModal />
+        <User />
+      </template>
+    </v-app>
   </div>
 </template>
 
@@ -101,10 +141,13 @@ export default {
     return {
       todos: [],
       todoName: '',
+      content: '',
       error: '',
       isErrorExist: false,
       isLoading: false,
-      token: ''
+      token: '',
+      bucketName: process.env.POST_IMAGE_BUCKET_NAME,
+      baseURL: process.env.BASE_URL
     }
   },
   watch: {
@@ -241,6 +284,12 @@ export default {
   vertical-align: middle;
 }
 .new-todo {
+  margin-top: 20px;
+}
+.create-part {
+  background: lightgray;
+}
+.container {
   margin-top: 20px;
 }
 </style>
