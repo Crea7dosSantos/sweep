@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     ...mapActions('modal', ['unsetPostView']),
+    ...mapActions('snackbar', ['snackOn']),
     closeModal: function() {
       this.unsetPostView()
       this.deleteData()
@@ -99,8 +100,13 @@ export default {
         .post('/create', dict)
         .then(() => {
           self.closeModal()
+          this.snackOn({
+            payload: 'Success created a new post',
+            color: 'green'
+          })
         })
         .catch(err => {
+          this.snackOn({ payload: 'Error create a new post', color: 'error' })
           console.log(err)
         })
     },
