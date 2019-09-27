@@ -62,8 +62,12 @@ export default {
     return {
       uploadedUserImage: '',
       uploadedBackImage: '',
-      UserImageSetKey: false,
-      BackImageSetKey: false
+      userImageSetKeyName: null,
+      backImageSetKeyName: null,
+      tmpUploadedUserImage: '',
+      tmpUploadedBackImage: '',
+      tmpUserImageSetKeyName: null,
+      tmpBackImageSetKeyName: null
     }
   },
   computed: {
@@ -74,7 +78,8 @@ export default {
         return this.isUserView
       },
       set() {
-        return this.$store.dispatch('modal/unsetUserView')
+        this.$store.dispatch('modal/unsetUserView')
+        this.deleteData()
       }
     }
   },
@@ -87,17 +92,35 @@ export default {
       .get('/profile')
       .then(res => {
         const data = res.data.user[0]
-        data['profile_image_key'] == null
-          ? (self.uploadedUserImage = UserDefault)
-          : (self.uploadedUserImage = `https://${userImageBucketName}${baseURL}${
-              data['profile_image_key']
-            }`)
-        data['profile_back_image_key'] == null
-          ? (self.uploadedBackImage =
-              'https://cdn.vuetifyjs.com/images/parallax/material.jpg')
-          : (self.uploadedBackImage = `https://${backImageBucketName}${baseURL}${
-              data['profile_back_image_key']
-            }`)
+        if (data['profile_image_key'] == null) {
+          self.uploadedUserImage = UserDefault
+          self.tmpUploadedUserImage = UserDefault
+        } else {
+          self.uploadedUserImage = `https://${userImageBucketName}${baseURL}${
+            data['profile_image_key']
+          }`
+          self.tmpUploadedUserImage = `https://${userImageBucketName}${baseURL}${
+            data['profile_image_key']
+          }`
+          self.userImageSetKeyName = data['profile_image_key']
+          self.tmpUserImageSetKeyName = data['profile_image_key']
+        }
+
+        if (data['profile_back_image_key'] == null) {
+          self.uploadedBackImage =
+            'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+          self.tmpUploadedBackImage =
+            'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+        } else {
+          self.uploadedBackImage = `https://${backImageBucketName}${baseURL}${
+            data['profile_back_image_key']
+          }`
+          self.tmpUploadedBackImage = `https://${backImageBucketName}${baseURL}${
+            data['profile_back_image_key']
+          }`
+          self.backImageSetKeyName = data['profile_back_image_key']
+          self.tmpBackImageSetKeyName = data['profile_back_image_key']
+        }
       })
       .catch(() => {
         this.snackOn({ paylod: 'error get profile', color: 'error' })
@@ -109,15 +132,13 @@ export default {
     ...mapActions('snackbar', ['snackOn']),
     closeModal: function() {
       this.unsetUserView()
+      this.deleteData()
     },
     saveProfile: function() {
       const self = this
-      let dict = { profile_image_key: null, profile_back_image_key: null }
-      if (self.UserImageSetKey !== false) {
-        dict['profile_image_key'] = self.UserImageSetKey
-      }
-      if (self.BackImageSetKey !== false) {
-        dict['profile_back_image_key'] = self.BackImageSetKey
+      let dict = {
+        profile_image_key: self.userImageSetKeyName,
+        profile_back_image_key: self.backImageSetKeyName
       }
       this.axiosAccessHandler()
         .post('/save', dict)
@@ -212,12 +233,12 @@ export default {
       let reader = new FileReader()
       if (select === 'userImage') {
         reader.onload = e => {
-          this.UserImageSetKey = file.name
+          this.userImageSetKeyName = file.name
           this.uploadedUserImage = e.target.result
         }
       } else if (select === 'backImage') {
         reader.onload = e => {
-          this.BackImageSetKey = file.name
+          this.backImageSetKeyName = file.name
           this.uploadedBackImage = e.target.result
         }
       }
@@ -236,6 +257,12 @@ export default {
     },
     getToken: function() {
       return Cookies.get('access_token')
+    },
+    deleteData: function() {
+      this.uploadedUserImage = this.tmpUploadedUserImage
+      this.uploadedBackImage = this.tmpUploadedBackImage
+      this.userImageSetKeyName = this.tmpUserImageSetKeyName
+      this.backImageSetKeyName = this.tmpBackImageSetKeyName
     }
   }
 }
