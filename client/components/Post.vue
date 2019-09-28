@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="postViewvisible" width="500px">
+  <v-dialog
+    v-model="postViewvisible"
+    width="500px"
+  >
     <v-card dark>
       <input
         ref="postImage"
@@ -7,28 +10,55 @@
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedPostImage()"
-      />
+      >
       <v-card-title>
-        <v-btn text icon @click="closeModal">
+        <v-btn
+          text
+          icon
+          @click="closeModal"
+        >
           <v-icon>clear</v-icon>
         </v-btn>
-        <span class="close-profile">post window</span>
+        <span class="close-profile">Post window</span>
       </v-card-title>
       <v-divider />
-      <p class="image-title body-2">select back image</p>
+      <p class="image-title body-2">
+        select back image
+      </p>
       <div class="image-div">
-        <v-img v-show="uploadedPostImage" height="250" :src="uploadedPostImage">
-          <v-row class="fill-height" align="center">
-            <v-col justify="center" class="backimage-button">
-              <v-btn icon text @click="uploadPostImage">
+        <v-img
+          v-show="uploadedPostImage"
+          height="250"
+          :src="uploadedPostImage"
+        >
+          <v-row
+            class="fill-height"
+            align="center"
+          >
+            <v-col
+              justify="center"
+              class="backimage-button"
+            >
+              <v-btn
+                icon
+                text
+                @click="uploadPostImage"
+              >
                 <v-icon>add_a_photo</v-icon>
               </v-btn>
             </v-col>
-            <v-col align-self="end" cols="12" class="avatar-col" />
+            <v-col
+              align-self="end"
+              cols="12"
+              class="avatar-col"
+            />
           </v-row>
         </v-img>
       </div>
-      <v-col cols="12" md="12">
+      <v-col
+        cols="12"
+        md="12"
+      >
         <v-form ref="form">
           <v-text-field
             v-model="postTitle"
@@ -51,8 +81,20 @@
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn color="red darken-1" text @click="closeModal">Cancel</v-btn>
-        <v-btn color=" darken-1" text @click="savePost">Post</v-btn>
+        <v-btn
+          color="red darken-1"
+          text
+          @click="closeModal"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          color=" darken-1"
+          text
+          @click="savePost"
+        >
+          Post
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

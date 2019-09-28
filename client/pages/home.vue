@@ -89,10 +89,18 @@
     </div>
     <div>-->
     <v-app>
-      <h3 class="title is-3">All Post</h3>
+      <h3 class="title is-3">
+        All Post
+      </h3>
       <div>
-        <v-col v-for="(todo, index) in todos" :key="index">
-          <v-card max-width="400" class="mx-auto">
+        <v-col
+          v-for="(todo, index) in todos"
+          :key="index"
+        >
+          <v-card
+            max-width="400"
+            class="mx-auto"
+          >
             <v-img
               :src="'https://' + bucketName + baseURL + todo.post_image_key"
               class="white--text"
@@ -100,14 +108,19 @@
             >
               <!-- "https://sweep-user-back-image.s3.amazonaws.com/sunset-2137067_1920%20(1).jpg" -->
 
-              <v-card-title class="align-end fill-height" max-width="400">{{ todo["title"] }}</v-card-title>
+              <v-card-title
+                class="align-end fill-height"
+                max-width="400"
+              >
+                {{ todo["title"] }}
+              </v-card-title>
             </v-img>
             <v-card-text>
               <span>{{ todo["date_posted"] | dateFormat }}</span>
-              <br />
+              <br>
               <span class="text--primary">
                 <span>{{ todo.content }}</span>
-                <br />
+                <br>
               </span>
             </v-card-text>
             <!-- <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
