@@ -89,44 +89,25 @@
     </div>
     <div>-->
     <v-app>
-      <h3 class="title is-3">
-        All Post
-      </h3>
+      <h3 class="title is-3">All Post</h3>
       <div>
-        <v-col
-          v-for="(todo, index) in todos"
-          :key="index"
-        >
-          <v-card
-            max-width="400"
-            class="mx-auto"
-          >
+        <v-col v-for="(post, index) in posts" :key="index">
+          <v-card max-width="400" class="mx-auto">
             <v-img
-              :src="'https://' + bucketName + baseURL + todo.post_image_key"
+              :src="'https://' + bucketName + baseURL + post.post_image_key"
               class="white--text"
               height="200px"
             >
-              <!-- "https://sweep-user-back-image.s3.amazonaws.com/sunset-2137067_1920%20(1).jpg" -->
-
-              <v-card-title
-                class="align-end fill-height"
-                max-width="400"
-              >
-                {{ todo["title"] }}
-              </v-card-title>
+              <v-card-title class="align-end fill-height" max-width="400">{{ post["title"] }}</v-card-title>
             </v-img>
             <v-card-text>
-              <span>{{ todo["date_posted"] | dateFormat }}</span>
-              <br>
+              <span>{{ post["date_posted"] | dateFormat }}</span>
+              <br />
               <span class="text--primary">
-                <span>{{ todo.content }}</span>
-                <br>
+                <span>{{ post.content }}</span>
+                <br />
               </span>
             </v-card-text>
-            <!-- <td class="has-text-weight-semibold td-font">{{ todo["date_posted"] | dateFormat }}</td>
-            <td>
-              <button class="button is-primary" @click="deleteHandler(todo.id)">Delete</button>
-            </td>-->
           </v-card>
         </v-col>
       </div>
@@ -141,7 +122,7 @@
 <script>
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import AllModal from '~/components/AllModal'
 import User from '~/components/User'
 
@@ -149,6 +130,9 @@ export default {
   components: {
     AllModal,
     User
+  },
+  computed: {
+    ...mapState('post', ['posts'])
   },
   data: function() {
     return {
