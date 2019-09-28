@@ -139,6 +139,7 @@ export default {
   methods: {
     ...mapActions('modal', ['unsetPostView']),
     ...mapActions('snackbar', ['snackOn']),
+    ...mapActions('post', ['init']),
     closeModal: function() {
       this.unsetPostView()
       this.deleteData()
@@ -165,6 +166,7 @@ export default {
             payload: 'Success created a new post',
             color: 'green'
           })
+          this.init(this.getToken())
         })
         .catch(err => {
           this.snackOn({ payload: 'Error create a new post', color: 'error' })

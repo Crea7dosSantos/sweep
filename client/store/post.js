@@ -28,7 +28,7 @@ export const actions = {
         commit('init', data)
       })
       .catch(() => {
-        console.log('stateのhome部分でエラってる。')
+        console.log('Failed to get data')
       })
   }
 }
