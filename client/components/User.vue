@@ -123,13 +123,16 @@ export default {
         }
       })
       .catch(() => {
-        this.snackOn({ paylod: 'error get profile', color: 'error' })
+        self.displaySnackOn('Failed to get profile', 'error')
         return
       })
   },
   methods: {
     ...mapActions('modal', ['unsetUserView']),
     ...mapActions('snackbar', ['snackOn']),
+    displaySnackOn: function(text, color) {
+      this.snackOn({ payload: text, color: color })
+    },
     closeModal: function() {
       this.unsetUserView()
       this.deleteData()

@@ -1,27 +1,14 @@
 <template>
-  <v-dialog
-    v-model="userSignoutVisible"
-    width="400px"
-  >
-    <v-card
-      class="elevation-12"
-      dark
-    >
+  <v-dialog v-model="userSignoutVisible" width="400px">
+    <v-card class="elevation-12" dark>
       <v-toolbar flat>
-        <v-toolbar-title class="grey--text">
-          Sign out
-        </v-toolbar-title>
+        <v-toolbar-title class="grey--text">Sign out</v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>
       <v-divider />
       <div class="card-container">
         <div class="inner-icon">
-          <v-icon
-            color="purple darken-2"
-            size="50"
-          >
-            swap_horiz
-          </v-icon>
+          <v-icon color="purple darken-2" size="50">swap_horiz</v-icon>
         </div>
         <div class="inner-recomend">
           <span class="recomend-signout">Todo-Sampleからサインアウトしますか？</span>
@@ -29,17 +16,9 @@
         </div>
         <v-card-actions>
           <div class="flex-grow-1" />
-          <v-btn color="normal">
-            Cancel
-          </v-btn>
+          <v-btn color="normal">Cancel</v-btn>
           <div class="flex-grow-1" />
-          <v-btn
-            color="indigo accent-2"
-            :loading="loading"
-            @click="signout"
-          >
-            Sign out
-          </v-btn>
+          <v-btn color="indigo accent-2" :loading="loading" @click="signout">Sign out</v-btn>
         </v-card-actions>
       </div>
     </v-card>
@@ -69,6 +48,7 @@ export default {
     ...mapActions('user', ['signOut']),
     ...mapActions('snackbar', ['snackOn']),
     ...mapActions('modal', ['unsetSignoutView']),
+    ...mapActions('post', ['unset']),
     signout: function() {
       const router = this.$router
       this.snackOn({ payload: 'Sign out complete', color: 'green' })
@@ -76,6 +56,7 @@ export default {
       Cookies.remove('access_token')
       Cookies.remove('refresh_token')
       this.signOut()
+      this.unset()
       this.loading = false
       this.unsetSignoutView()
       router.push('/')
