@@ -11,7 +11,7 @@ export default ({ store, isHMR }) => {
     window.onNuxtReady(() => {
       createPersistedState({
         key: 'storage',
-        paths: ['user']
+        paths: ['user', 'post']
       })(store) // vuex plugins can be connected to store, even after creation
     })
   }
