@@ -3,6 +3,7 @@ from flask_todo import app, db, bcrypt
 from flask_todo.models import Todo, TodoSchema, User, UserSchema
 import datetime
 from pytz import timezone
+from sqlalchemy import desc
 from flask_jwt_extended import (
     create_access_token, create_refresh_token, jwt_required,
     jwt_refresh_token_required, get_jwt_identity, )
@@ -36,7 +37,8 @@ def refresh():
 def home():
     current_user = get_jwt_identity()
     print(current_user)
-    todos = db.session.query(Todo).filter(Todo.user_id == current_user).all()
+    todos = db.session.query(Todo).filter(
+        Todo.user_id == current_user).order_by(desc(Todo.id)).all()
     for todo in todos:
         dt_naive_to_utc_replace = todo.date_posted.replace(
             tzinfo=datetime.timezone.utc)
