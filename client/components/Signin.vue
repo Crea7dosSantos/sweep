@@ -1,13 +1,8 @@
 <template>
-  <v-dialog
-    v-model="userSigninVisible"
-    width="400px"
-  >
+  <v-dialog v-model="userSigninVisible" width="400px">
     <v-card class="elevation-12">
       <v-toolbar flat>
-        <v-toolbar-title class="grey--text">
-          Sign in
-        </v-toolbar-title>
+        <v-toolbar-title class="grey--text">Sign in</v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>
       <v-divider />
@@ -36,12 +31,7 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn
-          color="primary"
-          @click="signin"
-        >
-          Sign in
-        </v-btn>
+        <v-btn color="primary" @click="signin">Sign in</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -80,7 +70,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['signIn']),
+    ...mapActions('user', ['setUserState']),
     ...mapActions('snackbar', ['snackOn']),
     ...mapActions('modal', ['unsetSigninView']),
     signin: function() {
@@ -97,7 +87,7 @@ export default {
         })
         .then(res => {
           this.snackOn({ payload: 'Sign in Success!', color: 'green' })
-          this.signIn(res.data.access_token)
+          this.setUserState(res.data.access_token)
           Cookies.set('access_token', res.data.access_token)
           Cookies.set('refresh_token', res.data.refresh_token)
           this.unsetSigninView()

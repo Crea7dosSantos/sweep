@@ -5,7 +5,7 @@ const initialState = {
   name: '',
   id: '',
   email: '',
-  imageKey: ''
+  imageKey: null
 }
 
 export const state = () => ({
@@ -26,13 +26,13 @@ export const mutations = {
     state.user.name = ''
     state.user.id = ''
     state.user.email = ''
-    state.user.imageKey = ''
+    state.user.imageKey = null
     state.loggedIn = false
   }
 }
 
 export const actions = {
-  signIn({ commit }, token) {
+  setUserState({ commit }, token) {
     const axiosAccess = Axios.create({
       baseURL: 'http://localhost:5000',
       headers: {
@@ -53,7 +53,7 @@ export const actions = {
         commit('setUserStete', false)
       })
   },
-  signOut({ commit }) {
+  unsetUserState({ commit }) {
     commit('unsetUserState')
   }
 }
