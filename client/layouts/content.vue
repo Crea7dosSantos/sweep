@@ -43,7 +43,11 @@
             <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
               <v-list-item @click="displayUserView">
                 <v-list-item-avatar size="24">
-                  <v-img :src="userImage" />
+                  <v-img :src="userImage" :class="{ 'is-hidden': isAuthProfileImage }" />
+                  <v-img
+                    :class="{ 'is-hidden': !isAuthProfileImage }"
+                    :src="'https://' + userImageBucketName + baseURL + user.profileImageKey"
+                  />
                 </v-list-item-avatar>
                 <div class="v-list-icon">
                   <v-list-item-content>
@@ -152,6 +156,7 @@ export default {
   computed: {
     ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated']),
+    ...mapGetters('user', ['isAuthProfileImage']),
     ...mapState('snackbar', ['message', 'isEnable', 'actionStatus']),
     ...mapState('modal', ['isSignoutView']),
     snackbarVisible: {
@@ -168,6 +173,8 @@ export default {
     showSearchInput: false,
     drawer: true,
     snackbar: false,
+    userImageBucketName: process.env.USER_IMAGE_BUCKET_NAME,
+    baseURL: process.env.BASE_URL,
     timeout: 3000,
     items: [{ title: 'home', icon: 'person' }],
     items1: [{ title: 'documentation', icon: 'dashboard' }],

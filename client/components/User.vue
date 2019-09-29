@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="userViewVisible" width="500px">
+  <v-dialog
+    v-model="userViewVisible"
+    width="500px"
+  >
     <v-card dark>
       <input
         ref="backImage"
@@ -7,49 +10,99 @@
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedBackImage()"
-      />
+      >
       <input
         ref="userImage"
         style="display: none"
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedUserImage()"
-      />
+      >
       <v-card-title>
-        <v-btn text icon @click="closeModal">
+        <v-btn
+          text
+          icon
+          @click="closeModal"
+        >
           <v-icon>clear</v-icon>
         </v-btn>
         <span class="close-profile">profile edit</span>
       </v-card-title>
-      <v-img v-show="uploadedBackImage" height="300" :src="uploadedBackImage">
-        <v-row class="fill-height" align="center">
-          <v-col justify="center" class="backimage-button">
-            <v-btn icon text @click="uploadBackImage">
+      <v-img
+        v-show="uploadedBackImage"
+        height="300"
+        :src="uploadedBackImage"
+      >
+        <v-row
+          class="fill-height"
+          align="center"
+        >
+          <v-col
+            justify="center"
+            class="backimage-button"
+          >
+            <v-btn
+              icon
+              text
+              @click="uploadBackImage"
+            >
               <v-icon>add_a_photo</v-icon>
             </v-btn>
           </v-col>
-          <v-col align-self="end" cols="12" class="avatar-col">
-            <button height="100px" icon class="avatar-button" @click="uploadUserImage">
-              <v-avatar color="grey" size="100">
-                <v-img v-show="uploadedUserImage" :src="uploadedUserImage" />
+          <v-col
+            align-self="end"
+            cols="12"
+            class="avatar-col"
+          >
+            <button
+              height="100px"
+              icon
+              class="avatar-button"
+              @click="uploadUserImage"
+            >
+              <v-avatar
+                color="grey"
+                size="100"
+              >
+                <v-img
+                  v-show="uploadedUserImage"
+                  :src="uploadedUserImage"
+                />
               </v-avatar>
             </button>
           </v-col>
         </v-row>
       </v-img>
-      <v-col cols="12" md="12">
-        <v-text-field v-model="user.name" filled counter="25" label="Name" placeholder="Username" />
+      <v-col
+        cols="12"
+        md="12"
+      >
+        <v-text-field
+          v-model="user.name"
+          filled
+          counter="25"
+          label="Name"
+          placeholder="Username"
+        />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn color="red darken-1" text @click="closeModal">Cancel</v-btn>
+        <v-btn
+          color="red darken-1"
+          text
+          @click="closeModal"
+        >
+          Cancel
+        </v-btn>
         <v-btn
           color=" darken-1"
           text
-          @click="saveProfile"
           :loading="saveLoading"
           :disabled="saveDisabled"
-        >Save</v-btn>
+          @click="saveProfile"
+        >
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
