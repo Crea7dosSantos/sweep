@@ -17,7 +17,8 @@ def protected():
         return jsonify({"message": "Bad access token"}), 401
     user_datas = db.session.query(User.username,
                                   User.email,
-                                  User.id, User.profile_image_key).\
+                                  User.id, User.profile_image_key,
+                                  User.profile_back_image_key).\
         filter(User.id == current_user)
     return jsonify({'status': 'ok',
                     'user_datas': UserSchema(many=True).dump(user_datas)}), 200

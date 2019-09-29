@@ -5,7 +5,8 @@ const initialState = {
   name: '',
   id: '',
   email: '',
-  imageKey: null
+  profileImageKey: null,
+  backImageKey: null
 }
 
 export const state = () => ({
@@ -19,14 +20,16 @@ export const mutations = {
     state.user.name = userObj.username
     state.user.id = userObj.id
     state.user.email = userObj.email
-    state.user.imageKey = userObj.profile_image_key
+    state.user.profileImageKey = userObj.profile_image_key
+    state.user.backImageKey = userObj.profile_back_image_key
     state.loggedIn = true
   },
   unsetUserState(state) {
     state.user.name = ''
     state.user.id = ''
     state.user.email = ''
-    state.user.imageKey = null
+    state.user.profileImageKey = null
+    state.user.backImageKey = null
     state.loggedIn = false
   }
 }
@@ -63,6 +66,6 @@ export const getters = {
     return !!state.loggedIn
   },
   isAuthProfileImage(state) {
-    return !!state.user.imageKey
+    return !!state.user.profileImageKey
   }
 }
