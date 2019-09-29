@@ -43,14 +43,20 @@
       <v-card-actions>
         <div class="flex-grow-1" />
         <v-btn color="red darken-1" text @click="closeModal">Cancel</v-btn>
-        <v-btn color=" darken-1" text @click="saveProfile">Save</v-btn>
+        <v-btn
+          color=" darken-1"
+          text
+          @click="saveProfile"
+          :loading="saveLoading"
+          :disabled="saveDisabled"
+        >Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 import Axios from 'axios'
@@ -67,12 +73,16 @@ export default {
       tmpUploadedUserImage: '',
       tmpUploadedBackImage: '',
       tmpUserImageSetKeyName: null,
-      tmpBackImageSetKeyName: null
+      tmpBackImageSetKeyName: null,
+      saveLoading: false,
+      saveDisabled: false
     }
   },
   computed: {
     ...mapState('modal', ['isUserView']),
     ...mapState('user', ['user']),
+    ...mapGetters('user', ['isAuthProfileImage']),
+    ...mapGetters('user', ['isAuthBackImage']),
     userViewVisible: {
       get() {
         return this.isUserView
@@ -142,6 +152,7 @@ export default {
       this.deleteData()
     },
     saveProfile: function() {
+      this.saveLoading = true
       const self = this
       let dict = {
         profile_image_key: self.userImageSetKeyName,
@@ -150,10 +161,31 @@ export default {
       this.axiosAccessHandler()
         .post('/save', dict)
         .then(() => {
-          console.log('success update profile')
-          this.snackOn({ payload: 'success update profile', color: 'green' })
-          this.setUserState(this.getToken())
-          self.closeModal()
+          let promiss = new Promise(function(resolve) {
+            self.setUserState(self.getToken())
+            setTimeout(function() {
+              console.log('success update profile')
+              self.saveLoading = false
+              self.closeModal()
+              resolve()
+            }, 5000)
+          })
+          self.snackOn({
+            payload: 'success update profile',
+            color: 'green'
+          })
+          promiss.then(function() {
+            if (self.isAuthProfileImage) {
+              self.uploadedUserImage = self.createUserImageString(
+                self.user.profileImageKey
+              )
+            }
+            if (self.isAuthBackImage) {
+              self.uploadedBackImage = self.createBackImageString(
+                self.user.backImageKey
+              )
+            }
+          })
         })
         .catch(err => {
           this.snackOn({ payload: 'Failed to update profile', color: 'error' })
@@ -181,6 +213,8 @@ export default {
       return s3
     },
     selectedBackImage: function() {
+      this.saveDisabled = true
+      const self = this
       const file = this.$refs.backImage.files[0]
       if (!file) {
         return
@@ -204,11 +238,14 @@ export default {
             console.log(err)
             return
           }
+          self.saveDisabled = false
         }
       )
       this.createImage(file, 'backImage')
     },
     selectedUserImage: function() {
+      this.saveDisabled = true
+      const self = this
       const file = this.$refs.userImage.files[0]
       if (!file) {
         return
@@ -232,6 +269,7 @@ export default {
             console.log(err)
             return
           }
+          self.saveDisabled = false
           console.log(data)
         }
       )
@@ -271,6 +309,16 @@ export default {
       this.uploadedBackImage = this.tmpUploadedBackImage
       this.userImageSetKeyName = this.tmpUserImageSetKeyName
       this.backImageSetKeyName = this.tmpBackImageSetKeyName
+    },
+    createUserImageString(text) {
+      const baseURL = process.env.BASE_URL
+      const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
+      return `https://${userImageBucketName}${baseURL}${text}`
+    },
+    createBackImageString(text) {
+      const baseURL = process.env.BASE_URL
+      const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
+      return `https://${backImageBucketName}${baseURL}${text}`
     }
   }
 }

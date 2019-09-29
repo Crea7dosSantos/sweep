@@ -67,5 +67,8 @@ export const getters = {
   },
   isAuthProfileImage(state) {
     return !!state.user.profileImageKey
+  },
+  isAuthBackImage(state) {
+    return !!state.user.backImageKey
   }
 }
