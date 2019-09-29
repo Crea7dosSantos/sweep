@@ -84,7 +84,7 @@ export default {
     }
   }),
   methods: {
-    ...mapActions('user', ['signIn']),
+    ...mapActions('user', ['setUserState']),
     ...mapActions('snackbar', ['snackOn']),
     signin: function() {
       const router = this.$router
@@ -100,7 +100,7 @@ export default {
         })
         .then(res => {
           this.snackOn({ payload: 'Sign in Success!', color: 'green' })
-          this.signIn(res.data.access_token)
+          this.setUserState(res.data.access_token)
           Cookies.set('access_token', res.data.access_token)
           Cookies.set('refresh_token', res.data.refresh_token)
           router.push('/home')

@@ -1,23 +1,36 @@
 <template>
   <div class="container">
     <v-app>
-      <h3 class="title is-3">All Post</h3>
+      <h3 class="title is-3">
+        All Post
+      </h3>
       <div>
-        <v-col v-for="(post, index) in posts" :key="index">
-          <v-card max-width="400" class="mx-auto">
+        <v-col
+          v-for="(post, index) in posts"
+          :key="index"
+        >
+          <v-card
+            max-width="400"
+            class="mx-auto"
+          >
             <v-img
               :src="'https://' + bucketName + baseURL + post.post_image_key"
               class="white--text"
               height="200px"
             >
-              <v-card-title class="align-end fill-height" max-width="400">{{ post["title"] }}</v-card-title>
+              <v-card-title
+                class="align-end fill-height"
+                max-width="400"
+              >
+                {{ post["title"] }}
+              </v-card-title>
             </v-img>
             <v-card-text>
               <span>{{ post["date_posted"] | dateFormat }}</span>
-              <br />
+              <br>
               <span class="text--primary">
                 <span>{{ post.content }}</span>
-                <br />
+                <br>
               </span>
             </v-card-text>
           </v-card>
@@ -38,6 +51,7 @@ import AllModal from '~/components/AllModal'
 import User from '~/components/User'
 
 export default {
+  layout: 'content',
   components: {
     AllModal,
     User

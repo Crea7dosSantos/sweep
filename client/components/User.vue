@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="userViewVisible" width="500px">
+  <v-dialog
+    v-model="userViewVisible"
+    width="500px"
+  >
     <v-card dark>
       <input
         ref="backImage"
@@ -7,50 +10,106 @@
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedBackImage()"
-      />
+      >
       <input
         ref="userImage"
         style="display: none"
         type="file"
         accept="image/jpeg, image/jpg, image/png"
         @change="selectedUserImage()"
-      />
+      >
       <v-card-title>
-        <v-btn text icon @click="closeModal">
+        <v-btn
+          text
+          icon
+          @click="closeModal"
+        >
           <v-icon>clear</v-icon>
         </v-btn>
         <span class="close-profile">profile edit</span>
       </v-card-title>
-      <v-img v-show="uploadedBackImage" height="300" :src="uploadedBackImage">
-        <v-row class="fill-height" align="center">
-          <v-col justify="center" class="backimage-button">
-            <v-btn icon text @click="uploadBackImage">
+      <v-img
+        v-show="uploadedBackImage"
+        height="300"
+        :src="uploadedBackImage"
+      >
+        <v-row
+          class="fill-height"
+          align="center"
+        >
+          <v-col
+            justify="center"
+            class="backimage-button"
+          >
+            <v-btn
+              icon
+              text
+              @click="uploadBackImage"
+            >
               <v-icon>add_a_photo</v-icon>
             </v-btn>
           </v-col>
-          <v-col align-self="end" cols="12" class="avatar-col">
-            <button height="100px" icon class="avatar-button" @click="uploadUserImage">
-              <v-avatar color="grey" size="100">
-                <v-img v-show="uploadedUserImage" :src="uploadedUserImage" />
+          <v-col
+            align-self="end"
+            cols="12"
+            class="avatar-col"
+          >
+            <button
+              height="100px"
+              icon
+              class="avatar-button"
+              @click="uploadUserImage"
+            >
+              <v-avatar
+                color="grey"
+                size="100"
+              >
+                <v-img
+                  v-show="uploadedUserImage"
+                  :src="uploadedUserImage"
+                />
               </v-avatar>
             </button>
           </v-col>
         </v-row>
       </v-img>
-      <v-col cols="12" md="12">
-        <v-text-field v-model="user.name" filled counter="25" label="Name" placeholder="Username" />
+      <v-col
+        cols="12"
+        md="12"
+      >
+        <v-text-field
+          v-model="user.name"
+          filled
+          counter="25"
+          label="Name"
+          placeholder="Username"
+        />
       </v-col>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn color="red darken-1" text @click="closeModal">Cancel</v-btn>
-        <v-btn color=" darken-1" text @click="saveProfile">Save</v-btn>
+        <v-btn
+          color="red darken-1"
+          text
+          @click="closeModal"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          color=" darken-1"
+          text
+          :loading="saveLoading"
+          :disabled="saveDisabled"
+          @click="saveProfile"
+        >
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import AWS from 'aws-sdk'
 import S3 from 'aws-sdk/clients/s3'
 import Axios from 'axios'
@@ -67,12 +126,16 @@ export default {
       tmpUploadedUserImage: '',
       tmpUploadedBackImage: '',
       tmpUserImageSetKeyName: null,
-      tmpBackImageSetKeyName: null
+      tmpBackImageSetKeyName: null,
+      saveLoading: false,
+      saveDisabled: false
     }
   },
   computed: {
     ...mapState('modal', ['isUserView']),
     ...mapState('user', ['user']),
+    ...mapGetters('user', ['isAuthProfileImage']),
+    ...mapGetters('user', ['isAuthBackImage']),
     userViewVisible: {
       get() {
         return this.isUserView
@@ -84,6 +147,9 @@ export default {
     }
   },
   mounted() {
+    if (!this.getToken()) {
+      return
+    }
     const self = this
     const baseURL = process.env.BASE_URL
     const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
@@ -130,6 +196,7 @@ export default {
   methods: {
     ...mapActions('modal', ['unsetUserView']),
     ...mapActions('snackbar', ['snackOn']),
+    ...mapActions('user', ['setUserState']),
     displaySnackOn: function(text, color) {
       this.snackOn({ payload: text, color: color })
     },
@@ -138,6 +205,7 @@ export default {
       this.deleteData()
     },
     saveProfile: function() {
+      this.saveLoading = true
       const self = this
       let dict = {
         profile_image_key: self.userImageSetKeyName,
@@ -146,9 +214,31 @@ export default {
       this.axiosAccessHandler()
         .post('/save', dict)
         .then(() => {
-          console.log('success update profile')
-          this.snackOn({ payload: 'success update profile', color: 'green' })
-          self.closeModal()
+          let promiss = new Promise(function(resolve) {
+            self.setUserState(self.getToken())
+            setTimeout(function() {
+              console.log('success update profile')
+              self.saveLoading = false
+              self.closeModal()
+              resolve()
+            }, 5000)
+          })
+          self.snackOn({
+            payload: 'success update profile',
+            color: 'green'
+          })
+          promiss.then(function() {
+            if (self.isAuthProfileImage) {
+              self.uploadedUserImage = self.createUserImageString(
+                self.user.profileImageKey
+              )
+            }
+            if (self.isAuthBackImage) {
+              self.uploadedBackImage = self.createBackImageString(
+                self.user.backImageKey
+              )
+            }
+          })
         })
         .catch(err => {
           this.snackOn({ payload: 'Failed to update profile', color: 'error' })
@@ -176,6 +266,8 @@ export default {
       return s3
     },
     selectedBackImage: function() {
+      this.saveDisabled = true
+      const self = this
       const file = this.$refs.backImage.files[0]
       if (!file) {
         return
@@ -199,11 +291,14 @@ export default {
             console.log(err)
             return
           }
+          self.saveDisabled = false
         }
       )
       this.createImage(file, 'backImage')
     },
     selectedUserImage: function() {
+      this.saveDisabled = true
+      const self = this
       const file = this.$refs.userImage.files[0]
       if (!file) {
         return
@@ -227,6 +322,7 @@ export default {
             console.log(err)
             return
           }
+          self.saveDisabled = false
           console.log(data)
         }
       )
@@ -266,6 +362,16 @@ export default {
       this.uploadedBackImage = this.tmpUploadedBackImage
       this.userImageSetKeyName = this.tmpUserImageSetKeyName
       this.backImageSetKeyName = this.tmpBackImageSetKeyName
+    },
+    createUserImageString(text) {
+      const baseURL = process.env.BASE_URL
+      const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
+      return `https://${userImageBucketName}${baseURL}${text}`
+    },
+    createBackImageString(text) {
+      const baseURL = process.env.BASE_URL
+      const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
+      return `https://${backImageBucketName}${baseURL}${text}`
     }
   }
 }

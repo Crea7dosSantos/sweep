@@ -60,7 +60,7 @@ export default {
     loading: false
   }),
   methods: {
-    ...mapActions('user', ['signOut']),
+    ...mapActions('user', ['unsetUserState']),
     ...mapActions('snackbar', ['snackOn']),
     signout: function() {
       const router = this.$router
@@ -68,7 +68,7 @@ export default {
       this.loading = true
       Cookies.remove('access_token')
       Cookies.remove('refresh_token')
-      this.signOut()
+      this.unsetUserState()
       this.loading = false
       router.push('/')
     }
