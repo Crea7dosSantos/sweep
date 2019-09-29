@@ -133,6 +133,7 @@ export default {
   methods: {
     ...mapActions('modal', ['unsetUserView']),
     ...mapActions('snackbar', ['snackOn']),
+    ...mapActions('user', ['setUserState']),
     displaySnackOn: function(text, color) {
       this.snackOn({ payload: text, color: color })
     },
@@ -151,6 +152,7 @@ export default {
         .then(() => {
           console.log('success update profile')
           this.snackOn({ payload: 'success update profile', color: 'green' })
+          this.setUserState(this.getToken())
           self.closeModal()
         })
         .catch(err => {
