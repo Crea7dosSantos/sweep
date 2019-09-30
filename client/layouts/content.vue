@@ -96,7 +96,7 @@
               </v-list-item>
             </v-list-item-group>
             <v-list-item-group>
-              <div class="pl-7 mt-7">
+              <div class="mt-7">
                 <v-btn rounded width="200" color="blue-grey lighten-2" @click="displayPostView">POST</v-btn>
               </div>
             </v-list-item-group>
