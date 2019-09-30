@@ -88,7 +88,6 @@ def signin():
     password = request.json.get('password', None)
     user = User.query.filter_by(email=email).first()
     if not user:
-        # abort(400, {"msg": "Missing email parameter"})
         return jsonify({"msg": "Missing email parameter"}), 400
     if user and not bcrypt.check_password_hash(user.password, password):
         return jsonify({"msg": "Missing password parameter"}), 400
