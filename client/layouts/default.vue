@@ -74,18 +74,9 @@
         <v-toolbar-items v-for="item in items" :key="item.title" class="hidden-sm-and-down">
           <v-btn text :class="{ 'is-hidden': !isAuthenticated }" :to="item.title">{{ item.title }}</v-btn>
         </v-toolbar-items>
-        <!-- <v-toolbar-items
-            v-for="item in items1"
-            :key="item.title"
-            class="hidden-sm-and-down"
-          >
-            <v-btn
-              text
-              :to="item.title"
-            >
-              {{ item.title }}
-            </v-btn>
-        </v-toolbar-items>-->
+        <v-toolbar-items v-for="item in items1" :key="item.title" class="hidden-sm-and-down">
+          <v-btn text :to="item.title">{{ item.title }}</v-btn>
+        </v-toolbar-items>
         <v-toolbar-items v-for="item in items4" :key="item.title" class="hidden-sm-and-down">
           <v-btn
             text
