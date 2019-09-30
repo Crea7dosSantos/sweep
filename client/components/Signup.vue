@@ -91,8 +91,6 @@ export default {
     ...mapActions('modal', ['unsetSignupView']),
     ...mapActions('modal', ['setSigninView']),
     signup: function() {
-      const router = this.$router
-
       if (!this.$refs.form.validate()) {
         return
       }
@@ -107,7 +105,7 @@ export default {
           this.snackOn({ payload: 'Success create account', color: 'green' })
           console.log(res.data.message)
           this.unsetSignupView()
-          router.push('/signin')
+          this.setSigninView()
         })
         .catch(error => {
           console.log(error)
