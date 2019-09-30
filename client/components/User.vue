@@ -80,10 +80,6 @@ export default {
       uploadedBackImage: '',
       userImageSetKeyName: null,
       backImageSetKeyName: null,
-      tmpUploadedUserImage: '',
-      tmpUploadedBackImage: '',
-      tmpUserImageSetKeyName: null,
-      tmpBackImageSetKeyName: null,
       saveLoading: false,
       saveDisabled: false
     }
@@ -98,7 +94,6 @@ export default {
         return this.isUserView
       },
       set() {
-        console.log('hogehoge')
         this.$store.dispatch('modal/unsetUserView')
         if (this.user.profileImageKey === null) {
           this.uploadedUserImage = UserDefault
@@ -123,40 +118,27 @@ export default {
       return
     }
     const self = this
-    const baseURL = process.env.BASE_URL
-    const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
     this.axiosAccessHandler()
       .get('/profile')
       .then(res => {
         const data = res.data.user[0]
         if (data['profile_image_key'] == null) {
           self.uploadedUserImage = UserDefault
-          self.tmpUploadedUserImage = UserDefault
         } else {
-          self.uploadedUserImage = `https://${userImageBucketName}${baseURL}${
+          self.uploadedUserImage = this.createUserImageString(
             data['profile_image_key']
-          }`
-          self.tmpUploadedUserImage = `https://${userImageBucketName}${baseURL}${
-            data['profile_image_key']
-          }`
+          )
           self.userImageSetKeyName = data['profile_image_key']
-          self.tmpUserImageSetKeyName = data['profile_image_key']
         }
 
         if (data['profile_back_image_key'] == null) {
           self.uploadedBackImage =
             'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
-          self.tmpUploadedBackImage =
-            'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
         } else {
           self.uploadedBackImage = this.createBackImageString(
             data['profile_back_image_key']
           )
-          self.tmpUploadedBackImage = this.createBackImageString(
-            data['profile_back_image_key']
-          )
           self.backImageSetKeyName = data['profile_back_image_key']
-          self.tmpBackImageSetKeyName = data['profile_back_image_key']
         }
       })
       .catch(() => {
@@ -173,7 +155,6 @@ export default {
     },
     closeModal: function() {
       this.unsetUserView()
-      // this.deleteData()
     },
     saveProfile: function() {
       this.saveLoading = true
@@ -327,12 +308,6 @@ export default {
     },
     getToken: function() {
       return Cookies.get('access_token')
-    },
-    deleteData: function() {
-      this.uploadedUserImage = this.tmpUploadedUserImage
-      this.uploadedBackImage = this.tmpUploadedBackImage
-      this.userImageSetKeyName = this.tmpUserImageSetKeyName
-      this.backImageSetKeyName = this.tmpBackImageSetKeyName
     },
     createUserImageString(text) {
       const baseURL = process.env.BASE_URL
