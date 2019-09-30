@@ -164,7 +164,7 @@ export default {
         profile_back_image_key: self.backImageSetKeyName
       }
       this.axiosAccessHandler()
-        .post('/save', dict)
+        .post('/update', dict)
         .then(() => {
           let promiss = new Promise(function(resolve) {
             self.setUserState(self.getToken())

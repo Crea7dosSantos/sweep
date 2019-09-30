@@ -143,9 +143,9 @@ def profile():
                     'user': UserSchema(many=True).dump(user)}), 200
 
 
-@app.route('/save', methods=['POST'])
+@app.route('/update', methods=['POST'])
 @jwt_required
-def save():
+def profile_update():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
 
