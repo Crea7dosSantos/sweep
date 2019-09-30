@@ -6,18 +6,10 @@
         <div class="second" />
         <div class="third" />
         <div class="txt">
-          <div class="display-4">
-            Sweep
-          </div>
-          <br>
+          <div class="display-4">Sweep</div>
+          <br />
           <div class="textcontainer">
-            <button
-              class="btn6"
-              to
-              @click="displaySigninView"
-            >
-              Let's start!!!
-            </button>
+            <button class="btn6" to @click="displaySigninView">Let's start!!!</button>
           </div>
         </div>
       </div>
@@ -30,16 +22,25 @@
 
 <script>
 import AllModal from '~/components/AllModal'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
     AllModal
   },
+  computed: {
+    ...mapGetters('user', ['isAuthenticated'])
+  },
   methods: {
     ...mapActions('modal', ['setSigninView']),
     displaySigninView: function() {
-      this.setSigninView()
+      const self = this
+      const router = this.$router
+      if (this.isAuthenticated) {
+        router.push('/home')
+      } else {
+        self.setSigninView()
+      }
     }
   }
 }
