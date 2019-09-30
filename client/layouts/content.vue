@@ -35,22 +35,20 @@
             <v-list-item-group v-for="item in items1" :key="item.title" link>
               <v-list-item :to="item.title">
                 <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
                 </v-list-item-icon>
                 <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </div>
               </v-list-item>
             </v-list-item-group>
-            <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
+            <v-list-item-group v-for="item in items5" :key="item.title" link>
               <v-list-item @click="displayUserView">
-                <v-list-item-avatar size="24">
-                  <v-img :src="profileImageVisible"></v-img>
-                </v-list-item-avatar>
-                <div class="v-list-icon">
-                  <v-list-item-content>
-                    <v-list-item-title>profile</v-list-item-title>
-                  </v-list-item-content>
+                <v-list-item-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <div>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </div>
               </v-list-item>
             </v-list-item-group>
@@ -62,10 +60,23 @@
             >
               <v-list-item @click="displaySignoutView">
                 <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
                 </v-list-item-icon>
                 <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </div>
+              </v-list-item>
+            </v-list-item-group>
+
+            <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
+              <v-list-item @click="displayUserView">
+                <v-list-item-avatar size="24">
+                  <v-img :src="profileImageVisible"></v-img>
+                </v-list-item-avatar>
+                <div class="v-list-icon">
+                  <v-list-item-content>
+                    <v-list-item-title>{{ user.name }}</v-list-item-title>
+                  </v-list-item-content>
                 </div>
               </v-list-item>
             </v-list-item-group>
@@ -83,6 +94,11 @@
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </div>
               </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group>
+              <div class="pl-7 mt-7">
+                <v-btn rounded width="200" color="blue-grey lighten-2" @click="displayPostView">POST</v-btn>
+              </div>
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
@@ -187,13 +203,22 @@ export default {
     baseURL: process.env.BASE_URL,
     timeout: 3000,
     items: [{ title: 'home', icon: 'person' }],
-    items1: [{ title: 'documentation', icon: 'dashboard' }],
-    items2: [{ title: 'signout', icon: 'dashboard' }],
+    items1: [
+      {
+        title: 'documentation',
+        icon: 'library_books',
+        color: 'blue lighten-1'
+      }
+    ],
+    items2: [
+      { title: 'signout', icon: 'dashboard', color: 'deep-purple darken-1' }
+    ],
     items3: [
       { title: 'signup', icon: 'account_box' },
       { title: 'signin', icon: 'gavel' }
     ],
-    items4: [{ title: 'post', icon: 'person' }]
+    items4: [{ title: 'post', icon: 'person' }],
+    items5: [{ title: 'profile edit', icon: 'edit', color: 'red lighten-1' }]
   }),
   methods: {
     ...mapActions('snackbar', ['snackOff']),
