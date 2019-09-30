@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="userSigninVisible" width="400px">
+  <v-dialog v-model="userSigninVisible" width="450px">
     <v-card class="elevation-12">
       <v-toolbar flat>
         <v-toolbar-title class="grey--text">Sign in</v-toolbar-title>
