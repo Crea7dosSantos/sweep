@@ -40,13 +40,16 @@
             </v-row>
           </v-img>
           <v-col cols="12" md="12">
-            <v-text-field
-              v-model="user.name"
-              filled
-              counter="25"
-              label="Name"
-              placeholder="Username"
-            />
+            <v-form ref="form">
+              <v-text-field
+                v-model="displayUserName"
+                :rules="[rules.required, rules.min4]"
+                filled
+                counter="20"
+                label="Username"
+                placeholder="Username"
+              />
+            </v-form>
           </v-col>
           <v-card-actions>
             <div class="flex-grow-1" />
@@ -80,12 +83,13 @@ export default {
       uploadedBackImage: '',
       userImageSetKeyName: null,
       backImageSetKeyName: null,
-      tmpUploadedUserImage: '',
-      tmpUploadedBackImage: '',
-      tmpUserImageSetKeyName: null,
-      tmpBackImageSetKeyName: null,
       saveLoading: false,
-      saveDisabled: false
+      saveDisabled: false,
+      displayUserName: '',
+      rules: {
+        required: value => !!value || 'Required.',
+        min4: value => value.length >= 4 || 'Min 4 characters'
+      }
     }
   },
   computed: {
@@ -99,7 +103,22 @@ export default {
       },
       set() {
         this.$store.dispatch('modal/unsetUserView')
-        this.deleteData()
+        if (this.user.profileImageKey === null) {
+          this.uploadedUserImage = UserDefault
+        } else {
+          this.uploadedUserImage = this.createUserImageString(
+            this.user.profileImageKey
+          )
+        }
+        if (this.user.backImageKey === null) {
+          this.uploadedBackImage =
+            'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+        } else {
+          this.uploadedBackImage = this.createBackImageString(
+            this.user.backImageKey
+          )
+        }
+        this.displayUserName = this.user.name
       }
     }
   },
@@ -108,41 +127,28 @@ export default {
       return
     }
     const self = this
-    const baseURL = process.env.BASE_URL
-    const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
-    const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
     this.axiosAccessHandler()
       .get('/profile')
       .then(res => {
         const data = res.data.user[0]
+        this.displayUserName = data['username']
         if (data['profile_image_key'] == null) {
           self.uploadedUserImage = UserDefault
-          self.tmpUploadedUserImage = UserDefault
         } else {
-          self.uploadedUserImage = `https://${userImageBucketName}${baseURL}${
+          self.uploadedUserImage = this.createUserImageString(
             data['profile_image_key']
-          }`
-          self.tmpUploadedUserImage = `https://${userImageBucketName}${baseURL}${
-            data['profile_image_key']
-          }`
+          )
           self.userImageSetKeyName = data['profile_image_key']
-          self.tmpUserImageSetKeyName = data['profile_image_key']
         }
 
         if (data['profile_back_image_key'] == null) {
           self.uploadedBackImage =
             'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
-          self.tmpUploadedBackImage =
-            'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
         } else {
-          self.uploadedBackImage = `https://${backImageBucketName}${baseURL}${
+          self.uploadedBackImage = this.createBackImageString(
             data['profile_back_image_key']
-          }`
-          self.tmpUploadedBackImage = `https://${backImageBucketName}${baseURL}${
-            data['profile_back_image_key']
-          }`
+          )
           self.backImageSetKeyName = data['profile_back_image_key']
-          self.tmpBackImageSetKeyName = data['profile_back_image_key']
         }
       })
       .catch(() => {
@@ -159,17 +165,24 @@ export default {
     },
     closeModal: function() {
       this.unsetUserView()
-      this.deleteData()
     },
     saveProfile: function() {
+      if (!this.$refs.form.validate()) {
+        this.snackOn({
+          payload: 'There is an error in the update part of Username',
+          color: 'error'
+        })
+        return
+      }
       this.saveLoading = true
       const self = this
       let dict = {
         profile_image_key: self.userImageSetKeyName,
-        profile_back_image_key: self.backImageSetKeyName
+        profile_back_image_key: self.backImageSetKeyName,
+        username: self.displayUserName
       }
       this.axiosAccessHandler()
-        .post('/save', dict)
+        .post('/update', dict)
         .then(() => {
           let promiss = new Promise(function(resolve) {
             self.setUserState(self.getToken())
@@ -313,12 +326,6 @@ export default {
     },
     getToken: function() {
       return Cookies.get('access_token')
-    },
-    deleteData: function() {
-      this.uploadedUserImage = this.tmpUploadedUserImage
-      this.uploadedBackImage = this.tmpUploadedBackImage
-      this.userImageSetKeyName = this.tmpUserImageSetKeyName
-      this.backImageSetKeyName = this.tmpBackImageSetKeyName
     },
     createUserImageString(text) {
       const baseURL = process.env.BASE_URL

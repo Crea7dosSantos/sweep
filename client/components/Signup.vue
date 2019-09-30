@@ -1,17 +1,12 @@
 <template>
-  <v-dialog
-    v-model="userSignupVisible"
-    width="500px"
-  >
+  <v-dialog v-model="userSignupVisible" width="450px">
     <v-card class="elevation-12">
       <v-toolbar flat>
-        <v-toolbar-title class="grey--text">
-          Sign up
-        </v-toolbar-title>
+        <v-toolbar-title class="grey--text">Sign up</v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>
-      <v-divider />
-      <v-card-text>
+      <v-divider class="mb-4" />
+      <v-card-text class="pb-0">
         <v-form ref="form">
           <v-text-field
             v-model="userName"
@@ -47,13 +42,14 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn
-          color="primary"
-          @click="signup"
-        >
-          Sign up
-        </v-btn>
+        <v-btn class="me-4 mb-3" color="primary" @click="signup">Sign up</v-btn>
       </v-card-actions>
+      <div class="signin-div">
+        <p class="subtitle-1 mb-0">
+          Already a member?
+          <v-btn @click="displaySigninView" text small color="primary">Sign in</v-btn>
+        </p>
+      </div>
     </v-card>
   </v-dialog>
 </template>
@@ -93,9 +89,8 @@ export default {
   methods: {
     ...mapActions('snackbar', ['snackOn']),
     ...mapActions('modal', ['unsetSignupView']),
+    ...mapActions('modal', ['setSigninView']),
     signup: function() {
-      const router = this.$router
-
       if (!this.$refs.form.validate()) {
         return
       }
@@ -110,12 +105,16 @@ export default {
           this.snackOn({ payload: 'Success create account', color: 'green' })
           console.log(res.data.message)
           this.unsetSignupView()
-          router.push('/signin')
+          this.setSigninView()
         })
         .catch(error => {
           console.log(error)
           this.snackOn({ payload: 'Error create account' })
         })
+    },
+    displaySigninView: function() {
+      this.unsetSignupView()
+      this.setSigninView()
     }
   }
 }
@@ -124,5 +123,8 @@ export default {
 <style scoped>
 .v-divider {
   margin: 0px;
+}
+.signin-div {
+  padding-bottom: 10px;
 }
 </style>

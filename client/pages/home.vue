@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <v-app>
-      <h3 class="title is-3">All Post</h3>
+      <div>
+        <h3 class="title is-3">All Post</h3>
+      </div>
       <div>
         <v-col v-for="(post, index) in posts" :key="index">
           <v-card max-width="400" class="mx-auto">
@@ -88,22 +90,6 @@ export default {
 </script>
 
 <style>
-.todo-list {
-  margin-top: 50px;
-}
-.td-font {
-  color: gray;
-  font-size: 17px;
-}
-.table td {
-  vertical-align: middle;
-}
-.new-todo {
-  margin-top: 20px;
-}
-.create-part {
-  background: lightgray;
-}
 .container {
   margin-top: 20px;
 }

@@ -4,7 +4,7 @@
       <div>
         <v-navigation-drawer v-model="drawer" fixed app>
           <v-app-bar color="grey lighten-2">
-            <v-list-item @click="countInit">
+            <v-list-item to="/">
               <div>
                 <v-list-item-title class="title">Sweep</v-list-item-title>
               </div>
@@ -35,7 +35,32 @@
             <v-list-item-group v-for="item in items1" :key="item.title" link>
               <v-list-item :to="item.title">
                 <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <div>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </div>
+              </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group v-for="item in items5" :key="item.title" link>
+              <v-list-item @click="displayUserView">
+                <v-list-item-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <div>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </div>
+              </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group
+              v-for="item in items2"
+              :key="item.title"
+              :class="{ 'is-hidden': !isAuthenticated }"
+              link
+            >
+              <v-list-item @click="displaySignoutView">
+                <v-list-item-icon>
+                  <v-icon :color="item.color">{{ item.icon }}</v-icon>
                 </v-list-item-icon>
                 <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -49,23 +74,8 @@
                 </v-list-item-avatar>
                 <div class="v-list-icon">
                   <v-list-item-content>
-                    <v-list-item-title>profile</v-list-item-title>
+                    <v-list-item-title>{{ user.name }}</v-list-item-title>
                   </v-list-item-content>
-                </div>
-              </v-list-item>
-            </v-list-item-group>
-            <v-list-item-group
-              v-for="item in items2"
-              :key="item.title"
-              :class="{ 'is-hidden': !isAuthenticated }"
-              link
-            >
-              <v-list-item @click="displaySignoutView">
-                <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-icon>
-                <div>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </div>
               </v-list-item>
             </v-list-item-group>
@@ -83,6 +93,11 @@
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </div>
               </v-list-item>
+            </v-list-item-group>
+            <v-list-item-group>
+              <div class="mt-7">
+                <v-btn rounded width="200" color="blue-grey lighten-2" @click="displayPostView">POST</v-btn>
+              </div>
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
@@ -148,12 +163,12 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import UserDefault from '~/assets/user_default.png'
 
 export default {
   computed: {
-    ...mapState('user', ['user', 'count']),
+    ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated']),
     ...mapGetters('user', ['isAuthProfileImage']),
     ...mapState('snackbar', ['message', 'isEnable', 'actionStatus']),
@@ -187,31 +202,30 @@ export default {
     baseURL: process.env.BASE_URL,
     timeout: 3000,
     items: [{ title: 'home', icon: 'person' }],
-    items1: [{ title: 'documentation', icon: 'dashboard' }],
-    items2: [{ title: 'signout', icon: 'dashboard' }],
+    items1: [
+      {
+        title: 'documentation',
+        icon: 'library_books',
+        color: 'blue lighten-1'
+      }
+    ],
+    items2: [
+      { title: 'signout', icon: 'dashboard', color: 'deep-purple darken-1' }
+    ],
     items3: [
       { title: 'signup', icon: 'account_box' },
       { title: 'signin', icon: 'gavel' }
     ],
-    items4: [{ title: 'post', icon: 'person' }]
+    items4: [{ title: 'post', icon: 'person' }],
+    items5: [{ title: 'profile edit', icon: 'edit', color: 'red lighten-1' }]
   }),
   methods: {
-    ...mapMutations('user', ['setCount']),
     ...mapActions('snackbar', ['snackOff']),
     ...mapActions('modal', ['setUserView']),
     ...mapActions('modal', ['setSigninView']),
     ...mapActions('modal', ['setSignupView']),
     ...mapActions('modal', ['setSignoutView']),
     ...mapActions('modal', ['setPostView']),
-    countInit: function() {
-      this.setCount(0)
-      console.log('countInitがタップされた。')
-      const router = this.$router
-      router.push('/')
-    },
-    countUp: function() {
-      this.setCount(1)
-    },
     close: function() {
       this.snackOff()
     },
