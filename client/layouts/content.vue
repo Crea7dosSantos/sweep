@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <v-app class="inspire">
+  <v-app class="inspire">
+    <v-content>
       <div>
         <v-navigation-drawer v-model="drawer" fixed app>
           <v-app-bar color="grey lighten-2">
-            <v-list-item to="/">
-              <v-list-item-title class="title">Sweep</v-list-item-title>
+            <v-list-item @click="countInit">
+              <div>
+                <v-list-item-title class="title">Sweep</v-list-item-title>
+              </div>
             </v-list-item>
           </v-app-bar>
           <v-list dense>
@@ -25,9 +27,9 @@
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
-                <v-list-item-content>
+                <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                </div>
               </v-list-item>
             </v-list-item-group>
             <v-list-item-group v-for="item in items1" :key="item.title" link>
@@ -35,19 +37,15 @@
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
-                <v-list-item-content>
+                <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                </div>
               </v-list-item>
             </v-list-item-group>
             <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
               <v-list-item @click="displayUserView">
                 <v-list-item-avatar size="24">
-                  <v-img :src="userImage" :class="{ 'is-hidden': isAuthProfileImage }" />
-                  <v-img
-                    :class="{ 'is-hidden': !isAuthProfileImage }"
-                    :src="'https://' + userImageBucketName + baseURL + user.profileImageKey"
-                  />
+                  <v-img :src="profileImageVisible"></v-img>
                 </v-list-item-avatar>
                 <div class="v-list-icon">
                   <v-list-item-content>
@@ -66,9 +64,9 @@
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
-                <v-list-item-content>
+                <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                </div>
               </v-list-item>
             </v-list-item-group>
             <v-list-item-group
@@ -81,9 +79,9 @@
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
-                <v-list-item-content>
+                <div>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                </div>
               </v-list-item>
             </v-list-item-group>
           </v-list>
@@ -129,11 +127,12 @@
             >{{ item.title }}</v-btn>
           </v-toolbar-items>
           <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn
-              text
-              :class="{ 'is-hidden': !isAuthenticated }"
-              @click="displayUserView"
-            >{{ user.name }}</v-btn>
+            <v-btn text :class="{ 'is-hidden': !isAuthenticated }" @click="displayUserView">
+              <v-list-item-avatar size="30">
+                <v-img :src="profileImageVisible"></v-img>
+              </v-list-item-avatar>
+              {{ user.name }}
+            </v-btn>
           </v-toolbar-items>
         </v-app-bar>
       </div>
@@ -144,17 +143,17 @@
         </v-snackbar>
       </div>
       <nuxt />
-    </v-app>
-  </div>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import UserDefault from '~/assets/user_default.png'
 
 export default {
   computed: {
-    ...mapState('user', ['user']),
+    ...mapState('user', ['user', 'count']),
     ...mapGetters('user', ['isAuthenticated']),
     ...mapGetters('user', ['isAuthProfileImage']),
     ...mapState('snackbar', ['message', 'isEnable', 'actionStatus']),
@@ -165,6 +164,17 @@ export default {
       },
       set() {
         return this.$store.dispatch('snackbar/snackOff')
+      }
+    },
+    profileImageVisible: {
+      get() {
+        if (this.isAuthProfileImage) {
+          return `https://${this.userImageBucketName}${this.baseURL}${
+            this.user.profileImageKey
+          }`
+        } else {
+          return this.userImage
+        }
       }
     }
   },
@@ -186,12 +196,22 @@ export default {
     items4: [{ title: 'post', icon: 'person' }]
   }),
   methods: {
+    ...mapMutations('user', ['setCount']),
     ...mapActions('snackbar', ['snackOff']),
     ...mapActions('modal', ['setUserView']),
     ...mapActions('modal', ['setSigninView']),
     ...mapActions('modal', ['setSignupView']),
     ...mapActions('modal', ['setSignoutView']),
     ...mapActions('modal', ['setPostView']),
+    countInit: function() {
+      this.setCount(0)
+      console.log('countInitがタップされた。')
+      const router = this.$router
+      router.push('/')
+    },
+    countUp: function() {
+      this.setCount(1)
+    },
     close: function() {
       this.snackOff()
     },
