@@ -149,7 +149,6 @@ def profile_update():
     if not request.is_json:
         return jsonify({"message": "Missing JSON in request"}), 400
 
-    print(request.json)
     current_user = get_jwt_identity()
     profile_image_key = request.json.get('profile_image_key', None)
     profile_back_image_key = request.json.get('profile_back_image_key', None)
