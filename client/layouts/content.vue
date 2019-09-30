@@ -67,7 +67,6 @@
                 </div>
               </v-list-item>
             </v-list-item-group>
-
             <v-list-item-group :class="{ 'is-hidden': !isAuthenticated }">
               <v-list-item @click="displayUserView">
                 <v-list-item-avatar size="24">

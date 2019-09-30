@@ -98,8 +98,23 @@ export default {
         return this.isUserView
       },
       set() {
+        console.log('hogehoge')
         this.$store.dispatch('modal/unsetUserView')
-        this.deleteData()
+        if (this.user.profileImageKey === null) {
+          this.uploadedUserImage = UserDefault
+        } else {
+          this.uploadedUserImage = this.createUserImageString(
+            this.user.profileImageKey
+          )
+        }
+        if (this.user.backImageKey === null) {
+          this.uploadedBackImage =
+            'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
+        } else {
+          this.uploadedBackImage = this.createBackImageString(
+            this.user.backImageKey
+          )
+        }
       }
     }
   },
@@ -110,7 +125,6 @@ export default {
     const self = this
     const baseURL = process.env.BASE_URL
     const userImageBucketName = process.env.USER_IMAGE_BUCKET_NAME
-    const backImageBucketName = process.env.BACK_IMAGE_BUCKET_NAME
     this.axiosAccessHandler()
       .get('/profile')
       .then(res => {
@@ -135,12 +149,12 @@ export default {
           self.tmpUploadedBackImage =
             'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
         } else {
-          self.uploadedBackImage = `https://${backImageBucketName}${baseURL}${
+          self.uploadedBackImage = this.createBackImageString(
             data['profile_back_image_key']
-          }`
-          self.tmpUploadedBackImage = `https://${backImageBucketName}${baseURL}${
+          )
+          self.tmpUploadedBackImage = this.createBackImageString(
             data['profile_back_image_key']
-          }`
+          )
           self.backImageSetKeyName = data['profile_back_image_key']
           self.tmpBackImageSetKeyName = data['profile_back_image_key']
         }
@@ -159,7 +173,7 @@ export default {
     },
     closeModal: function() {
       this.unsetUserView()
-      this.deleteData()
+      // this.deleteData()
     },
     saveProfile: function() {
       this.saveLoading = true
