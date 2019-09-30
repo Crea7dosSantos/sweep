@@ -39,7 +39,6 @@ def refresh():
 @jwt_required
 def home():
     current_user = get_jwt_identity()
-    print(current_user)
     todos = db.session.query(Todo).filter(
         Todo.user_id == current_user).order_by(desc(Todo.id)).all()
     for todo in todos:
@@ -91,9 +90,7 @@ def signin():
     if not user:
         # abort(400, {"msg": "Missing email parameter"})
         return jsonify({"msg": "Missing email parameter"}), 400
-    if user and bcrypt.check_password_hash(user.password, password):
-        print('success signin')
-    else:
+    if user and not bcrypt.check_password_hash(user.password, password):
         return jsonify({"msg": "Missing password parameter"}), 400
 
     ret = {
@@ -135,9 +132,7 @@ def signout():
 @jwt_required
 def profile():
     current_user = get_jwt_identity()
-    print(current_user)
     user = db.session.query(User).filter(User.id == current_user).all()
-    print(user)
 
     return jsonify({'status': 'ok',
                     'user': UserSchema(many=True).dump(user)}), 200
