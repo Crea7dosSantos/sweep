@@ -1,17 +1,12 @@
 <template>
-  <v-dialog
-    v-model="userSigninVisible"
-    width="400px"
-  >
+  <v-dialog v-model="userSigninVisible" width="400px">
     <v-card class="elevation-12">
       <v-toolbar flat>
-        <v-toolbar-title class="grey--text">
-          Sign in
-        </v-toolbar-title>
+        <v-toolbar-title class="grey--text">Sign in</v-toolbar-title>
         <div class="flex-grow-1" />
       </v-toolbar>
-      <v-divider />
-      <v-card-text>
+      <v-divider class="mb-4" />
+      <v-card-text class="pb-0">
         <v-form ref="form">
           <v-text-field
             v-model="email"
@@ -36,13 +31,14 @@
       </v-card-text>
       <v-card-actions>
         <div class="flex-grow-1" />
-        <v-btn
-          color="primary"
-          @click="signin"
-        >
-          Sign in
-        </v-btn>
+        <v-btn color="primary" class="me-4 mb-3" @click="signin">Sign in</v-btn>
       </v-card-actions>
+      <div class="signup-div">
+        <p class="subtitle-1 mb-0">
+          Not a member?
+          <v-btn @click="displaySignupView" text small color="primary">Sign up now</v-btn>
+        </p>
+      </div>
     </v-card>
   </v-dialog>
 </template>
@@ -83,6 +79,7 @@ export default {
     ...mapActions('user', ['setUserState']),
     ...mapActions('snackbar', ['snackOn']),
     ...mapActions('modal', ['unsetSigninView']),
+    ...mapActions('modal', ['setSignupView']),
     signin: function() {
       const router = this.$router
 
@@ -106,6 +103,10 @@ export default {
         .catch(() => {
           this.snackOn({ payload: 'An error has occured', color: 'error' })
         })
+    },
+    displaySignupView: function() {
+      this.unsetSigninView()
+      this.setSignupView()
     }
   }
 }
@@ -114,5 +115,8 @@ export default {
 <style scoped>
 .v-divider {
   margin: 0px;
+}
+.signup-div {
+  padding-bottom: 10px;
 }
 </style>
