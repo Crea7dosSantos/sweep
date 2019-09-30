@@ -153,9 +153,11 @@ def profile_update():
     current_user = get_jwt_identity()
     profile_image_key = request.json.get('profile_image_key', None)
     profile_back_image_key = request.json.get('profile_back_image_key', None)
+    user_name = request.json.get('username')
     user = db.session.query(User).filter(User.id == current_user).first()
     user.profile_image_key = profile_image_key
     user.profile_back_image_key = profile_back_image_key
+    user.username = user_name
     db.session.commit()
 
     return 'OK'

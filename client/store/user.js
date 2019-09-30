@@ -49,7 +49,6 @@ export const actions = {
       .then(res => {
         const data = res.data
         const payload = data.user_datas
-        console.log(payload)
         commit('setUserState', payload)
       })
       .catch(() => {

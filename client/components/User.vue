@@ -40,13 +40,16 @@
             </v-row>
           </v-img>
           <v-col cols="12" md="12">
-            <v-text-field
-              v-model="user.name"
-              filled
-              counter="25"
-              label="Name"
-              placeholder="Username"
-            />
+            <v-form ref="form">
+              <v-text-field
+                v-model="displayUserName"
+                :rules="[rules.required, rules.min4]"
+                filled
+                counter="20"
+                label="Username"
+                placeholder="Username"
+              />
+            </v-form>
           </v-col>
           <v-card-actions>
             <div class="flex-grow-1" />
@@ -81,7 +84,12 @@ export default {
       userImageSetKeyName: null,
       backImageSetKeyName: null,
       saveLoading: false,
-      saveDisabled: false
+      saveDisabled: false,
+      displayUserName: '',
+      rules: {
+        required: value => !!value || 'Required.',
+        min4: value => value.length >= 4 || 'Min 4 characters'
+      }
     }
   },
   computed: {
@@ -110,6 +118,7 @@ export default {
             this.user.backImageKey
           )
         }
+        this.displayUserName = this.user.name
       }
     }
   },
@@ -122,6 +131,7 @@ export default {
       .get('/profile')
       .then(res => {
         const data = res.data.user[0]
+        this.displayUserName = data['username']
         if (data['profile_image_key'] == null) {
           self.uploadedUserImage = UserDefault
         } else {
@@ -157,11 +167,19 @@ export default {
       this.unsetUserView()
     },
     saveProfile: function() {
+      if (!this.$refs.form.validate()) {
+        this.snackOn({
+          payload: 'There is an error in the update part of Username',
+          color: 'error'
+        })
+        return
+      }
       this.saveLoading = true
       const self = this
       let dict = {
         profile_image_key: self.userImageSetKeyName,
-        profile_back_image_key: self.backImageSetKeyName
+        profile_back_image_key: self.backImageSetKeyName,
+        username: self.displayUserName
       }
       this.axiosAccessHandler()
         .post('/update', dict)
