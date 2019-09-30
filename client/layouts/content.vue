@@ -4,7 +4,7 @@
       <div>
         <v-navigation-drawer v-model="drawer" fixed app>
           <v-app-bar color="grey lighten-2">
-            <v-list-item @click="countInit">
+            <v-list-item to="/">
               <div>
                 <v-list-item-title class="title">Sweep</v-list-item-title>
               </div>
@@ -148,12 +148,12 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import UserDefault from '~/assets/user_default.png'
 
 export default {
   computed: {
-    ...mapState('user', ['user', 'count']),
+    ...mapState('user', ['user']),
     ...mapGetters('user', ['isAuthenticated']),
     ...mapGetters('user', ['isAuthProfileImage']),
     ...mapState('snackbar', ['message', 'isEnable', 'actionStatus']),
@@ -196,22 +196,12 @@ export default {
     items4: [{ title: 'post', icon: 'person' }]
   }),
   methods: {
-    ...mapMutations('user', ['setCount']),
     ...mapActions('snackbar', ['snackOff']),
     ...mapActions('modal', ['setUserView']),
     ...mapActions('modal', ['setSigninView']),
     ...mapActions('modal', ['setSignupView']),
     ...mapActions('modal', ['setSignoutView']),
     ...mapActions('modal', ['setPostView']),
-    countInit: function() {
-      this.setCount(0)
-      console.log('countInitがタップされた。')
-      const router = this.$router
-      router.push('/')
-    },
-    countUp: function() {
-      this.setCount(1)
-    },
     close: function() {
       this.snackOff()
     },
