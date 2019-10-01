@@ -1,7 +1,7 @@
 # sweep
 This is a Todo application with Nuxt on the client side and Flask on the server side
 
-> todo_application
+> Close_SNS_application
 
 ## Build Setup
 
